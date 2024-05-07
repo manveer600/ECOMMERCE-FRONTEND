@@ -7,11 +7,11 @@ function Logout() {
     const token = useSelector(loggedInUserToken);
     useEffect(() => {
         dispatch(signOutAsync());
-    }, [])
+    }, [dispatch])
     return (
         <div>
             {
-                !token && <Navigate to='/login' />
+                !token && <Navigate to='/login' replace={true} />
             }
         </div>
 

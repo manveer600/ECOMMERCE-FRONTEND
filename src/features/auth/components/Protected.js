@@ -4,7 +4,7 @@ import {loggedInUserToken } from "../authSlice";
 function Protected({children}) {
     const token = useSelector(loggedInUserToken);
     if(!token){
-        return <Navigate to='/login'/>
+        return <Navigate to='/login' replace={true}/>
     }
     return children;
 }

@@ -15,7 +15,7 @@ function Login() {
   return (
     <>
 
-      {token && <Navigate to='/' ></Navigate>}
+      {token && <Navigate to='/' replace={true}></Navigate>}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
@@ -32,7 +32,7 @@ function Login() {
           <form noValidate onSubmit={handleSubmit(async (data) => {
             const response = await dispatch(checkUserAsync({ email: data.email, password: data.password }));
             if (response?.payload?.success) {
-              <Navigate to='/' />
+              <Navigate to='/' replace={true}/>
             }
           })} className="space-y-6" action="#" method="POST">
             <div>

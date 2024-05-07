@@ -3,22 +3,25 @@ import ReactConfetti from "react-confetti";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { resetCartAsync } from "../features/cart/CartSlice";
-// import { resetOrder } from "../features/order/orderSlice";
+import { resetOrder } from "../features/order/orderSlice";
 export default function OrderSuccessPage() {
     const dispatch = useDispatch();
     const params = useParams();
-    const {id} = params;
+    const { id } = params;
 
     useEffect(() => {
-        console.log('congrats order has been placed man');
-        dispatch(resetCartAsync());
-        // reset current order
-        // dispatch(resetOrder());
-    },[dispatch])
+        async function instant() {
+            console.log('congrats order has been placed man......................................................................................................');
+            await dispatch(resetCartAsync());
+            // reset current order
+            await dispatch(resetOrder());
+        }
+        instant();
+    }, [dispatch])
 
     return (
         <>
-        <ReactConfetti className=" h-full w-full"/>
+            <ReactConfetti className=" h-full w-full" />
 
             <main className="grid min-h-screen place-items-center bg-white w-full">
                 <div className="text-center">

@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { createProductAsync, fetchProductByIdAsync, updateProductAsync } from "../../product/productSlice";
 import { useEffect } from "react";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function AdminProductForm() {
     const params = useParams();

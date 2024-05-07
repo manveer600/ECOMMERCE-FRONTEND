@@ -150,7 +150,7 @@ function App() {
   return (
     <div className="App">
       {/*<AlertProvider template={AlertTemplate} {...options}> */}
-        <RouterProvider router={router} />
+      <RouterProvider router={router} />
       {/* </AlertProvider> */}
     </div>
   );

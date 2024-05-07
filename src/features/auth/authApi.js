@@ -20,19 +20,21 @@ export function checkUser(loginData) {
         try {
             const response = await fetch(`http://localhost:8080/users/login`, {
                 method: 'POST',
-                body: JSON.stringify(loginData),
-                headers: { 'content-type': "application/json" },
                 credentials:'include',
                 mode:'cors',
+                body: JSON.stringify(loginData),
+                headers: { 'content-type': "application/json" },
             });
             if (response.ok) {
                 const data = await response.json();
                 resolve({ data });
             } else {
                 const error = await response.json();
+                console.log('error while logging', error);
                 reject(error);
             }
         } catch (e) {
+            console.log('Unable to login at this time. Please try again later',e);
             reject(e);
         }
     })

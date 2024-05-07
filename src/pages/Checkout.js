@@ -14,7 +14,7 @@ function Checkout() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const items = useSelector((state) => state?.cart?.items);
-  const [open, setOpen] = useState(true)
+  // const [open, setOpen] = useState(true)
   const totalAmount = items.reduce((amount, item) => discountedPrice(item.productId) * item.quantity + amount, 0);
   const totalItems = items.reduce((total, item) => item.quantity + total, 0);
 
@@ -68,9 +68,9 @@ function Checkout() {
 
   return (
     <Navbar>
-      {currentOrder !== null && currentOrder.paymentMethod === 'cash' && <Navigate to={`/orderSuccess/${currentOrder.id}`} />}
+      {currentOrder !== null && currentOrder.paymentMethod === 'cash' && <Navigate to={`/orderSuccess/${currentOrder.id}`} replace={true} />}
       {/* TODO: BHAI Y CHEEZ GALAT HAI YAHAN PE VO WALA LOGIC LGEGA KI JAB PAYMENT SUCCESSFULL HO JAYE TB USER KA ORDER CREATE HO VRNA NA HO */}
-      {currentOrder !== null && currentOrder.paymentMethod === 'card' && <Navigate to={`/stripe-checkout`} />}
+      {currentOrder !== null && currentOrder.paymentMethod === 'card' && <Navigate to={`/stripe-checkout`} replace={true} />}
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:flex p-3 space-x-5 font-serif lg:px-8">
         <div className='lg:w-1/2 text-start bg-white p-5'>
@@ -457,7 +457,7 @@ function Checkout() {
                   <button
                     type="button"
                     className="font-medium text-indigo-600 hover:text-indigo-500"
-                    onClick={() => setOpen(false)}
+                    // onClick={() => setOpen(false)}
                   >
                     Continue Shopping
                     <span aria-hidden="true"> &rarr;</span>
