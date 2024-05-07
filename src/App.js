@@ -25,6 +25,7 @@ import AdminOrdersPage from './pages/Admin/AdminOrdersPage.js';
 import { transitions, positions, Provider as AlertProvider } from 'react-alert'
 import { fetchOrdersByUserAsync } from './features/order/orderSlice.js';
 import { loggedInUserToken } from './features/auth/authSlice.js';
+import StripeCheckout from './pages/StripeCheckout.js';
 // import AlertTemplate from 'react-alert-template-basic'
 
 const options = {
@@ -75,6 +76,11 @@ const router = createBrowserRouter(
     {
       path: `/orderSuccess/:id`,
       element: <Protected><OrderSuccessPage /></Protected>
+    },
+
+    {
+      path: `/stripe-checkout`,
+      element: <Protected><StripeCheckout /></Protected>
     },
 
     {

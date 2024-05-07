@@ -55,7 +55,6 @@ function UserProfile() {
         const userDetails = { ...user, address: [...user.address] };
         userDetails.address.push(newAddress);
 
-        console.log('user got updated', userDetails);
         await dispatch(updateUserAsync(userDetails));
         setShowAddressForm(false);
     }
@@ -68,7 +67,7 @@ function UserProfile() {
                 <div className="mt-8">
                     <h2 className="text-4xl font-serif font-bold text-blue-700 underline ">Name: {user.name ? user.name : "Manveer"} </h2>
                     <h4 className="text-xl font-serif font-bold text-red-600 ">Email: {user.email ? user.email : "Manveer"}</h4>
-                    <h4 className="text-xl font-serif font-bold text-red-600 ">Role: {user.role === 'admin' ? user.role : null}</h4>
+                    <h4 className="text-xl font-serif font-bold text-red-600 ">Role: {user.role === 'admin' ? user.role : 'user'}</h4>
                     <div className="flow-root">
                         {showAddressForm === true ? <button
                             onClick={e => setShowAddressForm(false)}
@@ -88,7 +87,6 @@ function UserProfile() {
                                 return; 
                               }
                           
-                            console.log('new address', newAddress);
                             addNewAddress(newAddress);
                             // await dispatch(updateUserAsync({ ...loggedInUser, addresses: [...loggedInUser.addresses, data] }));
                             reset();

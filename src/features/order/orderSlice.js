@@ -18,14 +18,14 @@ export const addOrderAsync = createAsyncThunk(
 );
 
 
-export const fetchOrdersByUserAsync = createAsyncThunk('/fetch/ordersByUser', async() => {
-    const response = await fetchOrdersByUser();
-    return response.data;
+export const fetchOrdersByUserAsync = createAsyncThunk('/fetch/ordersByUser', async () => {
+  const response = await fetchOrdersByUser();
+  return response.data;
 })
 
 
-export const fetchAllOrdersAsync = createAsyncThunk('counter/fetchAllOrders', async ({sort, pagination }) => {
-  const response = await fetchAllOrders(sort,pagination);
+export const fetchAllOrdersAsync = createAsyncThunk('counter/fetchAllOrders', async ({ sort, pagination }) => {
+  const response = await fetchAllOrders(sort, pagination);
   return response.data;
 }
 );
@@ -43,21 +43,24 @@ export const updateOrderAsync = createAsyncThunk(
 export const orderSlice = createSlice({
   name: 'order',
   initialState,
-  reducers: {
-    resetOrder: (state) => {
-      state.currentOrder = null;
-    }
-  },
+  // reducers: {
+  //   resetOrder: (state) => {
+  //     state.currentOrder = null;
+  //   }
+  // },
   extraReducers: (builder) => {
     builder
       .addCase(addOrderAsync.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(addOrderAsync.fulfilled, (state, action) => {
-        state.status = 'idle';
-        state.currentOrder = action.payload.order;
-        state.orders.push(action.payload.order);
-      })
+      .addCase(addOrderAsync.fulfilled, (state, action) => (
+        {
+          ...state,
+          status: 'idle',
+          currentOrder: action.payload.order,
+          orders: [...state.orders, action.payload.order],
+          totalOrders: state.orders.length + 1,
+        }))
       .addCase(fetchAllOrdersAsync.pending, (state) => {
         state.status = 'loading';
       })
@@ -80,6 +83,7 @@ export const orderSlice = createSlice({
       .addCase(fetchOrdersByUserAsync.fulfilled, (state, action) => {
         state.status = 'idle';
         state.orders = action.payload.orders;
+        state.totalOrders = action.payload.orders.length ;
       })
   },
 });
@@ -88,6 +92,6 @@ export const orderSlice = createSlice({
 
 export const selectOrders = (state) => state.orders.orders;
 export const selectTotalOrders = (state) => state.orders.totalOrders;
-export const { resetOrder } = orderSlice.actions;
+// export const { resetOrder } = orderSlice.actions;
 
 export default orderSlice.reducer;

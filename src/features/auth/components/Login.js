@@ -32,7 +32,6 @@ function Login() {
           <form noValidate onSubmit={handleSubmit(async (data) => {
             const response = await dispatch(checkUserAsync({ email: data.email, password: data.password }));
             if (response?.payload?.success) {
-              console.log('response payload lovish', response);
               <Navigate to='/' />
             }
           })} className="space-y-6" action="#" method="POST">

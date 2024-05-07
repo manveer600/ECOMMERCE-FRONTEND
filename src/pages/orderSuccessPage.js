@@ -3,16 +3,17 @@ import ReactConfetti from "react-confetti";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { resetCartAsync } from "../features/cart/CartSlice";
-import { resetOrder } from "../features/order/orderSlice";
+// import { resetOrder } from "../features/order/orderSlice";
 export default function OrderSuccessPage() {
     const dispatch = useDispatch();
     const params = useParams();
     const {id} = params;
 
     useEffect(() => {
+        console.log('congrats order has been placed man');
         dispatch(resetCartAsync());
         // reset current order
-        dispatch(resetOrder());
+        // dispatch(resetOrder());
     },[dispatch])
 
     return (

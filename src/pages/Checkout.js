@@ -17,14 +17,12 @@ function Checkout() {
   const [open, setOpen] = useState(true)
   const totalAmount = items.reduce((amount, item) => discountedPrice(item.productId) * item.quantity + amount, 0);
   const totalItems = items.reduce((total, item) => item.quantity + total, 0);
-  console.log('totalItems', totalItems);
-  console.log('totalAmount', totalAmount);
-  
+
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState('cash');
 
   const currentOrder = useSelector((state) => state?.orders?.currentOrder);
-
+  console.log('current order', currentOrder);
   const {
     register,
     handleSubmit,
@@ -43,12 +41,12 @@ function Checkout() {
 
   async function handleOrder() {
     if (items && items.length > 0 && paymentMethod && selectedAddress) {
-      
-      const order = { items, totalAmount, totalItems, loggedInUserId:user.id , paymentMethod, selectedAddress, status: 'pending' };
 
-      console.log('order', order);
+      const order = { items, totalAmount, totalItems, loggedInUserId: user.id, paymentMethod, selectedAddress, status: 'pending' };
+      console.log('order y hai', order);
       await dispatch(addOrderAsync(order));
     } else {
+      // TODO:
       //console.log('ki byi items toh add krlo pehle kakeeee')
       // YAHAN PE TOAST DIKHADO KI BYI PEHLE KUCH ADD TOH KRLO
     }
@@ -70,7 +68,9 @@ function Checkout() {
 
   return (
     <Navbar>
-      {currentOrder && <Navigate to={`/orderSuccess/${currentOrder.id}`} />}
+      {currentOrder !== null && currentOrder.paymentMethod === 'cash' && <Navigate to={`/orderSuccess/${currentOrder.id}`} />}
+      {/* TODO: BHAI Y CHEEZ GALAT HAI YAHAN PE VO WALA LOGIC LGEGA KI JAB PAYMENT SUCCESSFULL HO JAYE TB USER KA ORDER CREATE HO VRNA NA HO */}
+      {currentOrder !== null && currentOrder.paymentMethod === 'card' && <Navigate to={`/stripe-checkout`} />}
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:flex p-3 space-x-5 font-serif lg:px-8">
         <div className='lg:w-1/2 text-start bg-white p-5'>

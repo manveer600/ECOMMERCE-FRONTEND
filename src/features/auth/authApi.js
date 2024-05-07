@@ -3,7 +3,9 @@ export function createUser(userData) {
         const response = await fetch('http://localhost:8080/users/signup', {
             method: "POST",
             body: JSON.stringify(userData),
-            headers: { 'content-type': 'application/json' }
+            headers: { 'content-type': 'application/json' },
+            credentials:'include',
+            mode:'cors'
         })
         const data = await response.json();
         resolve({ data });
@@ -19,34 +21,20 @@ export function checkUser(loginData) {
             const response = await fetch(`http://localhost:8080/users/login`, {
                 method: 'POST',
                 body: JSON.stringify(loginData),
-                headers: { 'content-type': "application/json" }
+                headers: { 'content-type': "application/json" },
+                credentials:'include',
+                mode:'cors',
             });
-            if(response.ok){
+            if (response.ok) {
                 const data = await response.json();
                 resolve({ data });
-            }else{
+            } else {
                 const error = await response.json();
                 reject(error);
             }
         } catch (e) {
             reject(e);
         }
-
-        // if(data.length){
-        //     if(password === data[0].password) return resolve({data:data[0]});
-        //     else{
-        //         return reject({
-        //             message:'Wrong Credentials'
-        //         })
-        //     }
-        // }
-        // else{
-        //     return reject({
-        //         message:'User not found'
-        //     })
-        // }
-
-
     })
 }
 
@@ -56,7 +44,10 @@ export function checkUser(loginData) {
 
 export function signOut() {
     return new Promise(async (resolve) => {
-        const response = await fetch('http://localhost:8080/users/logout');
+        const response = await fetch('http://localhost:8080/users/logout', {
+            mode: "cors",
+            credentials: 'include',
+        });
         const data = await response.json();
         resolve({ data: 'success' });
     })

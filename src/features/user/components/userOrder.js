@@ -7,15 +7,15 @@ import { fetchOrdersByUserAsync } from "../../order/orderSlice";
 function UserOrder() {
     const dispatch = useDispatch();
     const orders = useSelector((state) => state?.orders?.orders);
-
     const navigate = useNavigate();
 
+    const totalItems = orders.reduce((total, order) => total + order.items.reduce((subTotal, item) => subTotal + item.quantity, 0), 0);
     useEffect(() => {
-        async function fetchingLoggedInUserOrder() {
+        async function fetchingOrders() {
             await dispatch(fetchOrdersByUserAsync());
         }
 
-        fetchingLoggedInUserOrder();
+        fetchingOrders();
     }, [dispatch])
     return (
         <div>
@@ -47,16 +47,13 @@ function UserOrder() {
                                                             </h3>
                                                             <p className="ml-4">${discountedPrice(item.productId) * item.quantity}</p>
                                                         </div>
+                                                        <p className="text-end line-through">${item.productId.price}</p>
                                                         <p className="mt-1 text-sm text-gray-500">Stock Available: {item.productId.stock - item.quantity}</p>
                                                     </div>
                                                     <div className="flex flex-1 items-end justify-between text-sm">
-                                                        <div className=" text-black font-bold ">Qty:{item.quantity}
-
-                                                        </div>
-
-
-
+                                                        <div className=" text-black font-bold ">Qty:{item.quantity}</div>
                                                     </div>
+
                                                 </div>
                                             </li>
                                         ))
@@ -67,28 +64,32 @@ function UserOrder() {
 
 
                                 {
-                                    order.selectedAddress && order.selectedAddress.map((address) => {
-                                        <li className=" border-2 p-3 flex justify-between  gap-x-6 py-5">
-                                            <div className="flex min-w-0 gap-x-4">
-                                                <div className="min-w-0  flex-auto">
-                                                    <p className="text-sm font-semibold leading-6 text-gray-900">{address.address}</p>
-                                                    <p className="mt-1 truncate text-xs leading-5 text-gray-500">{address.name}</p>
-                                                    <p className="mt-1 truncate text-xs leading-5 text-gray-500">{address.email}</p>
-                                                    <p className="mt-1 truncate text-xs leading-5 text-gray-500">{address.postalCode}</p>
+                                    order.selectedAddress[0] && order.selectedAddress.map((address) => {
+                                        return (
+                                            <li className=" border-2 p-3 flex justify-between  gap-x-6 py-5">
+                                                <div className="flex min-w-0 gap-x-4">
+                                                    <div className="min-w-0  flex-auto">
+                                                        <p className="text-sm font-semibold leading-6 text-gray-900">{address.address}</p>
+                                                        <p className="mt-1 truncate text-xs leading-5 text-gray-500">{address.name}</p>
+                                                        <p className="mt-1 truncate text-xs leading-5 text-gray-500">{address.email}</p>
+                                                        <p className="mt-1 truncate text-xs leading-5 text-gray-500">{address.postalCode}</p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                                                <p className="text-sm leading-6 text-gray-900">{address.state}</p>
-                                                <p className="text-sm leading-6 text-gray-900">Phone: {address.phoneNumber}</p>
-                                            </div>
-                                        </li>
+                                                <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                                                    <p className="text-sm leading-6 text-gray-900">{address.state}</p>
+                                                    <p className="text-sm leading-6 text-gray-900">Phone: {address.phoneNumber}</p>
+                                                </div>
+                                            </li>
+                                        )
                                     })
                                 }
 
                             </div>
                         </div>
 
-                        {order.totalItems > 0 ? (<div className="border-t border-gray-200 px-4 py-6 sm:px-6">
+
+
+                        {order.totalAmount > 0 ? (<div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                             <div className="flex justify-between text-base font-medium text-gray-900">
                                 <p>Subtotal</p>
                                 <p>
@@ -98,12 +99,12 @@ function UserOrder() {
                             <div className="flex justify-between text-base font-medium text-gray-900">
                                 <p>Total Items</p>
                                 <p>
-                                    {order.totalItems} items
+                                    {totalItems} items
                                 </p>
                             </div>
 
 
-                            <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
+                            {/* <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                                 <p>
 
                                     <Link to='/'>
@@ -118,11 +119,14 @@ function UserOrder() {
                                     </Link>
 
                                 </p>
-                            </div>
+                            </div> */}
                         </div>) : <div className="flex flex-col justify-start items-start mt-2">OOPS ! You haven't ordered anything
                             <button className="font-serif mt-2 bg-gray-200 px-2 py-1 hover:text-yellow-900 rounded-sm" onClick={() => navigate('/')}>See Items</button>
                         </div>}
+
+
                     </div>
+
                 )) : (
                     <div>
                         <p className="text-5xl text-red-500 text-center font-serif mt-10">OOPS!!😌 No orders found.</p>
@@ -133,18 +137,24 @@ function UserOrder() {
                 )
             }
 
+            <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
+                <p>
+
+                    <Link to='/'>
+                        <button
+                            type="button"
+                            className="font-medium text-indigo-600 hover:text-indigo-500"
+                            onClick={() => navigate('/')}
+                        >
+                            Continue Shopping
+                            <span aria-hidden="true"> &rarr;</span>
+                        </button>
+                    </Link>
+
+                </p>
+            </div>
 
         </div>
-
-
-
-
-
-
-
-
-
-
     );
 }
 

@@ -12,9 +12,9 @@ const initialState = {
 
 
 export const updateUserAsync = createAsyncThunk('user/updateUser', async(updatedData) => {
-    console.log('data to be updated', updatedData);
     const response  = await updateUser(updatedData);
     return response.data;
+    //TODO:SUCCESS PE KYA KRNA CHAHTE HO
 })
 
 export const fetchLoggedInUserAsync = createAsyncThunk('user/fetchLoggedInUser', async() => {
@@ -34,14 +34,12 @@ export const userSlice = createSlice({
         })
         .addCase(updateUserAsync.fulfilled , (state,action) => {
             state.status = 'idle';
-            console.log('action.payload', action.payload.user);
         })
         .addCase(fetchLoggedInUserAsync.pending ,(state) => {
             state.status = 'loading';
         })
         .addCase(fetchLoggedInUserAsync.fulfilled , (state,action) => {
             state.status = 'idle';
-            console.log('payload', action.payload);
             state.userInfo = action.payload.user;
         })
 

@@ -28,7 +28,6 @@ function Signup() {
         <div className="mt-10  sm:mx-auto sm:w-full sm:max-w-sm">
           <form noValidate className="space-y-6" onSubmit={handleSubmit(async (data) => {
             const response = await dispatch(createUserAsync({ email: data.email, password: data.password}));
-            console.log('response', response);
             if(response?.payload?.success){
               <Navigate to='/' />
             }

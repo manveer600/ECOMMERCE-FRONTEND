@@ -21,7 +21,6 @@ function Cart() {
     }
   }
   async function handleRemove(e, item){
-    console.log('item to be deleted', item);
     await dispatch(deleteItemFromCartAsync(item.id))
   }
 

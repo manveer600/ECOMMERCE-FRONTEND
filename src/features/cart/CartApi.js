@@ -15,7 +15,8 @@ export function addToCart(item){
 export function fetchItemsByUserId(){
     return new Promise(async (resolve) => {
         const response = await fetch(`http://localhost:8080/carts`,{
-            credentials:"include"
+            mode:"cors",
+            credentials:'include',
         });
         const data = await response.json();
         resolve({data});
@@ -28,7 +29,8 @@ export function updateItem(productId){
     return new Promise(async (resolve) => {
         const response = await fetch(`http://localhost:8080/carts/${productId}`, {
             method:"PATCH",
-            credentials:"include",
+            mode:"cors",
+            credentials:'include',
             headers:{'content-type':'application/json'}
         })
 
@@ -44,10 +46,10 @@ export function deleteItemFromCart(itemId){
     return new Promise(async (resolve) => {
         const response = await fetch(`http://localhost:8080/carts/${itemId}`, {
             method:"DELETE",
-            credentials:"include",
+            mode:"cors",
+            credentials:'include',
         })
         const data = await response.json();
-        console.log('data after deleting cart item', data);
         resolve({data});
     })
 }

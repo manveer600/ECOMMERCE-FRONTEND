@@ -27,7 +27,6 @@ export const fetchItemsByUserIdAsync = createAsyncThunk('user/fetchItemsByUserId
 
 
 export const updateItemAsync = createAsyncThunk('user/updateItem', async ({productId}) => {
-    console.log('itemToUpdate', productId);
     const response = await updateItem(productId);
     return response.data;
 }
@@ -54,7 +53,6 @@ export const cartSlice = createSlice({
             })
             .addCase(addToCartAsync.fulfilled, (state, action) => {
                 state.status = 'idle';
-                console.log('action.payload', action.payload);
                 state.items.push(action.payload.cart);
             })
             .addCase(fetchItemsByUserIdAsync.pending, (state, action) => {
@@ -70,7 +68,6 @@ export const cartSlice = createSlice({
             .addCase(updateItemAsync.fulfilled, (state, action) => {
                 state.status = 'idle';
                 const index = state.items.findIndex(item => item.productId.id === action.payload.updatedItem.productId);
-                console.log('index', index);
                 state.items[index] = action.payload.updatedItem;
             })
             .addCase(deleteItemFromCartAsync.pending, (state, action) => {

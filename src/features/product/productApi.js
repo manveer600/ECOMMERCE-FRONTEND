@@ -56,7 +56,8 @@ export function fetchAllCategories() {
   return new Promise(async (resolve) => {
     const response = await fetch(`http://localhost:8080/categories`, {
       method:'GET',
-      credentials:'include'
+      credentials:"include",
+      mode: 'cors'
     })
     const data = await response.json();
     resolve({ data })
@@ -67,7 +68,8 @@ export function fetchAllCategories() {
 export function fetchProductById(id) {
   return new Promise(async (resolve) => {
     const response = await fetch(`http://localhost:8080/products/${id}`, {
-      credentials:"include"
+      credentials:"include",
+      mode: 'cors'
     })
     const data = await response.json();
     resolve({ data })
@@ -81,6 +83,7 @@ export function createProduct(product) {
       method: 'POST',
       body: JSON.stringify(product),
       credentials:"include",
+      mode: 'cors',
       headers: { 'content-type': 'application/json' }
 
     })
@@ -98,6 +101,7 @@ export function updateProduct(product) {
       method: "PATCH",
       body: JSON.stringify(product),
       credentials:"include",
+      mode: 'cors',
       headers: { 'content-type': 'application/json' }
     })
 
