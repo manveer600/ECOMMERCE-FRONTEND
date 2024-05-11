@@ -12,9 +12,6 @@ export function createUser(userData) {
     })
 }
 
-
-
-
 export function checkUser(loginData) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -40,10 +37,6 @@ export function checkUser(loginData) {
     })
 }
 
-
-
-
-
 export function signOut() {
     return new Promise(async (resolve) => {
         const response = await fetch('http://localhost:8080/users/logout', {
@@ -52,5 +45,16 @@ export function signOut() {
         });
         const data = await response.json();
         resolve({ data: 'success' });
+    })
+}
+
+export function checkAuth(){
+    return new Promise(async (resolve) => {
+        const response = await fetch('http://localhost:8080/users/check-auth', {
+            mode: "cors",
+            credentials: 'include',
+        });
+        const data = await response.json();
+        resolve({ data });
     })
 }

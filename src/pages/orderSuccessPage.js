@@ -4,12 +4,21 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { resetCartAsync } from "../features/cart/CartSlice";
 import { resetOrder } from "../features/order/orderSlice";
+import { checkAuthAsync } from "../features/auth/authSlice";
 export default function OrderSuccessPage() {
     const dispatch = useDispatch();
     const params = useParams();
     const { id } = params;
 
+
     useEffect(() => {
+        (async () => {
+            await dispatch(checkAuthAsync());
+        })()
+    }, [dispatch])
+
+    useEffect(() => {
+
         async function instant() {
             console.log('congrats order has been placed man......................................................................................................');
             await dispatch(resetCartAsync());
@@ -23,7 +32,7 @@ export default function OrderSuccessPage() {
         <>
             <ReactConfetti className=" h-full w-full" />
 
-            <main className="grid min-h-screen place-items-center bg-white w-full">
+            {params?.id ?  <main className="grid min-h-screen place-items-center bg-white w-full">
                 <div className="text-center">
                     <p className="px-4 text-center text-4xl sm:text-6xl font-semibold text-indigo-600 ">Congratulations😁</p>
                     <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">Order Id #{id}</h1>
@@ -39,7 +48,7 @@ export default function OrderSuccessPage() {
                         </Link>
                     </div>
                 </div>
-            </main>
+            </main> : <h1>loading</h1>}
         </>
     )
 }

@@ -24,7 +24,7 @@ import AdminProductFormPage from './pages/Admin/AdminProductFormPage.js';
 import AdminOrdersPage from './pages/Admin/AdminOrdersPage.js';
 import { transitions, positions, Provider as AlertProvider } from 'react-alert'
 import { fetchOrdersByUserAsync } from './features/order/orderSlice.js';
-import { loggedInUserToken } from './features/auth/authSlice.js';
+import { checkAuthAsync, loggedInUserToken } from './features/auth/authSlice.js';
 import StripeCheckout from './pages/StripeCheckout.js';
 // import AlertTemplate from 'react-alert-template-basic'
 
@@ -133,9 +133,17 @@ const router = createBrowserRouter(
 
 
   ]);
+
 function App() {
   const dispatch = useDispatch();
   const token = useSelector(loggedInUserToken);
+
+  useEffect(() => {
+    (async() => {
+      await dispatch(checkAuthAsync());
+    })()
+  }, [dispatch])
+
   useEffect(() => {
     async function instant() {
       if (token) {

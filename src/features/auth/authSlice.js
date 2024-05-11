@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { checkUser, createUser, signOut } from './authApi';
 import { updateUser } from '../user/userApi';
-
+import { checkAuth } from './authApi';
 const initialState = {
-   loggedInUserToken:null,
-   userInfo:null,
-   status:'idle',
-   error:null
+    loggedInUserToken: null,
+    userInfo: null,
+    status: 'idle',
+    error: null
 };
 
 export const createUserAsync = createAsyncThunk('user/createUser', async (userData) => {
@@ -30,17 +30,31 @@ export const updateUserAsync = createAsyncThunk('user/updateUser', async (update
 );
 
 
-export const checkUserAsync = createAsyncThunk('user/checkUser', async (loginData, {rejectWithValue}) => {
-    try{
+export const checkUserAsync = createAsyncThunk('user/checkUser', async (loginData, { rejectWithValue }) => {
+    try {
         const response = await checkUser(loginData);
         return response.data;
     }
-    catch(error){
+    catch (error) {
         console.log('rejecting with an error', error);
         return rejectWithValue(error);
     }
 }
 );
+
+export const checkAuthAsync = createAsyncThunk('user/checkAuth', async () => {
+    try {
+        const response = await checkAuth();
+        console.log("response.data", response);
+        return response.data;
+    }
+    catch (error) {
+        console.log('rejecting with an error', error);
+        return error;
+    }
+}
+);
+
 
 
 export const authSlice = createSlice({
@@ -84,11 +98,17 @@ export const authSlice = createSlice({
                 state.loggedInUserToken = null;
                 state.userInfo = null;
             })
+            .addCase(checkAuthAsync.fulfilled, (state, action) => {
+                state.status = 'idle';
+                console.log('action', action);
+                state.loggedInUserToken = action.payload.token;
+                state.userInfo = action.payload.user;
+            })
     },
 });
 
 
-export const loggedInUserToken = (state) => state?.auth?.loggedInUserToken ;
+export const loggedInUserToken = (state) => state?.auth?.loggedInUserToken;
 export const userInfo = (state) => state?.auth?.userInfo;
 
 export default authSlice.reducer;
