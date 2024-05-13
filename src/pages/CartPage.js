@@ -4,7 +4,7 @@ import Navbar from "../features/navbar/Navbar";
 function CartPage() {
     return (  
         <>
-        <Navbar><Cart/></Navbar></>
+        <Navbar/><Cart/></>
     );
 }
 

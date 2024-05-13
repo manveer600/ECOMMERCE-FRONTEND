@@ -10,6 +10,7 @@ import { discountedPrice } from '../app/constants.js';
 
 
 function Checkout() {
+  const [currentOrder, setCurrentOrder] = useState();
   const user = useSelector(userInfo);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -21,8 +22,8 @@ function Checkout() {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState('cash');
 
-  const currentOrder = useSelector((state) => state?.orders?.currentOrder);
-  console.log('current order', currentOrder);
+  // const currentOrder = useSelector((state) => state?.orders?.currentOrder);
+  // console.log('current order', currentOrder);
   const {
     register,
     handleSubmit,
@@ -43,7 +44,7 @@ function Checkout() {
     if (items && items.length > 0 && paymentMethod && selectedAddress) {
 
       const order = { items, totalAmount, totalItems, loggedInUserId: user.id, paymentMethod, selectedAddress, status: 'pending' };
-      console.log('order y hai', order);
+      setCurrentOrder(order);
       await dispatch(addOrderAsync(order));
     } else {
       // TODO:
@@ -66,11 +67,13 @@ function Checkout() {
     setPaymentMethod(e.target.value);
   }
 
+  console.log('currentorder', currentOrder);
+
   return (
     <Navbar>
-      {currentOrder !== null && currentOrder.paymentMethod === 'cash' && <Navigate to={`/orderSuccess/${currentOrder.id}`} replace={true} />}
+      {currentOrder !== undefined && currentOrder.paymentMethod === 'cash' && <Navigate to={`/orderSuccess/${currentOrder.id}`} replace={true} />}
       {/* TODO: BHAI Y CHEEZ GALAT HAI YAHAN PE VO WALA LOGIC LGEGA KI JAB PAYMENT SUCCESSFULL HO JAYE TB USER KA ORDER CREATE HO VRNA NA HO */}
-      {currentOrder !== null && currentOrder.paymentMethod === 'card' && <Navigate to={`/stripe-checkout`} replace={true} />}
+      {currentOrder !== undefined && currentOrder.paymentMethod === 'card' && <Navigate to={`/stripe-checkout`} replace={true} />}
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:flex p-3 space-x-5 font-serif lg:px-8">
         <div className='lg:w-1/2 text-start bg-white p-5'>

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { checkUser, createUser, signOut } from './authApi';
+import { loginUser, createUser, signOut } from './authApi';
 import { updateUser } from '../user/userApi';
 import { checkAuth } from './authApi';
 const initialState = {
@@ -30,9 +30,9 @@ export const updateUserAsync = createAsyncThunk('user/updateUser', async (update
 );
 
 
-export const checkUserAsync = createAsyncThunk('user/checkUser', async (loginData, { rejectWithValue }) => {
+export const loginUserAsync = createAsyncThunk('user/loginUser', async (loginData, { rejectWithValue }) => {
     try {
-        const response = await checkUser(loginData);
+        const response = await loginUser(loginData);
         return response.data;
     }
     catch (error) {
@@ -71,15 +71,15 @@ export const authSlice = createSlice({
                 state.loggedInUserToken = action.payload.token;
                 state.userInfo = action.payload.user;
             })
-            .addCase(checkUserAsync.pending, (state, action) => {
+            .addCase(loginUserAsync.pending, (state, action) => {
                 state.status = 'loading';
             })
-            .addCase(checkUserAsync.fulfilled, (state, action) => {
+            .addCase(loginUserAsync.fulfilled, (state, action) => {
                 state.status = 'idle';
                 state.loggedInUserToken = action.payload.token;
                 state.userInfo = action.payload.user
             })
-            .addCase(checkUserAsync.rejected, (state, action) => {
+            .addCase(loginUserAsync.rejected, (state, action) => {
                 state.status = 'idle';
                 state.error = action.payload;
             })
@@ -100,7 +100,6 @@ export const authSlice = createSlice({
             })
             .addCase(checkAuthAsync.fulfilled, (state, action) => {
                 state.status = 'idle';
-                console.log('action', action);
                 state.loggedInUserToken = action.payload.token;
                 state.userInfo = action.payload.user;
             })

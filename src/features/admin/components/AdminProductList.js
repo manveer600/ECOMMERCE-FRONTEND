@@ -117,14 +117,14 @@ export default function AdminProductList() {
     if (selectedProduct) setValue('title', selectedProduct.title);
   }, [selectedProduct])
 
-  useEffect(() => {
-    async function fetching() {
-      await dispatch(fetchAllBrandsAsync())
-      await dispatch(fetchAllCategoriesAsync());
-    }
+  // useEffect(() => {
+  //   async function fetching() {
+  //     await dispatch(fetchAllBrandsAsync())
+  //     await dispatch(fetchAllCategoriesAsync());
+  //   }
 
-    fetching();
-  }, [dispatch])
+  //   fetching();
+  // }, [dispatch])
 
 
   useEffect(() => {

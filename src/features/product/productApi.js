@@ -1,24 +1,19 @@
 export function fetchAllProducts() {
   return new Promise(async (resolve) => {
-    const response = await fetch('http://localhost:8080/products',{
-      credentials:"include"
+    const response = await fetch('http://localhost:8080/products', {
+      credentials: "include"
     })
     const data = await response.json();
     resolve({ data })
   });
 }
 
-
 export function fetchProductsByFilter(filter, sort, pagination) {
-  // filter = {"category":'smartphone'}
-  // filter={category:["smartphones", "laptops", "skincare", "etc"]}
+  // filter = {"category":'smartphone', "brand":"apple"}
   let queryString = '';
   for (let key in filter) {
-    const array = filter[key]; //array milega ["smartphones", "laptops", "skincare", "etc"]
-    if (array.length) {
-      const lastFilter = array[array.length - 1];
-      queryString += `${key}=${lastFilter}&`
-    }
+    const value = filter[key];
+    queryString += `${key}=${value}&`
   }
 
   for (let key in sort) {
@@ -30,21 +25,20 @@ export function fetchProductsByFilter(filter, sort, pagination) {
 
 
   return new Promise(async (resolve) => {
-    const response = await fetch(`http://localhost:8080/products?${queryString}`,{
-      credentials:"include",
+    const response = await fetch(`http://localhost:8080/products?${queryString}`, {
+      credentials: "include",
       mode: 'cors'
     })
     const data = await response.json();
-    resolve({ data:data });
+    resolve({ data: data });
   });
 }
-
 
 export function fetchAllBrands() {
   return new Promise(async (resolve) => {
     const response = await fetch(`http://localhost:8080/brands`, {
-      method:'GET',
-      credentials:"include",
+      method: 'GET',
+      credentials: "include",
       mode: 'cors'
     })
     const data = await response.json();
@@ -55,34 +49,32 @@ export function fetchAllBrands() {
 export function fetchAllCategories() {
   return new Promise(async (resolve) => {
     const response = await fetch(`http://localhost:8080/categories`, {
-      method:'GET',
-      credentials:"include",
+      method: 'GET',
+      credentials: "include",
       mode: 'cors'
     })
     const data = await response.json();
     resolve({ data })
   });
 }
-
 
 export function fetchProductById(id) {
   return new Promise(async (resolve) => {
     const response = await fetch(`http://localhost:8080/products/${id}`, {
-      credentials:"include",
+      credentials: "include",
       mode: 'cors'
     })
     const data = await response.json();
     resolve({ data })
   });
 }
-
 
 export function createProduct(product) {
   return new Promise(async (resolve) => {
     const response = await fetch(`http://localhost:8080/products`, {
       method: 'POST',
       body: JSON.stringify(product),
-      credentials:"include",
+      credentials: "include",
       mode: 'cors',
       headers: { 'content-type': 'application/json' }
 
@@ -92,15 +84,12 @@ export function createProduct(product) {
   });
 }
 
-
-
-
 export function updateProduct(product) {
   return new Promise(async (resolve) => {
     const response = await fetch(`http://localhost:8080/products/${product.id}`, {
       method: "PATCH",
       body: JSON.stringify(product),
-      credentials:"include",
+      credentials: "include",
       mode: 'cors',
       headers: { 'content-type': 'application/json' }
     })

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { fetchLoggedInUserAsync } from './features/user/userSlice.js';
 import { fetchItemsByUserIdAsync } from './features/cart/CartSlice.js';
 import { useDispatch, useSelector } from 'react-redux';
@@ -135,31 +135,10 @@ const router = createBrowserRouter(
   ]);
 
 function App() {
-  const dispatch = useDispatch();
-  const token = useSelector(loggedInUserToken);
 
-  useEffect(() => {
-    (async() => {
-      await dispatch(checkAuthAsync());
-    })()
-  }, [dispatch])
-
-  useEffect(() => {
-    async function instant() {
-      if (token) {
-        await dispatch(fetchItemsByUserIdAsync());
-        await dispatch(fetchLoggedInUserAsync());
-        await dispatch(fetchOrdersByUserAsync());
-      }
-    }
-
-    instant();
-  }, [dispatch, token])
   return (
     <div className="App">
-      {/*<AlertProvider template={AlertTemplate} {...options}> */}
       <RouterProvider router={router} />
-      {/* </AlertProvider> */}
     </div>
   );
 }

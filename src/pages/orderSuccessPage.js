@@ -20,7 +20,6 @@ export default function OrderSuccessPage() {
     useEffect(() => {
 
         async function instant() {
-            console.log('congrats order has been placed man......................................................................................................');
             await dispatch(resetCartAsync());
             // reset current order
             await dispatch(resetOrder());

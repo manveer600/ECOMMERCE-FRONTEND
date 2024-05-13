@@ -10,7 +10,6 @@ export default function CheckoutForm() {
   const stripe = useStripe();
   const elements = useElements();
   const currentOrder = useSelector((state) => state.orders.currentOrder);
-  console.log('currentOrder is this', currentOrder);
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 

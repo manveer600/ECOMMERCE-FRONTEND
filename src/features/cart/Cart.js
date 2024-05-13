@@ -26,13 +26,13 @@ function Cart() {
 
 
 
-  useEffect(() => {
-    async function fetchItems(){
-        await dispatch(fetchItemsByUserIdAsync());
-    }
+  // useEffect(() => {
+  //   async function fetchItems(){
+  //       await dispatch(fetchItemsByUserIdAsync());
+  //   }
 
-    fetchItems();
-  },[])
+  //   fetchItems();
+  // },[])
 
   return (
     <div className="mx-auto mt-10 z-10 overflow-x-hidden bg-white max-w-7xl py-6 sm:px-6 lg:px-8"><div className="mt-8">
