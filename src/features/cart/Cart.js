@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { deleteItemFromCartAsync, fetchItemsByUserIdAsync, updateItemAsync } from "./CartSlice";
+import { deleteItemFromCartAsync, updateItemAsync } from "./CartSlice";
 import { discountedPrice } from "../../app/constants";
 // import { addOrderAsync } from "../order/orderSlice";
 
@@ -15,9 +15,23 @@ function Cart() {
   const [open, setOpen] = useState(true)
   const totalAmount = items.reduce((amount, item) => discountedPrice(item.productId) * item.quantity + amount, 0);
   const totalItems = items.reduce((total, item) => item.quantity + total, 0);
-  function handleQuantity(e, item) {
-    if (e.target.value <= item.stock) {
-      dispatch(updateItemAsync({ ...item, quantity: +e.target.value }))
+  async function handleQuantity(e, item) {
+    const inputValue = +e.target.value;
+    console.log('inputValue', inputValue);
+    const maxStock = item.productId.stock;
+    const dataToBeUpdated = {
+      quantity : inputValue
+    }
+
+    if(inputValue >= 1 && inputValue <= maxStock){
+      await dispatch(updateItemAsync({productId:item.productId.id,dataToBeUpdated}))
+    }
+    else{
+      e.target.value = Math.min(Math.max(inputValue,1), item.productId.stock);
+      const dataToBeUpdated = {
+        quantity:e.target.value
+      }
+      await dispatch(updateItemAsync({productId:item.productId.id,dataToBeUpdated}))
     }
   }
   async function handleRemove(e, item){
@@ -25,14 +39,6 @@ function Cart() {
   }
 
 
-
-  // useEffect(() => {
-  //   async function fetchItems(){
-  //       await dispatch(fetchItemsByUserIdAsync());
-  //   }
-
-  //   fetchItems();
-  // },[])
 
   return (
     <div className="mx-auto mt-10 z-10 overflow-x-hidden bg-white max-w-7xl py-6 sm:px-6 lg:px-8"><div className="mt-8">
@@ -59,20 +65,16 @@ function Cart() {
                   </div>
                     <p className="ml-4 text-end font-semibold line-through">${item.productId.price * item.quantity}</p>
                   <p className="mt-1 text-sm text-gray-500">Stock Available: {item.productId.stock - item.quantity}</p>
-                  <p className="mt-1 text-sm text-gray-500"> quantity Selected: {item.quantity}</p>
+                  <p className="mt-1 text-sm text-gray-500">Quantity Selected: {item.quantity}</p>
                 </div>
 
-                <div className="flex flex-1 items-end justify-between text-sm">
+                <div className="flex flex-1 items-end mt-2 justify-between text-sm">
                   <div className=" text-black font-bold ">Qty
-                    <div className="inline ml-2">
-                      {/* <select value={item.quantity} onChange={(e) => handleQuantity(e,item)}>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                      </select> */}
+                    <div className="inline mt-2 ml-2">
                       <input
                         type="number"
-                        value={item.quantity}
                         onChange={(e) => handleQuantity(e, item)}
+                        value={item.quantity}
                         min={1}
                         max={item.productId.stock}  // Set the maximum value to the available stock
                       />

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { fetchProductByIdAsync } from '../productSlice'
 import { addToCartAsync, updateItemAsync } from '../../cart/CartSlice'
-import {discountedPrice} from '../../../app/constants.js'
+import { discountedPrice } from '../../../app/constants.js'
 const colors = [
   { name: 'White', class: 'bg-white', selectedClass: 'ring-gray-400' },
   { name: 'Gray', class: 'bg-gray-200', selectedClass: 'risizeng-gray-400' },
@@ -52,11 +52,18 @@ export default function ProductDetails() {
   async function handleCart(e) {
     e.preventDefault();
     let newItem;
-    const existingItemIndex = cartItems.findIndex(c => c.productId === product.id);
+    const existingItemIndex = cartItems.findIndex(c => c.productId.id === product.id);
     if (existingItemIndex != -1) {
-      await dispatch(updateItemAsync({productId:product.id}));
+      let item = cartItems[existingItemIndex];
+      console.log('item found', item);
+      const dataToBeUpdated = {
+        quantity: item.quantity + 1
+      };
+      console.log('card update');
+      await dispatch(updateItemAsync({ productId: product.id, dataToBeUpdated }));
     } else {
-      newItem = {productId:product.id , quantity:1} 
+      console.log('card add');
+      newItem = { productId: product.id, quantity: 1 }
       await dispatch(addToCartAsync(newItem));
     }
   }
@@ -117,13 +124,13 @@ export default function ProductDetails() {
               />
             </div>
           </div>
-          <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
+          {product.images[3] && <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
             <img
               src={product.images[3]}
               alt={product.title}
               className="h-full w-full object-cover object-center"
             />
-          </div>
+          </div>}
         </div>
 
         {/* Product info */}

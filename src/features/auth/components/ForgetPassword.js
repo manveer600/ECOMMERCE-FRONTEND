@@ -1,13 +1,15 @@
 import { useForm } from "react-hook-form"
-import { useState } from "react";
-import { Link } from "react-router-dom";
-function Login() {
+import { useDispatch } from "react-redux";
+import {Link} from 'react-router-dom';
+import { forgotPasswordAsync } from "../authSlice";
+function ForgetPassword() {
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
 
+    const dispatch = useDispatch();
 
     return (
         <>
@@ -27,6 +29,8 @@ function Login() {
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                     <form noValidate onSubmit={handleSubmit(async (data) => {
                         // IMPLEMENTATION IN BACKEND IS NECESSARY
+                        console.log('email hi aayegi obv');
+                        await dispatch(forgotPasswordAsync(data));
                     })} className="space-y-6" action="#" method="POST">
                         <div>
                             <label htmlFor="email" className="block text-start text-sm font-medium leading-6 text-gray-900">
@@ -80,4 +84,4 @@ function Login() {
     )
 }
 
-export default Login;
+export default ForgetPassword;

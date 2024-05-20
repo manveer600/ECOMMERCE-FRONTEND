@@ -1,7 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { loginUser, createUser, signOut } from './authApi';
-import { updateUser } from '../user/userApi';
-import { checkAuth } from './authApi';
+import { loginUser, createUser, signOut, forgotPassword, resetPassword, checkAuth, updateUser } from './authApi';
 const initialState = {
     loggedInUserToken: null,
     userInfo: null,
@@ -23,8 +21,8 @@ export const signOutAsync = createAsyncThunk('user/signOut', async () => {
 );
 
 
-export const updateUserAsync = createAsyncThunk('user/updateUser', async (update) => {
-    const response = await updateUser(update);
+export const updateUserAsync = createAsyncThunk('user/updateUser', async (updatedData) => {
+    const response = await updateUser(updatedData);
     return response.data;
 }
 );
@@ -57,6 +55,38 @@ export const checkAuthAsync = createAsyncThunk('user/checkAuth', async () => {
 
 
 
+export const forgotPasswordAsync = createAsyncThunk('user/forgotPassword', async (data) => {
+    try {
+        const response = await forgotPassword(data);
+        console.log("response.data", response);
+        return response.data;
+    }
+    catch (error) {
+        console.log('error forgetting password');
+        return error;
+    }
+}
+);
+
+
+export const resetPasswordAsync = createAsyncThunk('user/resetPassword', async (data) => {
+    console.log('data in slice', data);
+    try {
+        const response = await resetPassword(data);
+        console.log("response.data", response);
+        return response.data1;
+    }
+    catch (error) {
+        console.log('error reseting password');
+        return error;
+    }
+}
+);
+
+
+
+
+
 export const authSlice = createSlice({
     name: 'user',
     initialState,
@@ -84,11 +114,12 @@ export const authSlice = createSlice({
                 state.error = action.payload;
             })
             .addCase(updateUserAsync.pending, (state) => {
-                state.status = 'loading';
+                state.status = 'updating user';
             })
             .addCase(updateUserAsync.fulfilled, (state, action) => {
                 state.status = 'idle';
-                state.loggedInUserToken = action.payload.token;
+                state.userInfo = action.payload.user
+                // state.loggedInUserToken = action.payload.token;
             })
             .addCase(signOutAsync.pending, (state) => {
                 state.status = 'loggingOut';

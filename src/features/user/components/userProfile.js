@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { updateUserAsync } from "../userSlice";
+import { updateUserAsync } from "../../auth/authSlice.js";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { userInfo } from "../../auth/authSlice";
@@ -18,15 +18,20 @@ function UserProfile() {
     } = useForm();
 
 
-    function handleRemove(e, address, index) {
-        alert(`Are you sure you want to delete this address: ${address.address}`)
-        const userDetails = { ...user, address: [...user.address] };
-        userDetails.address.splice(index, 1);
-        dispatch(updateUserAsync(userDetails));
+    async function handleRemove(e, address, index) {
+        const confirmation = window.confirm(`Are you sure you want to delete this address: ${address.address}?`);
+        console.log('yes confirmed');
+        // alert(`Are you sure you want to delete this address: ${address.address}`)
+        if (confirmation) {
+            const userDetails = { ...user, address: [...user.address] };
+            userDetails.address.splice(index, 1);
+            const response = await dispatch(updateUserAsync(userDetails));
+        }
 
     }
 
     async function handleEdit(addressUpdate, index) {
+        console.log('updated address', addressUpdate);
         const userDetails = { ...user, address: [...user.address] };
         userDetails.address.splice(index, 1, addressUpdate);
         await dispatch(updateUserAsync(userDetails));
@@ -82,12 +87,13 @@ function UserProfile() {
                             Add New Address
                         </button>}
                         {showAddressForm === true && <form noValidate onSubmit={handleSubmit(async (newAddress) => {
+                            console.log('new address', newAddress);
                             if (Object.keys(newAddress).length === 0) {
                                 console.error('New address is empty');
-                                return; 
-                              }
-                          
-                            addNewAddress(newAddress);
+                                return;
+                            }
+
+                            await addNewAddress(newAddress);
                             // await dispatch(updateUserAsync({ ...loggedInUser, addresses: [...loggedInUser.addresses, data] }));
                             reset();
                         })}>
@@ -460,7 +466,7 @@ function UserProfile() {
                                         type="submit"
                                         className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                     >
-                                        Edit Address
+                                        Save Address
                                     </button>
                                 </div>
 
@@ -538,9 +544,6 @@ function UserProfile() {
                 </div>} */}
         </div>
     );
-    return (
-        <div>hello</div>
-    )
 }
 
 export default UserProfile;

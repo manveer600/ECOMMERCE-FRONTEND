@@ -1,40 +1,34 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { checkAuthAsync } from "../authSlice";
-import { fetchItemsByUserIdAsync } from "../../cart/CartSlice";
-import { fetchOrdersByUserAsync } from "../../order/orderSlice";
-import { fetchAllBrandsAsync, fetchAllCategoriesAsync, fetchAllProductsAsync } from "../../product/productSlice";
+import { checkAuthAsync, loggedInUserToken } from "../authSlice";
 import Spinner from "../../common/Spinner/spinner.js";
+import { fetchItemsByUserIdAsync } from "../../cart/CartSlice.js";
 function Protected({ children }) {
     const dispatch = useDispatch();
-    const token = useSelector(state => state?.auth?.loggedInUserToken);
-    console.log('token found in protected', token);
+    const token = useSelector(loggedInUserToken);
     const [isLoading, setIsLoading] = useState(true);
+    const [redirectToLogin, setRedirectToLogin] = useState(false);
 
-    useEffect((state) => {
+
+    useEffect(() => {
         async function instant() {
             const previousUser = await dispatch(checkAuthAsync());
             if (previousUser?.payload?.success) {
-                await dispatch(fetchAllProductsAsync());
-                await dispatch(fetchAllProductsAsync());
-                await dispatch(fetchAllBrandsAsync());
-                await dispatch(fetchAllCategoriesAsync());
-                await dispatch(fetchOrdersByUserAsync());
                 await dispatch(fetchItemsByUserIdAsync());
-            }
+            } else if (!previousUser?.payload?.success) setRedirectToLogin(true);
             setIsLoading(false);
         }
         instant();
-    }, [token])
+    }, [dispatch, token])
 
     if (isLoading) {
-        return <Spinner/>
+        return <Spinner />
     }
-    if (!token) {
-        console.log('token not found in protected');
+    if (!token || redirectToLogin) {
         return <Navigate to='/login' replace={true} />
-    } else if (token) return children;
+    }
+    return children;
 }
 
 export default Protected;

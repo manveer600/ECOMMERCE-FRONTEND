@@ -1,14 +1,16 @@
 // import React, { useState, useEffect } from "react";
 // import { loadStripe } from "@stripe/stripe-js";
 // import { Elements } from "@stripe/react-stripe-js";
-
 // import CheckoutForm from "./StripeCheckoutForm";
 // import { useSelector } from "react-redux";
 // import '../Stripe.css'
+// import { useLocation } from "react-router-dom";
 // const stripePromise = loadStripe("pk_test_51PBZbsSAM9FrO44umUnTNJdWwpty0J2f6PMuYZ5fm2lN8sRsrYO9mWywryBC0Ejnim66DPklAfT9uNnqHW5cjsHF00BdGbv2Gl");
 
+
 // export default function StripeCheckout() {
-//     console.log('inside stripe checkout wala function');
+//     const order = useLocation();
+//     console.log('bhagwan ki daya ho toh order mil jayega', order);
 //     const currentOrder = useSelector((state) => state.orders.currentOrder);
 //     const [clientSecret, setClientSecret] = useState("");
 //     useEffect(() => {
@@ -51,8 +53,7 @@
 import React, { useState, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import { useSelector } from 'react-redux';
-
+import { useLocation } from "react-router-dom";
 import CheckoutForm from "./StripeCheckoutForm";
 import "../Stripe.css";
 
@@ -61,16 +62,19 @@ import "../Stripe.css";
 // This is your test publishable API key.
 const stripePromise = loadStripe("pk_test_51PBZbsSAM9FrO44umUnTNJdWwpty0J2f6PMuYZ5fm2lN8sRsrYO9mWywryBC0Ejnim66DPklAfT9uNnqHW5cjsHF00BdGbv2Gl");
 
-export default function StripeCheckout() {
+function StripeCheckout() {
+    const order = useLocation();
+    console.log('data/order got from checkout page is this', order);
     const [clientSecret, setClientSecret] = useState("");
     // const currentOrder = useSelector((state) => state.orders.currentOrder);
 
     useEffect(() => {
-        // Create PaymentIntent as soon as the page loads
         fetch("http://localhost:8080/create-payment-intent", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({totalAmount:109}),
+            body: JSON.stringify({
+                totalAmount: order.totalAmount
+            }),
 
         })
             .then((res) => res.json())
@@ -89,9 +93,12 @@ export default function StripeCheckout() {
         <div className="Stripe">
             {clientSecret && (
                 <Elements options={options} stripe={stripePromise}>
-                    <CheckoutForm />
+                    <CheckoutForm order={order} />
                 </Elements>
             )}
         </div>
     );
 }
+
+
+export default StripeCheckout;

@@ -2,6 +2,11 @@ import { Link, Navigate } from "react-router-dom";
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux";
 import { loginUserAsync, loggedInUserToken } from "../authSlice";
+import { useState } from "react";
+import { FaEye } from "react-icons/fa";
+import { FaEyeSlash } from "react-icons/fa";
+
+
 function Login() {
   const dispatch = useDispatch();
   const error = useSelector((state) => state?.auth?.error);
@@ -12,6 +17,10 @@ function Login() {
     formState: { errors },
   } = useForm();
 
+  const [showPassword, setShowPassword] = useState(false);
+  function handleShow() {
+    setShowPassword(!showPassword);
+  }
   return (
     <>
 
@@ -81,10 +90,14 @@ function Login() {
                       required: 'Password is required'
                     })}
                   name="password"
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   autoComplete="current-password"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
+                {!showPassword && <FaEye onClick={handleShow} className="relative bottom-6 flex justify-center items-center text-end left-[350px]" />
+                }
+                {showPassword && <FaEyeSlash onClick={handleShow} className="relative bottom-6 flex justify-center items-center text-end left-[350px]" />
+                }
               </div>
               <p className="text-red-700">{errors?.password?.message}</p>
               {error && <p className="text-red-700">{error?.message}</p>

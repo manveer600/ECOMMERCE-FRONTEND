@@ -1,8 +1,5 @@
 import React, { useEffect } from 'react';
-import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { fetchLoggedInUserAsync } from './features/user/userSlice.js';
-import { fetchItemsByUserIdAsync } from './features/cart/CartSlice.js';
-import { useDispatch, useSelector } from 'react-redux';
+import {RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Home from '../src/pages/Homepage.js';
 import LoginPage from './pages/LoginPage.js';
 import SignupPage from './pages/SignupPage.js';
@@ -23,19 +20,25 @@ import AdminProductDetailsPage from './pages/Admin/AdminProductDetailsPage.js'
 import AdminProductFormPage from './pages/Admin/AdminProductFormPage.js';
 import AdminOrdersPage from './pages/Admin/AdminOrdersPage.js';
 import { transitions, positions, Provider as AlertProvider } from 'react-alert'
-import { fetchOrdersByUserAsync } from './features/order/orderSlice.js';
-import { checkAuthAsync, loggedInUserToken } from './features/auth/authSlice.js';
 import StripeCheckout from './pages/StripeCheckout.js';
+import ResetPasswordPage from './pages/ResetPasswordPage.js'
+import { useForm } from 'react-hook-form';
 // import AlertTemplate from 'react-alert-template-basic'
 
-const options = {
-  // you can also just use 'bottom center'
-  position: positions.BOTTOM_CENTER,
-  timeout: 5000,
-  offset: '30px',
-  // you can also just use 'scale'
-  transition: transitions.SCALE
-}
+
+
+
+
+
+
+// const options = {
+//   // you can also just use 'bottom center'
+//   position: positions.BOTTOM_CENTER,
+//   timeout: 5000,
+//   offset: '30px',
+//   // you can also just use 'scale'
+//   transition: transitions.SCALE
+// }
 const router = createBrowserRouter(
   [
     {
@@ -45,6 +48,10 @@ const router = createBrowserRouter(
     {
       path: "/login",
       element: <LoginPage />
+    },
+    {
+      path: "/resetPassword/:resetToken",
+      element: <ResetPasswordPage />
     },
     {
       path: "/signup",
@@ -85,7 +92,7 @@ const router = createBrowserRouter(
 
     {
       path: `/logout`,
-      element: <Logout />
+      element:<Protected><Logout /></Protected> 
     },
 
     {

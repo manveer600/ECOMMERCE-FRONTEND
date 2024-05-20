@@ -2,18 +2,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { discountedPrice } from "../../../app/constants";
+import { fetchOrdersByUserAsync } from "../../order/orderSlice";
+import { useEffect } from "react";
 function UserOrder() {
-    const orders = useSelector((state) => state?.orders?.orders);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+    const orders = useSelector((state) => state?.orders?.orders);
 
     const totalItems = orders.reduce((total, order) => total + order.items.reduce((subTotal, item) => subTotal + item.quantity, 0), 0);
-    // useEffect(() => {
-    //     async function fetchingOrders() {
-    //         await dispatch(fetchOrdersByUserAsync());
-    //     }
-
-    //     fetchingOrders();
-    // }, [dispatch])
+    useEffect(() => {
+        (async function fetchOrdersByUser(){
+            await dispatch(fetchOrdersByUserAsync());
+        })()
+    }, [dispatch])
     return (
         <div>
             <p className="text-center font-serif underline text-yellow-800  text-6xl pt-3 ">MY ORDERS</p>

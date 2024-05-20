@@ -7,6 +7,7 @@ export function addToCart(item){
             headers:{'content-type':'application/json'}
         })
         const data = await response.json();
+        console.log('data got from backend while adding an item to the cart', data);
         resolve({data});
     })
 }
@@ -25,12 +26,18 @@ export function fetchItemsByUserId(){
 
 
 
-export function updateItem(productId){
+export function updateItem(data){
+    console.log('updating data in api', data);
+    const dataToBeUpdated = data.dataToBeUpdated;
+    const productId = data.productId;
+    console.log(dataToBeUpdated);
+    console.log(productId);
     return new Promise(async (resolve) => {
         const response = await fetch(`http://localhost:8080/carts/${productId}`, {
             method:"PATCH",
             mode:"cors",
             credentials:'include',
+            body:JSON.stringify(dataToBeUpdated),
             headers:{'content-type':'application/json'}
         })
 

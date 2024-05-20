@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   PaymentElement,
   useStripe,
   useElements
 } from "@stripe/react-stripe-js";
-import { useSelector } from 'react-redux';
+import { addOrderAsync } from "../features/order/orderSlice";
+import { useNavigate } from "react-router-dom";
 
-export default function CheckoutForm() {
+export default function CheckoutForm(props) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();
-  const currentOrder = useSelector((state) => state.orders.currentOrder);
+
+  const currentOrder = props.order;
+  
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -55,27 +61,30 @@ export default function CheckoutForm() {
 
     setIsLoading(true);
 
-    const { error } = await stripe.confirmPayment({
+    const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        // Make sure to change this to your payment completion page
-        return_url: `http://localhost:3000/orderSuccess/45824582582752782`,
+        return_url: `http://localhost:3000/orderSuccess`,
       },
     });
 
-    // This point will only be reached if there is an immediate error when
-    // confirming the payment. Otherwise, your customer will be redirected to
-    // your `return_url`. For some payment methods like iDEAL, your customer will
-    // be redirected to an intermediate site first to authorize the payment, then
-    // redirected to the `return_url`.
-    if (error.type === "card_error" || error.type === "validation_error") {
-      setMessage(error.message);
-    } else {
-      setMessage("An unexpected error occurred.");
-    }
+    if (error) {
+      if (error.type === "card_error" || error.type === "validation_error") {
+        setMessage(error.message);
+      } else {
+        setMessage("Use only Indian Stripe Test Number, Example: 4000003560000008");
+      }
 
-    setIsLoading(false);
-  };
+      setIsLoading(false);
+    } else if (paymentIntent.status === 'succeeded') {
+      const response = await dispatch(addOrderAsync(currentOrder));
+      if (response?.payload?.success) {
+        navigate(`/orderSuccess/${response.payload.order.id}`);
+      } else {
+        setMessage("Failed to create order. Please try again.");
+      }
+    }
+  }
 
   const paymentElementOptions = {
     layout: "tabs"

@@ -4,7 +4,7 @@ import { Bars3Icon, ShoppingCartIcon, XMarkIcon } from '@heroicons/react/24/outl
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { userInfo } from '../auth/authSlice'
-
+import userImage from '../../assets/user.png'
 const navigation = [
     { name: 'Products', link: '/', user: true },
     { name: 'Products', link: '/admin', admin: true },
@@ -84,7 +84,7 @@ function Navbar({ children }) {
                                                 <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                                     <span className="absolute -inset-1.5" />
                                                     <span className="sr-only">Open user menu</span>
-                                                    <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+                                                    <img className="h-8 w-8 rounded-full text-white" src={userImage} alt="bhai" />
                                                 </Menu.Button>
                                             </div>
                                             <Transition

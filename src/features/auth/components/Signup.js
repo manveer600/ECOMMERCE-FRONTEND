@@ -2,7 +2,8 @@ import { Link, Navigate } from "react-router-dom";
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux";
 import { createUserAsync, loggedInUserToken } from "../authSlice";
-
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useState } from "react";
 function Signup() {
   const token = useSelector(loggedInUserToken);
   const {
@@ -11,6 +12,17 @@ function Signup() {
     formState: { errors },
   } = useForm();
   const dispatch = useDispatch();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  function handlePassword() {
+    setShowPassword(!showPassword);
+  }
+
+  function handleConfirmPassword() {
+    setShowConfirmPassword(!showConfirmPassword);
+  }
+
+
   return (
     <>
       {token && <Navigate to='/' replace={true} ></Navigate>}
@@ -27,8 +39,8 @@ function Signup() {
 
         <div className="mt-10  sm:mx-auto sm:w-full sm:max-w-sm">
           <form noValidate className="space-y-6" onSubmit={handleSubmit(async (data) => {
-            const response = await dispatch(createUserAsync({ email: data.email, password: data.password}));
-            if(response?.payload?.success){
+            const response = await dispatch(createUserAsync({ email: data.email, password: data.password }));
+            if (response?.payload?.success) {
               <Navigate to='/' />
             }
           })}>
@@ -75,10 +87,14 @@ function Signup() {
                       required: 'Password is required'
                     })}
                   // name="password"
-                  type="password"
+                  type={showPassword ? 'text' : "password"}
                   autoComplete="current-password"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
+                {!showPassword && <FaEye onClick={handlePassword} className="relative bottom-6 flex justify-center items-center text-end left-[350px]" />
+                }
+                {showPassword && <FaEyeSlash onClick={handlePassword} className="relative bottom-6 flex justify-center items-center text-end left-[350px]" />
+                }
               </div>
               <p className="text-red-700">{errors?.password?.message}</p>
             </div>
@@ -98,11 +114,15 @@ function Signup() {
                     required: 'Confirm Password is required', validate: (value, formValues) => value === formValues.password || 'Password does not match'
                   })}
                   // name="confirmPassword"
-                  type="password"
+                  type={showConfirmPassword ? 'text' : "password"}
                   autoComplete="current-password"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
+                {!showConfirmPassword && <FaEye onClick={handleConfirmPassword} className="relative bottom-6 flex justify-center items-center text-end left-[350px]" />
+                }
+                {showConfirmPassword && <FaEyeSlash onClick={handleConfirmPassword} className="relative bottom-6 flex justify-center items-center text-end left-[350px]" />
+                }
               </div>
               <p className="text-red-700">{errors?.confirmPassword?.message}</p>
             </div>

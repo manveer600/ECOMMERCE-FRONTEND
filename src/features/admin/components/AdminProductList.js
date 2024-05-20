@@ -100,22 +100,22 @@ export default function AdminProductList() {
     dispatch(fetchProductsByFilterAsync({ filter, sort, pagination }))
   }, [dispatch, filter, sort, page])
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    async function instant() {
-      if (params.id) {
-        await fetchProductByIdAsync(params.id);
-      }
-    }
+  //   async function instant() {
+  //     if (params.id) {
+  //       await fetchProductByIdAsync(params.id);
+  //     }
+  //   }
 
-    instant();
+  //   instant();
 
-  }, [params.id])
+  // }, [params.id])
 
 
-  useEffect(() => {
-    if (selectedProduct) setValue('title', selectedProduct.title);
-  }, [selectedProduct])
+  // useEffect(() => {
+  //   if (selectedProduct) setValue('title', selectedProduct.title);
+  // }, [selectedProduct])
 
   // useEffect(() => {
   //   async function fetching() {
@@ -203,7 +203,7 @@ export default function AdminProductList() {
                                           id={`filter-${section.id}-${optionIdx}`}
                                           name={`${section.id}[]`}
                                           defaultValue={option.value}
-                                          type="checkbox"
+                                          type="radio"
                                           defaultChecked={option.checked}
                                           onClick={e => handleFilter(section, option, e)}
                                           className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
@@ -323,7 +323,7 @@ export default function AdminProductList() {
                                       id={`filter-${section.id}-${optionIdx}`}
                                       name={`${section.id}[]`}
                                       defaultValue={option.value}
-                                      type="checkbox"
+                                      type="radio"
                                       onClick={e => handleFilter(section, option, e)}
                                       defaultChecked={option.checked}
                                       className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"

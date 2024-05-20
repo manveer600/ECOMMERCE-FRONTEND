@@ -58,3 +58,47 @@ export function checkAuth(){
         resolve({ data });
     })
 }
+
+export function forgotPassword(email){
+    return new Promise(async (resolve,reject) => {
+        const response = await fetch('http://localhost:8080/users/forgotPassword', {
+            method:'POST',
+            body:JSON.stringify(email),
+            headers: { 'content-type': "application/json" },
+        });
+        console.log("response from forgotpassword",response);
+        const data = await response.json();
+        resolve({data});
+    })
+}
+
+export function resetPassword(data){
+    console.log('data in auth api', data);
+    const resetPasswordToken = data.resetToken;
+    const newPassword = data.password;
+    return new Promise(async (resolve) => {
+        const response = await fetch(`http://localhost:8080/users/resetPassword/${resetPasswordToken}`, {
+            method:'POST',
+            body:JSON.stringify({password:newPassword}),
+            headers: { 'content-type': "application/json" },
+        });
+        console.log("response from resetPassword",response);
+        const data1 = await response.json();
+        resolve({data1});
+    })
+}
+
+
+export function updateUser(updatedData) {
+    return new Promise(async (resolve) => {
+      const response = await fetch(`http://localhost:8080/users/${updatedData.id}`, {
+        method: "PATCH",
+        body: JSON.stringify(updatedData),
+        credentials: "include",
+        mode: 'cors',
+        headers: { 'content-type': 'application/json' }
+      })
+      const data = await response.json();
+      resolve({ data });
+    })
+  }

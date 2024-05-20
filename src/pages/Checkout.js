@@ -2,19 +2,18 @@ import { useForm } from 'react-hook-form';
 import Navbar from '../features/navbar/Navbar.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserAsync, userInfo } from '../features/auth/authSlice.js';
-import { useState } from 'react';
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
 import { deleteItemFromCartAsync, updateItemAsync } from '../features/cart/CartSlice.js';
 import { addOrderAsync } from '../features/order/orderSlice.js';
 import { discountedPrice } from '../app/constants.js';
 
-
 function Checkout() {
-  const [currentOrder, setCurrentOrder] = useState();
   const user = useSelector(userInfo);
+  const items = useSelector((state) => state?.cart?.items);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const items = useSelector((state) => state?.cart?.items);
   // const [open, setOpen] = useState(true)
   const totalAmount = items.reduce((amount, item) => discountedPrice(item.productId) * item.quantity + amount, 0);
   const totalItems = items.reduce((total, item) => item.quantity + total, 0);
@@ -22,8 +21,6 @@ function Checkout() {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState('cash');
 
-  // const currentOrder = useSelector((state) => state?.orders?.currentOrder);
-  // console.log('current order', currentOrder);
   const {
     register,
     handleSubmit,
@@ -31,30 +28,48 @@ function Checkout() {
     formState: { errors },
   } = useForm();
 
-  function handleQuantity(e, item) {
-    if (e.target.value <= item.stock) {
-      dispatch(updateItemAsync({ ...item, quantity: +e.target.value }))
+  async function handleQuantity(e, item) {
+    const inputValue = +e.target.value;
+    console.log('inputValue', inputValue);
+    const maxStock = item.productId.stock;
+    const dataToBeUpdated = {
+      quantity: inputValue
+    }
+
+    if (inputValue >= 1 && inputValue <= maxStock) {
+      await dispatch(updateItemAsync({ productId: item.productId.id, dataToBeUpdated }))
+    }
+    else {
+      e.target.value = Math.min(Math.max(inputValue, 1), item.productId.stock);
+      const dataToBeUpdated = {
+        quantity: e.target.value
+      }
+      await dispatch(updateItemAsync({ productId: item.productId.id, dataToBeUpdated }))
     }
   }
+
   async function handleRemove(e, item) {
     await dispatch(deleteItemFromCartAsync(item.id))
   }
 
   async function handleOrder() {
     if (items && items.length > 0 && paymentMethod && selectedAddress) {
-
       const order = { items, totalAmount, totalItems, loggedInUserId: user.id, paymentMethod, selectedAddress, status: 'pending' };
-      setCurrentOrder(order);
-      await dispatch(addOrderAsync(order));
+      if (order.paymentMethod === 'card') {
+        console.log(order)
+        console.log('bhai mai card se payment kr rha hoon');
+        navigate('/stripe-checkout');
+      }
+      else if (order.paymentMethod === 'cash') {
+        const response = await dispatch(addOrderAsync(order));
+        if (response?.payload?.success) {
+          console.log('cash');
+          navigate(`/orderSuccess/${response.payload.order.id}`);
+        }
+      }
     } else {
-      // TODO:
-      //console.log('ki byi items toh add krlo pehle kakeeee')
-      // YAHAN PE TOAST DIKHADO KI BYI PEHLE KUCH ADD TOH KRLO
+      alert('All the fields are required to place an order');
     }
-
-    // redirect to order success page
-    // clear cart after order
-    // on server change the stock
   }
 
 
@@ -67,13 +82,11 @@ function Checkout() {
     setPaymentMethod(e.target.value);
   }
 
-  console.log('currentorder', currentOrder);
-
   return (
     <Navbar>
-      {currentOrder !== undefined && currentOrder.paymentMethod === 'cash' && <Navigate to={`/orderSuccess/${currentOrder.id}`} replace={true} />}
+      {/* {currentOrder !== undefined && currentOrder.paymentMethod === 'cash' && <Navigate to={`/orderSuccess/${currOrder.id}`} replace={true} />} */}
       {/* TODO: BHAI Y CHEEZ GALAT HAI YAHAN PE VO WALA LOGIC LGEGA KI JAB PAYMENT SUCCESSFULL HO JAYE TB USER KA ORDER CREATE HO VRNA NA HO */}
-      {currentOrder !== undefined && currentOrder.paymentMethod === 'card' && <Navigate to={`/stripe-checkout`} replace={true} />}
+      {/* {currentOrder !== undefined && currentOrder.paymentMethod === 'card' && <Navigate to={`/stripe-checkout`} replace={true} />} */}
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:flex p-3 space-x-5 font-serif lg:px-8">
         <div className='lg:w-1/2 text-start bg-white p-5'>
@@ -261,19 +274,6 @@ function Checkout() {
 
             </form>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
             <div className="border-b border-gray-900/10  pb-12">
               <h2 className="text-base font-semibold leading-7 text-gray-900">Existing Addresses</h2>
               <p className="mt-1 text-sm leading-6 text-gray-600">
@@ -394,14 +394,12 @@ function Checkout() {
                       <p className="text-end line-through">${item.productId.price * item.quantity}</p>
 
                       <p className="mt-1 text-sm text-gray-500">Stock Available: {item.productId.stock - item.quantity}</p>
+                      <p className="mt-1 text-sm text-gray-500">Quantity Selected: {item.quantity}</p>
                     </div>
-                    <div className="flex flex-1 items-end justify-between text-sm">
+                    <div className="flex flex-1 mt-2 items-end justify-between text-sm">
                       <div className=" text-black font-bold ">Qty
                         <div className="inline ml-2">
-                          {/* <select value={item.quantity} onChange={(e) => handleQuantity(e,item)}>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                      </select> */}
+
                           <input
                             type="number"
                             value={item.quantity}
@@ -460,7 +458,7 @@ function Checkout() {
                   <button
                     type="button"
                     className="font-medium text-indigo-600 hover:text-indigo-500"
-                    // onClick={() => setOpen(false)}
+                  // onClick={() => setOpen(false)}
                   >
                     Continue Shopping
                     <span aria-hidden="true"> &rarr;</span>
