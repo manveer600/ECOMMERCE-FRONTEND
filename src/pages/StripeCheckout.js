@@ -15,7 +15,7 @@
 //     const [clientSecret, setClientSecret] = useState("");
 //     useEffect(() => {
 //         // Create PaymentIntent as soon as the page loads
-//         fetch("https://ecommerce-backend-gj2h.onrender.com/create-payment-intent", {
+//         fetch("${process.env.REACT_APP_BACKEND_URL}create-payment-intent", {
 //             method: "POST",
 //             headers: { "Content-Type": "application/json" },
 //             body: JSON.stringify({ totalAmount: currentOrder.totalAmount }),
@@ -68,7 +68,7 @@ function StripeCheckout() {
     const [clientSecret, setClientSecret] = useState("");
 
     useEffect(() => {
-        fetch("https://ecommerce-backend-gj2h.onrender.com/create-payment-intent", {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}create-payment-intent`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

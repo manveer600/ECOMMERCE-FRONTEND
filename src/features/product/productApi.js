@@ -1,6 +1,6 @@
 export function fetchAllProducts() {
   return new Promise(async (resolve) => {
-    const response = await fetch('https://ecommerce-backend-gj2h.onrender.com/products', {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}products`, {
       credentials: "include"
     })
     const data = await response.json();
@@ -25,7 +25,8 @@ export function fetchProductsByFilter(filter, sort, pagination) {
 
 
   return new Promise(async (resolve) => {
-    const response = await fetch(`https://ecommerce-backend-gj2h.onrender.com/products?${queryString}`, {
+    console.log('${process.env.REACT_APP_BACKEND_URL}products?${queryString}', `${process.env.REACT_APP_BACKEND_URL}products ? ${queryString}`);
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}products?${queryString}`, {
       credentials: "include",
       mode: 'cors'
     })
@@ -36,7 +37,7 @@ export function fetchProductsByFilter(filter, sort, pagination) {
 
 export function fetchAllBrands() {
   return new Promise(async (resolve) => {
-    const response = await fetch(`https://ecommerce-backend-gj2h.onrender.com/brands`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}brands`, {
       method: 'GET',
       credentials: "include",
       mode: 'cors'
@@ -48,7 +49,7 @@ export function fetchAllBrands() {
 
 export function fetchAllCategories() {
   return new Promise(async (resolve) => {
-    const response = await fetch(`https://ecommerce-backend-gj2h.onrender.com/categories`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}categories`, {
       method: 'GET',
       credentials: "include",
       mode: 'cors'
@@ -60,7 +61,7 @@ export function fetchAllCategories() {
 
 export function fetchProductById(id) {
   return new Promise(async (resolve) => {
-    const response = await fetch(`https://ecommerce-backend-gj2h.onrender.com/products/${id}`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}products/${id}`, {
       credentials: "include",
       mode: 'cors'
     })
@@ -71,7 +72,7 @@ export function fetchProductById(id) {
 
 export function createProduct(product) {
   return new Promise(async (resolve) => {
-    const response = await fetch(`https://ecommerce-backend-gj2h.onrender.com/products`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}products`, {
       method: 'POST',
       body: JSON.stringify(product),
       credentials: "include",
@@ -86,7 +87,7 @@ export function createProduct(product) {
 
 export function updateProduct(product) {
   return new Promise(async (resolve) => {
-    const response = await fetch(`https://ecommerce-backend-gj2h.onrender.com/products/${product.id}`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}products/${product.id}`, {
       method: "PATCH",
       body: JSON.stringify(product),
       credentials: "include",

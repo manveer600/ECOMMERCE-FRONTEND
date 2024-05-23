@@ -1,6 +1,6 @@
 export function addToCart(item){
     return new Promise(async (resolve) => {
-        const response = await fetch(`https://ecommerce-backend-gj2h.onrender.com/carts`, {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}carts`, {
             method:"POST",
             body:JSON.stringify(item),
             credentials:"include",
@@ -15,7 +15,7 @@ export function addToCart(item){
 
 export function fetchItemsByUserId(){
     return new Promise(async (resolve) => {
-        const response = await fetch(`https://ecommerce-backend-gj2h.onrender.com/carts`,{
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}carts`,{
             mode:"cors",
             credentials:'include',
         });
@@ -33,7 +33,7 @@ export function updateItem(data){
     console.log(dataToBeUpdated);
     console.log(productId);
     return new Promise(async (resolve) => {
-        const response = await fetch(`https://ecommerce-backend-gj2h.onrender.com/carts/${productId}`, {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}carts/${productId}`, {
             method:"PATCH",
             mode:"cors",
             credentials:'include',
@@ -51,7 +51,7 @@ export function updateItem(data){
 
 export function deleteItemFromCart(itemId){
     return new Promise(async (resolve) => {
-        const response = await fetch(`https://ecommerce-backend-gj2h.onrender.com/carts/${itemId}`, {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}carts/${itemId}`, {
             method:"DELETE",
             mode:"cors",
             credentials:'include',

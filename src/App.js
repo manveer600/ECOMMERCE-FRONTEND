@@ -24,6 +24,10 @@ import TokenSentPage from './pages/TokenSentPage.js';
 import ContactUsPage from './pages/ContactUsPage.js';
 import './App.css';
 
+
+// import dotenv from 'dotenv'
+// dotenv.config();
+
 const router = createBrowserRouter(
   [
     {
