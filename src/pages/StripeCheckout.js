@@ -64,16 +64,15 @@ const stripePromise = loadStripe("pk_test_51PBZbsSAM9FrO44umUnTNJdWwpty0J2f6PMuY
 
 function StripeCheckout() {
     const order = useLocation();
-    console.log('data/order got from checkout page is this', order);
+    const currentOrder = order.state;
     const [clientSecret, setClientSecret] = useState("");
-    // const currentOrder = useSelector((state) => state.orders.currentOrder);
 
     useEffect(() => {
         fetch("http://localhost:8080/create-payment-intent", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                totalAmount: order.totalAmount
+                totalAmount: currentOrder.totalAmount
             }),
 
         })
@@ -93,7 +92,7 @@ function StripeCheckout() {
         <div className="Stripe">
             {clientSecret && (
                 <Elements options={options} stripe={stripePromise}>
-                    <CheckoutForm order={order} />
+                    <CheckoutForm  order={currentOrder} />
                 </Elements>
             )}
         </div>

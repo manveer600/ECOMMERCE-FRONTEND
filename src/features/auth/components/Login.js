@@ -1,26 +1,36 @@
 import { Link, Navigate } from "react-router-dom";
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux";
-import { loginUserAsync, loggedInUserToken } from "../authSlice";
-import { useState } from "react";
+import { loginUserAsync, loggedInUserToken, clearLoginError } from "../authSlice";
+import { useEffect, useState } from "react";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 
 
 function Login() {
   const dispatch = useDispatch();
-  const error = useSelector((state) => state?.auth?.error);
+  const loginError = useSelector((state) => state?.auth?.loginError);
   const token = useSelector(loggedInUserToken);
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch
   } = useForm();
 
+  const emailValue = watch('email');
   const [showPassword, setShowPassword] = useState(false);
   function handleShow() {
     setShowPassword(!showPassword);
   }
+
+
+  useEffect(() => {
+    (async function(){
+      await dispatch(clearLoginError());
+    })()
+  }, [dispatch,emailValue])
+  console.log('errors', errors);
   return (
     <>
 
@@ -55,15 +65,14 @@ function Login() {
                   ...register('email',
                     {
                       required: 'Email is required',
+                      autoComplete: "email",
                       pattern: {
                         value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                         message: 'Email not valid',
                       }
                     })}
-                  // name="email"
                   type="email"
                   autoComplete="email"
-                  required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -100,8 +109,9 @@ function Login() {
                 }
               </div>
               <p className="text-red-700">{errors?.password?.message}</p>
-              {error && <p className="text-red-700">{error?.message}</p>
-              }            </div>
+              {loginError && <p className="text-red-700">{loginError?.message}</p>
+              }
+            </div>
 
             <div>
               <button

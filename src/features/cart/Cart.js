@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { deleteItemFromCartAsync, updateItemAsync } from "./CartSlice";
 import { discountedPrice } from "../../app/constants";
-// import { addOrderAsync } from "../order/orderSlice";
 
 
 

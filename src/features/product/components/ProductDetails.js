@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom'
 import { fetchProductByIdAsync } from '../productSlice'
 import { addToCartAsync, updateItemAsync } from '../../cart/CartSlice'
 import { discountedPrice } from '../../../app/constants.js'
+import toast from 'react-hot-toast'
 const colors = [
   { name: 'White', class: 'bg-white', selectedClass: 'ring-gray-400' },
   { name: 'Gray', class: 'bg-gray-200', selectedClass: 'risizeng-gray-400' },
@@ -54,17 +55,25 @@ export default function ProductDetails() {
     let newItem;
     const existingItemIndex = cartItems.findIndex(c => c.productId.id === product.id);
     if (existingItemIndex != -1) {
-      let item = cartItems[existingItemIndex];
-      console.log('item found', item);
-      const dataToBeUpdated = {
-        quantity: item.quantity + 1
-      };
-      console.log('card update');
-      await dispatch(updateItemAsync({ productId: product.id, dataToBeUpdated }));
+      if (window.confirm('Item has already been added to cart. Do you want to add 1 more quantity?')) {
+        let item = cartItems[existingItemIndex];
+        console.log('item found', item);
+        const dataToBeUpdated = {
+          quantity: item.quantity + 1
+        };
+        console.log('card update');
+        const response = await dispatch(updateItemAsync({ productId: product.id, dataToBeUpdated }));
+        if (response?.payload?.success) {
+          toast.success(`Item's quantity updated`);
+        }
+      }
     } else {
       console.log('card add');
       newItem = { productId: product.id, quantity: 1 }
-      await dispatch(addToCartAsync(newItem));
+      const response = await dispatch(addToCartAsync(newItem));
+      if (response?.payload?.success) {
+        toast.success('Item added to cart successfully');
+      }
     }
   }
   return (

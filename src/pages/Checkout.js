@@ -58,7 +58,7 @@ function Checkout() {
       if (order.paymentMethod === 'card') {
         console.log(order)
         console.log('bhai mai card se payment kr rha hoon');
-        navigate('/stripe-checkout');
+        navigate('/stripe-checkout', {state:order});
       }
       else if (order.paymentMethod === 'cash') {
         const response = await dispatch(addOrderAsync(order));
@@ -441,16 +441,14 @@ function Checkout() {
                 {totalItems} items
               </p>
             </div><p className="mt-0.5 text-sm text-start text-black">Shipping and taxes calculated at checkout.</p>
-            <Link to='/checkout'>
-              <div className="mt-6">
-                <button
-                  onClick={handleOrder}
-                  className="flex text-center m-auto items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-                >
-                  Place Order
-                </button>
-              </div>
-            </Link>
+            <div className="mt-6">
+              <button
+                onClick={handleOrder}
+                className="flex text-center m-auto items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+              >
+                Place Order
+              </button>
+            </div>
             <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
               <p>
                 or{' '}

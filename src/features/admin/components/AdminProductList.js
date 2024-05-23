@@ -6,9 +6,10 @@ import { ChevronLeftIcon, ChevronRightIcon, XMarkIcon } from '@heroicons/react/2
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
 import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { ITEMS_PER_PAGE } from '../../../app/constants.js'
+import { ITEMS_PER_PAGE, discountedPrice } from '../../../app/constants.js'
 import { fetchAllBrandsAsync, fetchAllCategoriesAsync, fetchAllProductsAsync, fetchProductByIdAsync, fetchProductsByFilterAsync, } from '../../product/productSlice.js';
 import { useForm } from 'react-hook-form';
+import couldNotFindProduct from '../../../assets/couldNotFindProduct.png'
 
 const sortOptions = [
   { name: 'Best Rating', sort: 'rating', order: 'desc', current: false },
@@ -55,32 +56,14 @@ export default function AdminProductList() {
     }
   ]
 
-  async function handleFilter(section, option, e) {
 
+  async function handleFilter(section, option, e) {
     const newFilter = { ...filter };
     if (e.target.checked) {
-      if (newFilter[section.id]) {
-        newFilter[section.id].push(option.value);
-      } else {
-        newFilter[section.id] = [option.value]
-      }
+      newFilter[section.id] = option.value;
     }
-    else {
-      // {category: [smartphones,laptops]}
-      if (newFilter[section.id]) {
-        const array = newFilter[section.id];
-        const index = array.findIndex(a => a === option.value);
-        if (index !== -1) {
-          array.splice(index, 1);
-          if (array.length === 0) {
-            delete newFilter[section.id];
-            await dispatch(fetchAllProductsAsync());
-          }
-        }
-      }
-    }
+
     setFilter(newFilter);
-    // await dispatch(fetchProductsByFilterAsync(newFilter))
   }
 
 
@@ -95,37 +78,14 @@ export default function AdminProductList() {
 
   useEffect(() => {
 
-    const pagination = { _page: page, _limit: ITEMS_PER_PAGE }
-
-    dispatch(fetchProductsByFilterAsync({ filter, sort, pagination }))
+    (async function () {
+      const pagination = { _page: page, _limit: ITEMS_PER_PAGE }
+      await dispatch(fetchProductsByFilterAsync({ filter, sort, pagination }));
+      await dispatch(fetchAllBrandsAsync());
+      await dispatch(fetchAllCategoriesAsync());
+    }
+    )()
   }, [dispatch, filter, sort, page])
-
-  // useEffect(() => {
-
-  //   async function instant() {
-  //     if (params.id) {
-  //       await fetchProductByIdAsync(params.id);
-  //     }
-  //   }
-
-  //   instant();
-
-  // }, [params.id])
-
-
-  // useEffect(() => {
-  //   if (selectedProduct) setValue('title', selectedProduct.title);
-  // }, [selectedProduct])
-
-  // useEffect(() => {
-  //   async function fetching() {
-  //     await dispatch(fetchAllBrandsAsync())
-  //     await dispatch(fetchAllCategoriesAsync());
-  //   }
-
-  //   fetching();
-  // }, [dispatch])
-
 
   useEffect(() => {
     setPage(1);
@@ -278,7 +238,7 @@ export default function AdminProductList() {
                     </Transition>
                   </Menu>
 
-                  <button type="button" className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7">
+                  {/* <button type="button" className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7">
                     <span className="sr-only">View grid</span>
                     <Squares2X2Icon className="h-5 w-5" aria-hidden="true" />
                   </button>
@@ -289,7 +249,7 @@ export default function AdminProductList() {
                   >
                     <span className="sr-only">Filters</span>
                     <FunnelIcon className="h-5 w-5" aria-hidden="true" />
-                  </button>
+                  </button> */}
                 </div>
               </div>
 
@@ -355,10 +315,10 @@ export default function AdminProductList() {
                     </div>
                     <div className="bg-white">
                       <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
-                        <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
+                        {products && products.length != 0 ? <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
                           {products && products.map((product) => (
                             <Link to={`/productdetails/${product.id}`} key={product.id}>
-                              <div key={product.id} className="group border-2  p-1 relative">
+                              <div key={product.id} className="group relative">
                                 <div className="aspect-h-1 border-2 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
                                   <img
                                     src={product.thumbnail}
@@ -383,29 +343,36 @@ export default function AdminProductList() {
                                     </div>
                                   </div>
                                   <div>
-                                    <p className="text-sm font-bold text-gray-900">{
-                                      Math.round((product.price) * (1 - product.discountPercentage / 100))}
-                                      <svg className='inline h-6 w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" >
-                                        <path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM9 7.5A.75.75 0 0 0 9 9h1.5c.98 0 1.813.626 2.122 1.5H9A.75.75 0 0 0 9 12h3.622a2.251 2.251 0 0 1-2.122 1.5H9a.75.75 0 0 0-.53 1.28l3 3a.75.75 0 1 0 1.06-1.06L10.8 14.988A3.752 3.752 0 0 0 14.175 12H15a.75.75 0 0 0 0-1.5h-.825A3.733 3.733 0 0 0 13.5 9H15a.75.75 0 0 0 0-1.5H9Z" clipRule="evenodd" />
-                                      </svg>
-                                    </p>
+                                    <p className="text-sm font-bold text-gray-900">{discountedPrice(product)} <svg className='inline h-6 w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" >
+                                      <path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM9 7.5A.75.75 0 0 0 9 9h1.5c.98 0 1.813.626 2.122 1.5H9A.75.75 0 0 0 9 12h3.622a2.251 2.251 0 0 1-2.122 1.5H9a.75.75 0 0 0-.53 1.28l3 3a.75.75 0 1 0 1.06-1.06L10.8 14.988A3.752 3.752 0 0 0 14.175 12H15a.75.75 0 0 0 0-1.5h-.825A3.733 3.733 0 0 0 13.5 9H15a.75.75 0 0 0 0-1.5H9Z" clipRule="evenodd" />
+                                    </svg></p>
                                     <p className="text-sm line-through font-medium text-gray-900">{product.price}
 
                                     </p>
                                   </div>
+
                                 </div>
-                               {product.deleted && <p className='text-red-600'>Product Deleted</p>}
-                              
-                              </div>
-                              <div className='text-center'>
-                                <Link to={`/admin/editProduct/${product.id}`} className=" flex mt-2 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                                  Edit Product
-                                </Link>
+                                {product.deleted && <p className='text-red-600'>Product Deleted</p>}
+                                {product.stock === 0 && <p className='text-red-600'>Out of Stock</p>}
+
                               </div>
 
                             </Link>
                           ))}
-                        </div>
+                        </div> :
+                          <div className="flex flex-col items-center  h-screen">
+                            <img
+                              src={couldNotFindProduct}
+                              alt="Cute robot"
+                              height={500}
+                              width={500}
+                              className="mb-4"
+                            />
+                            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                              Oops! We couldn't find this product with this brand!
+                            </h2>
+                            <p className="text-gray-600">Try to change the filter</p>
+                          </div>}
                       </div>
                     </div>
 

@@ -50,7 +50,7 @@ export default function OrderSuccessPage() {
                         >
                             Order More
                         </Link>
-                        <Link to="/contact" className="text-sm font-semibold text-gray-900">
+                        <Link to="/contactUs" className="text-sm font-semibold text-gray-900">
                             Contact Us <span aria-hidden="true">&rarr;</span>
                         </Link>
                     </div>

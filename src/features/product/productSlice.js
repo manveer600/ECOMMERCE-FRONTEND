@@ -94,7 +94,7 @@ export const productSlice = createSlice({
             })
             .addCase(createProductAsync.fulfilled, (state,action) => {
                 state.status = 'idle';
-                state.products.push(action.payload);
+                state.products.push(action.payload.product);
             })
             .addCase(updateProductAsync.pending, (state,action) => {
                 state.status = 'updating product';

@@ -4,9 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Spinner from "../../common/Spinner/spinner";
 function ProtectedAdmin({ children }) {
+    const dispatch = useDispatch();
+    
     const token = useSelector(loggedInUserToken)
     const user = useSelector(userInfo);
-    const dispatch = useDispatch();
+    
     const [isLoading, setIsLoading] = useState(true);
     const [redirectToLogin, setRedirectToLogin] = useState(false);
 

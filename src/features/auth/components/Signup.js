@@ -1,19 +1,32 @@
 import { Link, Navigate } from "react-router-dom";
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux";
-import { createUserAsync, loggedInUserToken } from "../authSlice";
+import { clearSignUpError, createUserAsync, loggedInUserToken } from "../authSlice";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 function Signup() {
   const token = useSelector(loggedInUserToken);
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch
   } = useForm();
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const signUpError = useSelector((state) => state?.auth?.signUpError);
+  const emailValue = watch('email');
+
+  useEffect(() => {
+    (async function() {
+      if (signUpError) {
+        await dispatch(clearSignUpError());
+      }
+    })()
+  }, [emailValue, dispatch]);
+
+
   function handlePassword() {
     setShowPassword(!showPassword);
   }
@@ -22,7 +35,7 @@ function Signup() {
     setShowConfirmPassword(!showConfirmPassword);
   }
 
-
+  console.log("error", errors);
   return (
     <>
       {token && <Navigate to='/' replace={true} ></Navigate>}
@@ -39,11 +52,13 @@ function Signup() {
 
         <div className="mt-10  sm:mx-auto sm:w-full sm:max-w-sm">
           <form noValidate className="space-y-6" onSubmit={handleSubmit(async (data) => {
+            console.log('errors', errors);
             const response = await dispatch(createUserAsync({ email: data.email, password: data.password }));
             if (response?.payload?.success) {
               <Navigate to='/' />
             }
           })}>
+            {/* EMAIL */}
             <div>
               <label htmlFor="email" className="block text-start text-sm font-medium leading-6 text-gray-900">
                 Email address
@@ -60,18 +75,15 @@ function Signup() {
                         message: 'Email not valid',
                       }
                     })}
-                  // name="email"
                   type="email"
                   autoComplete="email"
-                  required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
+                <p className="text-red-700">{errors?.email?.message}</p>
               </div>
-              <p className="text-red-700">{errors?.email?.message}</p>
             </div>
 
-
-
+            {/* PASSWORD */}
             <div>
               <div className="flex items-centerjustify-between">
                 <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
@@ -86,7 +98,7 @@ function Signup() {
                     {
                       required: 'Password is required'
                     })}
-                  // name="password"
+                  name="password"
                   type={showPassword ? 'text' : "password"}
                   autoComplete="current-password"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -99,7 +111,7 @@ function Signup() {
               <p className="text-red-700">{errors?.password?.message}</p>
             </div>
 
-
+            {/* CONFIRM PASSWORD */}
             <div>
               <div className="flex items-center justify-between">
                 <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
@@ -126,6 +138,10 @@ function Signup() {
               </div>
               <p className="text-red-700">{errors?.confirmPassword?.message}</p>
             </div>
+
+            {signUpError && <p className="text-red-700">{signUpError?.message}</p>}
+
+            {/* SUBMIT */}
             <div>
               <button
                 type="submit"
@@ -134,6 +150,7 @@ function Signup() {
                 Sign Up
               </button>
             </div>
+
           </form>
 
           <p className="mt-10 text-center text-sm text-gray-500">
@@ -142,8 +159,8 @@ function Signup() {
               Login?
             </Link>
           </p>
-        </div>
-      </div>
+        </div >
+      </div >
     </>
   )
 }

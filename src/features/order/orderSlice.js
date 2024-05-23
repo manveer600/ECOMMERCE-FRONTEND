@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { addOrder, fetchAllOrders, fetchOrdersByUser, updateOrder } from './orderAPI';
+import { updateProduct } from '../product/productApi';
 
 const initialState = {
   orders: [],

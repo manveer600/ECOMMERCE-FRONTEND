@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from 'react-redux'
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { resetPasswordAsync } from "../authSlice";
+import toast from "react-hot-toast";
 function ResetPasswordPage() {
     const {
         register,
@@ -37,34 +38,51 @@ function ResetPasswordPage() {
                     const response = await dispatch(resetPasswordAsync({ password: newPassword.password, resetToken: resetToken.resetToken }));
                     console.log('response', response);
                     if (response?.payload?.success) {
-                        console.log('login pe jaa na saale shakal kya dekh rha h');
+                        toast.success('Password updated Successfully');
                         navigate('/login');
+                    }else{
+                        toast.error('Link has expired. Kindly Reset your password again');
+                        navigate('/forgetPassword', {replace:true});
                     }
                 })} className="space-y-6" action="#" method="POST">
 
 
                     <div>
-                        <div className="flex items-center justify-between">
-                            <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
-                                Set Your password
-                            </label>
-                        </div>
+                        {/* PASSWORD */}
                         <div className="mt-2">
+                            <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                                Password
+                            </label>
                             <input
                                 id="password"
                                 {...register('password',
                                     {
-                                        required: 'Password is required'
+                                        required: 'Password is required', 
+                                        validate:(value,formValues) => value === formValues.password || 'Passwords does not match'
                                     })}
-                                // name="password"
                                 type="password"
                                 autoComplete="password"
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
+                            {errors && errors.password && <p className="text-red-700">{errors?.password?.message}</p>}
                         </div>
-                        <p className="text-red-700">{errors?.password?.message}</p>
-                        {/* {errors && <p className="text-red-700">{errors?.password?.message}</p>
-                        } */}
+
+                        {/* CONFIRM PASSWORD */}
+                        <div className="mt-4">
+                            <label htmlFor="confirm-password" className="block text-sm font-medium leading-6 text-gray-900">
+                                Confirm Password
+                            </label>
+                            <input
+                                id="confirm-password"
+                                {...register('confirmPassword',
+                                    {
+                                        required: 'Confirm Password is required'
+                                    })}
+                                type="password"
+                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            />
+                            {errors && errors.confirmPassword && <p className="text-red-700">{errors?.confirmPassword?.message}</p>}
+                        </div>
                     </div>
 
                     <div>
@@ -77,12 +95,7 @@ function ResetPasswordPage() {
                     </div>
                 </form>
 
-                <p className="mt-10 text-center text-sm text-gray-500">
-                    Not a member?{' '}
-                    <Link to="/login" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                        Back
-                    </Link>
-                </p>
+
             </div>
         </div>
     );

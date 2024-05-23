@@ -1,7 +1,8 @@
 import { useForm } from "react-hook-form"
 import { useDispatch } from "react-redux";
-import {Link} from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { forgotPasswordAsync } from "../authSlice";
+import toast from "react-hot-toast";
 function ForgetPassword() {
     const {
         register,
@@ -10,6 +11,8 @@ function ForgetPassword() {
     } = useForm();
 
     const dispatch = useDispatch();
+
+    const navigate = useNavigate();
 
     return (
         <>
@@ -28,9 +31,13 @@ function ForgetPassword() {
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                     <form noValidate onSubmit={handleSubmit(async (data) => {
-                        // IMPLEMENTATION IN BACKEND IS NECESSARY
-                        console.log('email hi aayegi obv');
-                        await dispatch(forgotPasswordAsync(data));
+                        const response = await dispatch(forgotPasswordAsync(data));
+                        console.log("response", response);
+                        if (response?.payload?.success) {
+                            console.log(response.payload.success);
+                            // <Navigate to={'/tokenSent'} replace='true' />
+                            navigate('/tokenSent', { replace: true });
+                        }
                     })} className="space-y-6" action="#" method="POST">
                         <div>
                             <label htmlFor="email" className="block text-start text-sm font-medium leading-6 text-gray-900">

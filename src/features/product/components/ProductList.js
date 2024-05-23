@@ -7,8 +7,8 @@ import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ITEMS_PER_PAGE, discountedPrice } from '../../../app/constants.js'
-import { fetchAllBrandsAsync, fetchAllCategoriesAsync, fetchAllProductsAsync, fetchProductsByFilterAsync, } from '../productSlice.js';
-// import { fetchAllBrands } from '../productApi.js';
+import { fetchAllBrandsAsync, fetchAllCategoriesAsync, fetchProductsByFilterAsync, } from '../productSlice.js';
+import couldNotFindProduct from '../../../assets/couldNotFindProduct.png'
 import { Pagination } from '../../common/Pagination.js';
 const sortOptions = [
   { name: 'Best Rating', sort: 'rating', order: 'desc', current: false },
@@ -69,31 +69,13 @@ export default function ProductList() {
     (async function () {
       const pagination = { _page: page, _limit: ITEMS_PER_PAGE }
 
-      const products = await dispatch(fetchProductsByFilterAsync({ filter, sort, pagination })
+      await dispatch(fetchProductsByFilterAsync({ filter, sort, pagination })
       );
-      if (products.payload.totalDocs == 0) {
-        return (
-          <div className="text-8xl">
-            NO PRODUCT FOUND
-          </div >
-        )
-      }
       await dispatch(fetchAllBrandsAsync());
       await dispatch(fetchAllCategoriesAsync());
     }
     )()
   }, [dispatch, filter, sort, page])
-
-
-  // useEffect(() => {
-  //   async function fetching() {
-  //     await dispatch(fetchAllBrandsAsync());
-  //     await dispatch(fetchAllCategoriesAsync());
-  //   }
-
-  //   fetching();
-  // }, [dispatch])
-
 
   useEffect(() => {
     setPage(1);
@@ -361,14 +343,14 @@ export default function ProductList() {
                         </div> :
                           <div className="flex flex-col items-center  h-screen">
                             <img
-                              src="https://png.pngtree.com/png-clipart/20230414/original/pngtree-cute-cartoon-boy-with-sad-expression-png-image_9054562.png"
+                              src={couldNotFindProduct}
                               alt="Cute robot"
                               height={500}
                               width={500}
                               className="mb-4"
                             />
-                            <h2 className="text-3xl font-bold text-gray-800 mb-2">
-                              Oops! We couldn't find this product!
+                            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                              Oops! We couldn't find this product with this brand!
                             </h2>
                             <p className="text-gray-600">Try to change the filter</p>
                           </div>}
