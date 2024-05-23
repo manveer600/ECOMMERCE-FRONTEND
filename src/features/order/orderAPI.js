@@ -1,6 +1,6 @@
 export function addOrder(order) {
   return new Promise(async (resolve) => {
-    const response = await fetch('http://localhost:8080/orders', {
+    const response = await fetch('https://ecommerce-backend-gj2h.onrender.com/orders', {
       method: "POST",
       body: JSON.stringify(order),
       headers: { 'content-type': 'application/json' },
@@ -16,7 +16,7 @@ export function addOrder(order) {
 
 export function updateOrder(order) {
   return new Promise(async (resolve) => {
-    const response = await fetch(`http://localhost:8080/orders/${order.id}`, {
+    const response = await fetch(`https://ecommerce-backend-gj2h.onrender.com/orders/${order.id}`, {
       method: "PATCH",
       body: JSON.stringify(order),
       headers: { 'content-type': 'application/json' },
@@ -48,7 +48,7 @@ export function fetchAllOrders(sort, pagination) {
 
 
   return new Promise(async (resolve) => {
-    const response = await fetch(`http://localhost:8080/orders?${queryString}`, {
+    const response = await fetch(`https://ecommerce-backend-gj2h.onrender.com/orders?${queryString}`, {
       mode: "cors",
       credentials: 'include',
     })
@@ -61,7 +61,7 @@ export function fetchAllOrders(sort, pagination) {
 
 export function fetchOrdersByUser() {
   return new Promise(async (resolve) => {
-    const response = await fetch(`http://localhost:8080/orders/own`, {
+    const response = await fetch(`https://ecommerce-backend-gj2h.onrender.com/orders/own`, {
       mode: "cors",
       credentials: 'include',
     });

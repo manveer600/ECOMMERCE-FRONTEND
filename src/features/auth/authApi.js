@@ -2,7 +2,7 @@ import toast from "react-hot-toast";
 
 export function createUser(userData) {
     return new Promise(async (resolve, reject) => {
-        const response = await fetch('http://localhost:8080/users/signup', {
+        const response = await fetch('https://ecommerce-backend-gj2h.onrender.com/users/signup', {
             method: "POST",
             body: JSON.stringify(userData),
             headers: { 'content-type': 'application/json' },
@@ -24,7 +24,7 @@ export function createUser(userData) {
 export function loginUser(loginData) {
     return new Promise(async (resolve, reject) => {
         try {
-            const response = await fetch(`http://localhost:8080/users/login`, {
+            const response = await fetch(`https://ecommerce-backend-gj2h.onrender.com/users/login`, {
                 method: 'POST',
                 credentials: 'include',
                 mode: 'cors',
@@ -48,7 +48,7 @@ export function loginUser(loginData) {
 
 export function signOut() {
     return new Promise(async (resolve) => {
-        const response = await fetch('http://localhost:8080/users/logout', {
+        const response = await fetch('https://ecommerce-backend-gj2h.onrender.com/users/logout', {
             mode: "cors",
             credentials: 'include',
         });
@@ -59,7 +59,7 @@ export function signOut() {
 
 export function checkAuth() {
     return new Promise(async (resolve) => {
-        const response = await fetch('http://localhost:8080/users/check-auth', {
+        const response = await fetch('https://ecommerce-backend-gj2h.onrender.com/users/check-auth', {
             mode: "cors",
             credentials: 'include',
         });
@@ -73,7 +73,7 @@ export async function forgotPassword(email) {
 
     try {
         const response = await toast.promise(
-            fetch('http://localhost:8080/users/forgotPassword', {
+            fetch('https://ecommerce-backend-gj2h.onrender.com/users/forgotPassword', {
                 method: 'POST',
                 body: JSON.stringify(email),
                 headers: { 'Content-Type': 'application/json' }
@@ -108,7 +108,7 @@ export function resetPassword(data) {
     const resetPasswordToken = data.resetToken;
     const newPassword = data.password;
     return new Promise(async (resolve) => {
-        const response = await fetch(`http://localhost:8080/users/resetPassword/${resetPasswordToken}`, {
+        const response = await fetch(`https://ecommerce-backend-gj2h.onrender.com/users/resetPassword/${resetPasswordToken}`, {
             method: 'POST',
             body: JSON.stringify({ password: newPassword }),
             headers: { 'content-type': "application/json" },
@@ -122,7 +122,7 @@ export function resetPassword(data) {
 
 export function updateUser(updatedData) {
     return new Promise(async (resolve) => {
-        const response = await fetch(`http://localhost:8080/users/${updatedData.id}`, {
+        const response = await fetch(`https://ecommerce-backend-gj2h.onrender.com/users/${updatedData.id}`, {
             method: "PATCH",
             body: JSON.stringify(updatedData),
             credentials: "include",
