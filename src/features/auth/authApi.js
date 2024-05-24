@@ -23,7 +23,7 @@ export function createUser(userData) {
 export function loginUser(loginData) {
     return new Promise(async (resolve, reject) => {
         try {
-            const response = await fetch(`http://localhost:8080/users/login`, {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}users/login`, {
                 method: 'POST',
                 credentials: 'include',
                 mode: 'cors',

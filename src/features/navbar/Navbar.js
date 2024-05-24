@@ -36,7 +36,7 @@ function Navbar({ children }) {
                                         <img
                                             onClick={() => navigate("/")}
                                             className="h-8 w-8"
-                                            src={userImage}
+                                            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
                                             alt="Your Company"
                                         />
                                     </div>
