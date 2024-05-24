@@ -30,7 +30,6 @@ function Checkout() {
 
   async function handleQuantity(e, item) {
     const inputValue = +e.target.value;
-    console.log('inputValue', inputValue);
     const maxStock = item.productId.stock;
     const dataToBeUpdated = {
       quantity: inputValue
@@ -56,14 +55,11 @@ function Checkout() {
     if (items && items.length > 0 && paymentMethod && selectedAddress) {
       const order = { items, totalAmount, totalItems, loggedInUserId: user.id, paymentMethod, selectedAddress, status: 'pending' };
       if (order.paymentMethod === 'card') {
-        console.log(order)
-        console.log('bhai mai card se payment kr rha hoon');
         navigate('/stripe-checkout', {state:order});
       }
       else if (order.paymentMethod === 'cash') {
         const response = await dispatch(addOrderAsync(order));
         if (response?.payload?.success) {
-          console.log('cash');
           navigate(`/orderSuccess/${response.payload.order.id}`);
         }
       }

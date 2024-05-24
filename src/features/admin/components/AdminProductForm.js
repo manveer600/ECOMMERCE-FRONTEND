@@ -87,14 +87,12 @@ function AdminProductForm() {
                 product.id = params.id
                 product.rating = selectedProduct.rating || 1;
                 const response = await dispatch(updateProductAsync(product));
-                console.log('response after adding a product', response);
                 if (response?.payload) {
                     navigate('/admin');
                 }
             } else {
                 const response = await dispatch(createProductAsync(product));
                 reset();
-                console.log('response while creating new product', response);
                 if (response?.payload?.success) {
                     navigate(`/productdetails/${response.payload.product.id}`);
                 }

@@ -55,7 +55,6 @@ export const orderSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(addOrderAsync.fulfilled, (state, action) => (
-        console.log('action from backend', action.payload),
         {
           ...state,
           status: 'idle',

@@ -16,7 +16,6 @@ function Cart() {
   const totalItems = items.reduce((total, item) => item.quantity + total, 0);
   async function handleQuantity(e, item) {
     const inputValue = +e.target.value;
-    console.log('inputValue', inputValue);
     const maxStock = item.productId.stock;
     const dataToBeUpdated = {
       quantity : inputValue

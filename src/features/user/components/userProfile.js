@@ -20,8 +20,6 @@ function UserProfile() {
 
     async function handleRemove(e, address, index) {
         const confirmation = window.confirm(`Are you sure you want to delete this address: ${address.address}?`);
-        console.log('yes confirmed');
-        // alert(`Are you sure you want to delete this address: ${address.address}`)
         if (confirmation) {
             const userDetails = { ...user, address: [...user.address] };
             userDetails.address.splice(index, 1);
@@ -31,7 +29,6 @@ function UserProfile() {
     }
 
     async function handleEdit(addressUpdate, index) {
-        console.log('updated address', addressUpdate);
         const userDetails = { ...user, address: [...user.address] };
         userDetails.address.splice(index, 1, addressUpdate);
         await dispatch(updateUserAsync(userDetails));
@@ -65,14 +62,14 @@ function UserProfile() {
     }
 
     return (
-        <div>
-            <p className="text-center font-serif underline text-yellow-800  text-6xl pt-3 ">MY PROFILE</p>
+        <div className="p-2">
+            <p className="text-center font-serif underline text-yellow-800  text-5xl pt-3 sm:text-6xl  ">MY PROFILE</p>
 
-            <div className="mx-auto mt-10 z-10 overflow-x-hidden bg-white max-w-7xl py-6 sm:px-6 lg:px-8">
+            <div className="mx-auto mt-10 z-10 overflow-x-hidden bg-white p-3 max-w-7xl py-6 sm:px-6 lg:px-8">
                 <div className="mt-8">
-                    <h2 className="text-4xl font-serif font-bold text-blue-700 underline ">Name: {user.name ? user.name : "Manveer"} </h2>
-                    <h4 className="text-xl font-serif font-bold text-red-600 ">Email: {user.email ? user.email : "Manveer"}</h4>
-                    <h4 className="text-xl font-serif font-bold text-red-600 ">Role: {user.role === 'admin' ? user.role : 'user'}</h4>
+                    <h2 className="sm:text-4xl font-serif font-bold text-blue-700 underline ">Name: {user.name ? user.name : "Manveer"} </h2>
+                    <h4 className="sm:text-xl font-serif font-bold text-red-600 ">Email: {user.email ? user.email : "Manveer"}</h4>
+                    <h4 className="sm:text-xl font-serif font-bold text-red-600 ">Role: {user.role === 'admin' ? user.role : 'user'}</h4>
                     <div className="flow-root">
                         {showAddressForm === true ? <button
                             onClick={e => setShowAddressForm(false)}
@@ -87,7 +84,6 @@ function UserProfile() {
                             Add New Address
                         </button>}
                         {showAddressForm === true && <form noValidate onSubmit={handleSubmit(async (newAddress) => {
-                            console.log('new address', newAddress);
                             if (Object.keys(newAddress).length === 0) {
                                 console.error('New address is empty');
                                 return;

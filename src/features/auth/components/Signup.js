@@ -35,7 +35,6 @@ function Signup() {
     setShowConfirmPassword(!showConfirmPassword);
   }
 
-  console.log("error", errors);
   return (
     <>
       {token && <Navigate to='/' replace={true} ></Navigate>}
@@ -51,8 +50,7 @@ function Signup() {
         </div>
 
         <div className="mt-10  sm:mx-auto sm:w-full sm:max-w-sm">
-          <form noValidate className="space-y-6" onSubmit={handleSubmit(async (data) => {
-            console.log('errors', errors);
+          <form noValidate className="space-y-6 w-full" onSubmit={handleSubmit(async (data) => {
             const response = await dispatch(createUserAsync({ email: data.email, password: data.password }));
             if (response?.payload?.success) {
               <Navigate to='/' />
@@ -103,10 +101,19 @@ function Signup() {
                   autoComplete="current-password"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
-                {!showPassword && <FaEye onClick={handlePassword} className="relative bottom-6 flex justify-center items-center text-end left-[350px]" />
-                }
-                {showPassword && <FaEyeSlash onClick={handlePassword} className="relative bottom-6 flex justify-center items-center text-end left-[350px]" />
-                }
+                <div className="relative">
+                  {!showPassword ? (
+                    <FaEye
+                      onClick={handlePassword}
+                      className="absolute right-4 bottom-3 cursor-pointer"
+                    />
+                  ) : (
+                    <FaEyeSlash
+                      onClick={handlePassword}
+                      className="absolute right-4 bottom-3 cursor-pointer"
+                    />
+                  )}
+                </div>
               </div>
               <p className="text-red-700">{errors?.password?.message}</p>
             </div>
@@ -131,10 +138,19 @@ function Signup() {
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
-                {!showConfirmPassword && <FaEye onClick={handleConfirmPassword} className="relative bottom-6 flex justify-center items-center text-end left-[350px]" />
-                }
-                {showConfirmPassword && <FaEyeSlash onClick={handleConfirmPassword} className="relative bottom-6 flex justify-center items-center text-end left-[350px]" />
-                }
+                 <div className="relative">
+                  {!showConfirmPassword ? (
+                    <FaEye
+                      onClick={handleConfirmPassword}
+                      className="absolute right-4 bottom-3 cursor-pointer"
+                    />
+                  ) : (
+                    <FaEyeSlash
+                      onClick={handleConfirmPassword}
+                      className="absolute right-4 bottom-3 cursor-pointer"
+                    />
+                  )}
+                </div>
               </div>
               <p className="text-red-700">{errors?.confirmPassword?.message}</p>
             </div>

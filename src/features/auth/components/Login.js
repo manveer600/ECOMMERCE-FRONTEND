@@ -26,17 +26,17 @@ function Login() {
 
 
   useEffect(() => {
-    (async function(){
+    (async function () {
       await dispatch(clearLoginError());
     })()
-  }, [dispatch,emailValue])
-  console.log('errors', errors);
+  }, [dispatch, emailValue])
+
   return (
     <>
 
       {token && <Navigate to='/' replace={true}></Navigate>}
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+      <div className="flex min-h-full  flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+        <div className="sm:mx-auto text-center sm:w-full sm:max-w-sm">
           <img
             className="mx-auto h-10 w-auto"
             src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
@@ -47,15 +47,15 @@ function Login() {
           </h2>
         </div>
 
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        <div>
           <form noValidate onSubmit={handleSubmit(async (data) => {
             const response = await dispatch(loginUserAsync({ email: data.email, password: data.password }));
             if (response?.payload?.success) {
               <Navigate to='/' replace={true} />
             }
-          })} className="space-y-6" action="#" method="POST">
+          })} className="space-y-6  sm:m-auto sm:w-[500px] w-full p-2" action="#" method="POST">
             <div>
-              <label htmlFor="email" className="block text-start text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="email" className="block text-start text-sm font-medium text-gray-900">
                 Email address
               </label>
               <div className="mt-2">
@@ -81,7 +81,7 @@ function Login() {
             </div>
 
             <div>
-              <div className="flex items-center justify-between">
+              <div className="flex  items-center justify-between">
                 <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
                   Password
                 </label>
@@ -91,7 +91,7 @@ function Login() {
                   </Link>
                 </div>
               </div>
-              <div className="mt-2">
+              <div className="mt-2 ">
                 <input
                   id="password"
                   {...register('password',
@@ -103,10 +103,20 @@ function Login() {
                   autoComplete="current-password"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
-                {!showPassword && <FaEye onClick={handleShow} className="relative bottom-6 flex justify-center items-center text-end left-[350px]" />
-                }
-                {showPassword && <FaEyeSlash onClick={handleShow} className="relative bottom-6 flex justify-center items-center text-end left-[350px]" />
-                }
+                <div className="relative">
+                  {!showPassword ? (
+                    <FaEye
+                      onClick={handleShow}
+                      className="absolute right-4 bottom-3 cursor-pointer"
+                    />
+                  ) : (
+                    <FaEyeSlash
+                      onClick={handleShow}
+                      className="absolute right-4 bottom-3 cursor-pointer"
+                    />
+                  )}
+                </div>
+
               </div>
               <p className="text-red-700">{errors?.password?.message}</p>
               {loginError && <p className="text-red-700">{loginError?.message}</p>

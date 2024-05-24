@@ -57,18 +57,15 @@ export default function ProductDetails() {
     if (existingItemIndex != -1) {
       if (window.confirm('Item has already been added to cart. Do you want to add 1 more quantity?')) {
         let item = cartItems[existingItemIndex];
-        console.log('item found', item);
         const dataToBeUpdated = {
           quantity: item.quantity + 1
         };
-        console.log('card update');
         const response = await dispatch(updateItemAsync({ productId: product.id, dataToBeUpdated }));
         if (response?.payload?.success) {
           toast.success(`Item's quantity updated`);
         }
       }
     } else {
-      console.log('card add');
       newItem = { productId: product.id, quantity: 1 }
       const response = await dispatch(addToCartAsync(newItem));
       if (response?.payload?.success) {

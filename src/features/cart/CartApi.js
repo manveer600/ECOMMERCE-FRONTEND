@@ -7,7 +7,6 @@ export function addToCart(item){
             headers:{'content-type':'application/json'}
         })
         const data = await response.json();
-        console.log('data got from backend while adding an item to the cart', data);
         resolve({data});
     })
 }
@@ -27,11 +26,8 @@ export function fetchItemsByUserId(){
 
 
 export function updateItem(data){
-    console.log('updating data in api', data);
     const dataToBeUpdated = data.dataToBeUpdated;
     const productId = data.productId;
-    console.log(dataToBeUpdated);
-    console.log(productId);
     return new Promise(async (resolve) => {
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}carts/${productId}`, {
             method:"PATCH",

@@ -11,10 +11,8 @@ const initialState = {
 export const createUserAsync = createAsyncThunk('user/createUser', async (userData, { rejectWithValue }) => {
     try {
         const response = await createUser(userData);
-        console.log('response when signing up', response);
         return response.data;
     } catch (error) {
-        console.log('rejecting with an error', error);
         return rejectWithValue(error);
     }
 }
@@ -35,11 +33,10 @@ export const updateUserAsync = createAsyncThunk('user/updateUser', async (update
 export const loginUserAsync = createAsyncThunk('user/loginUser', async (loginData, { rejectWithValue }) => {
     try {
         const response = await loginUser(loginData);
-        console.log('response when logging', response);
+        console.log('respomse.data', response.data);
         return response.data;
     }
     catch (error) {
-        console.log('rejecting with an error', error);
         return rejectWithValue(error);
     }
 }
@@ -48,11 +45,9 @@ export const loginUserAsync = createAsyncThunk('user/loginUser', async (loginDat
 export const checkAuthAsync = createAsyncThunk('user/checkAuth', async () => {
     try {
         const response = await checkAuth();
-        console.log("response.data", response);
         return response.data;
     }
     catch (error) {
-        console.log('rejecting with an error', error);
         return error;
     }
 }
@@ -61,26 +56,20 @@ export const checkAuthAsync = createAsyncThunk('user/checkAuth', async () => {
 export const forgotPasswordAsync = createAsyncThunk('user/forgotPassword', async (data) => {
     try {
         const response = await forgotPassword(data);
-        console.log('data in authslice', response);
-        console.log('data in authslice', response);
         return response;
     }
     catch (error) {
-        console.log('error forgetting password');
         return error;
     }
 }
 );
 
 export const resetPasswordAsync = createAsyncThunk('user/resetPassword', async (data) => {
-    console.log('data in slice', data);
     try {
         const response = await resetPassword(data);
-        console.log("response.data", response);
         return response.data1;
     }
     catch (error) {
-        console.log('error reseting password');
         return error;
     }
 }

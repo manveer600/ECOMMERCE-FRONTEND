@@ -13,10 +13,6 @@ function ResetPasswordPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const resetToken = useParams();
-    console.log(resetToken);
-
-    console.log("errors", errors);
-
 
     return (
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -34,9 +30,7 @@ function ResetPasswordPage() {
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form noValidate onSubmit={handleSubmit(async (newPassword) => {
 
-                    console.log('data reset wala', newPassword);
                     const response = await dispatch(resetPasswordAsync({ password: newPassword.password, resetToken: resetToken.resetToken }));
-                    console.log('response', response);
                     if (response?.payload?.success) {
                         toast.success('Password updated Successfully');
                         navigate('/login');

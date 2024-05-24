@@ -19,7 +19,6 @@ function ContactUsPage() {
     } = useForm();
 
 
-    console.log('errors', errors);
     const [agreed, setAgreed] = useState(false)
 
     return (
@@ -42,8 +41,6 @@ function ContactUsPage() {
                     We got your back😁 !               </p>
             </div>
             <form noValidate onSubmit={handleSubmit((data) => {
-                console.log('data', data);
-                console.log(data.firstName);
                 toast.success(`Dear ${data.firstName}${' '}${data.lastName}, your message has been saved successfully and we will contact you shortly`, {
                     autoClose: 5500 
                 });

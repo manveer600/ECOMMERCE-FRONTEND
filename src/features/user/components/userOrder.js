@@ -16,13 +16,13 @@ function UserOrder() {
         })()
     }, [dispatch])
     return (
-        <div>
-            <p className="text-center font-serif underline text-yellow-800  text-6xl pt-3 ">MY ORDERS</p>
+        <div className="p-3">
+            <p className="text-center font-serif underline text-yellow-800 p-3 text-4xl sm:text-6xl pt-3 ">MY ORDERS</p>
             {
                 orders && orders[0] ? orders.map((order) => (
-                    <div className="mx-auto mt-10 z-10 overflow-x-hidden bg-white max-w-7xl py-6 sm:px-6 lg:px-8">
+                    <div className="mx-auto mt-10 z-10 overflow-x-hidden p-3 bg-white max-w-7xl py-6 sm:px-6 lg:px-8">
                         <div className="mt-8">
-                            <h2 className="text-4xl font-serif font-bold text-blue-700 underline ">Order #{order.id}</h2>
+                            <h2 className="sm:text-4xl font-serif font-bold text-blue-700 underline ">Order #{order.id}</h2>
                             <h4 className="text-xl font-serif font-bold text-red-600 ">Order Status : {order.status}</h4>
                             <div className="flow-root">
                                 <ul role="list" className="-my-6 p-5 divide-y divide-gray-200">

@@ -58,8 +58,6 @@ function AdminOrders() {
     }
 
     async function handleSorting(sortOption) {
-        // sortOption = {sort:'id', order:sort?._order === 'asc' ? 'desc' : 'asc'}
-        // console.log("sortOption", sortOption);
         const sort = { _sort: sortOption.sort, _order: sortOption.order }
         setSort(sort);
     }

@@ -30,8 +30,6 @@ export default function CheckoutForm(props) {
       "payment_intent_client_secret"
     );
 
-    console.log('clientSecret', clientSecret);
-
     if (!clientSecret) {
       return;
     }
@@ -65,15 +63,8 @@ export default function CheckoutForm(props) {
     setIsLoading(true);
     const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
-      // confirmParams: {
-      //   // return_url: `http://localhost:3000/orderSuccess`,
-      // },
       redirect: "if_required"
     });
-
-
-    console.log('error', error);
-    console.log('payment intent', paymentIntent);
 
     if (error) {
       if (error.type === "card_error" || error.type === "validation_error") {
@@ -85,7 +76,6 @@ export default function CheckoutForm(props) {
       setIsLoading(false);
     } else if (paymentIntent && paymentIntent.status === 'succeeded') {
       const response = await dispatch(addOrderAsync(currentOrder));
-      console.log('response after uploading order ', response);
 
       if (response?.payload?.success) {
         navigate(`/orderSuccess/${response.payload.order.id}`, { replace: true });

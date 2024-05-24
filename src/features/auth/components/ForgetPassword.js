@@ -32,10 +32,7 @@ function ForgetPassword() {
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                     <form noValidate onSubmit={handleSubmit(async (data) => {
                         const response = await dispatch(forgotPasswordAsync(data));
-                        console.log("response", response);
                         if (response?.payload?.success) {
-                            console.log(response.payload.success);
-                            // <Navigate to={'/tokenSent'} replace='true' />
                             navigate('/tokenSent', { replace: true });
                         }
                     })} className="space-y-6" action="#" method="POST">

@@ -15,7 +15,6 @@ export function createUser(userData) {
         }
         else {
             const error = await response.json();
-            console.log('error while signing up', error);
             reject(error);
         }
     })
@@ -24,23 +23,23 @@ export function createUser(userData) {
 export function loginUser(loginData) {
     return new Promise(async (resolve, reject) => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}users/login`, {
+            const response = await fetch(`http://localhost:8080/users/login`, {
                 method: 'POST',
                 credentials: 'include',
                 mode: 'cors',
                 body: JSON.stringify(loginData),
                 headers: { 'content-type': "application/json" },
             });
+
+            console.log('response from the backend', response);
             if (response.ok) {
                 const data = await response.json();
                 resolve({ data });
             } else {
                 const error = await response.json();
-                console.log('error while logging', error);
                 reject(error);
             }
         } catch (e) {
-            console.log('Unable to login at this time. Please try again later', e);
             reject(e);
         }
     })
@@ -69,7 +68,6 @@ export function checkAuth() {
 }
 
 export async function forgotPassword(email) {
-    console.log('Sending forgot password request for:', email);
 
     try {
         const response = await toast.promise(
@@ -81,8 +79,7 @@ export async function forgotPassword(email) {
             {
                 loading: 'Sending verification code...',
                 success: (data) => {
-                    console.log('data in success',);
-                    return data?.message || 'Verification code sent successfully!'
+                    return 'Verification code sent successfully!'
                 },
                 error: 'Failed to send forgot password request'
             }
@@ -94,7 +91,6 @@ export async function forgotPassword(email) {
 
 
         const data = await response.json();
-        console.log('data while forgot password is this', data);
         return data;
     } catch (error) {
         console.error("Error sending forgot password request:", error);
@@ -104,7 +100,6 @@ export async function forgotPassword(email) {
 
 
 export function resetPassword(data) {
-    console.log('data in auth api', data);
     const resetPasswordToken = data.resetToken;
     const newPassword = data.password;
     return new Promise(async (resolve) => {
@@ -113,7 +108,6 @@ export function resetPassword(data) {
             body: JSON.stringify({ password: newPassword }),
             headers: { 'content-type': "application/json" },
         });
-        console.log("response from resetPassword", response);
         const data1 = await response.json();
         resolve({ data1 });
     })

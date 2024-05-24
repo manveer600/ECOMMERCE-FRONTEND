@@ -25,7 +25,6 @@ export function fetchProductsByFilter(filter, sort, pagination) {
 
 
   return new Promise(async (resolve) => {
-    console.log('${process.env.REACT_APP_BACKEND_URL}products?${queryString}', `${process.env.REACT_APP_BACKEND_URL}products ? ${queryString}`);
     const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}products?${queryString}`, {
       credentials: "include",
       mode: 'cors'
