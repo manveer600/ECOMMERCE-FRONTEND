@@ -2,7 +2,7 @@ import { Fragment, useEffect } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, ShoppingCartIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { userInfo } from '../auth/authSlice'
 import userImage from '../../assets/user.png'
 const navigation = [
@@ -131,13 +131,14 @@ function Navbar({ children }) {
                             </div>
                         </div>
 
+                        {/* shyd ye hai phone wali cheez */}
                         <Disclosure.Panel className="md:hidden">
                             <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
                                 {navigation.map((item) => (
-                                    <Disclosure.Button
+                                    console.log('item', item),
+                                    item[user.role] && <Link
                                         key={item.name}
-                                        as="a"
-                                        href={item.href}
+                                        to={item.link}
                                         className={classNames(
                                             item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                                             'block rounded-md px-3 py-2 text-base font-medium'
@@ -145,13 +146,13 @@ function Navbar({ children }) {
                                         aria-current={item.current ? 'page' : undefined}
                                     >
                                         {item.name}
-                                    </Disclosure.Button>
+                                    </Link>
                                 ))}
                             </div>
                             <div className="border-t border-gray-700 pb-3 pt-4">
                                 <div className="flex items-center px-5">
                                     <div className="flex-shrink-0">
-                                        <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
+                                        <img className="h-10 w-10 rounded-full" src={userImage} alt="" />
                                     </div>
                                     <div className="ml-3">
                                         <div className="text-base font-medium leading-none text-white">{user.name}</div>
@@ -159,6 +160,7 @@ function Navbar({ children }) {
                                     </div>
                                     <button
                                         type="button"
+                                        onClick={() => navigate('/cart')}
                                         className="relative ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                                     >
                                         <span className="absolute -inset-1.5" />
