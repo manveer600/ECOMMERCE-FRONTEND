@@ -66,8 +66,8 @@ function Cart() {
                         <p >${discountedPrice(item.productId) * item.quantity}</p>
                       </div>
                       <p className=" sm:text-end font-semibold line-through">${item.productId.price * item.quantity}</p>
-                      <p className="mt-1 text-sm text-gray-500">Stock Available: {item.productId.stock - item.quantity}</p>
-                      <p className="mt-1 text-sm text-gray-500">Quantity Selected: {item.quantity}</p>
+                      <p className="mt-1 text-sm sm:text-start text-gray-500">Stock Available: {item.productId.stock - item.quantity}</p>
+                      <p className="mt-1 text-sm sm:text-start text-gray-500">Quantity Selected: {item.quantity}</p>
                     </div>
 
                     <div className="sm:flex flex-1 items-end mt-2 justify-between text-sm">
@@ -116,7 +116,7 @@ function Cart() {
             <p>
               {totalItems} items
             </p>
-          </div><p className="mt-0.5 text-sm text-start text-black">Shipping and taxes calculated at checkout.</p>
+          </div><p className="mt-0.5 text-sm sm:text-start text-center text-black">Shipping and taxes calculated at checkout.</p>
           <Link to='/checkout'>
             <div className="mt-6">
               <button

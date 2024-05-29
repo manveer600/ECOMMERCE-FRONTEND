@@ -67,7 +67,7 @@ function UserProfile() {
 
             <div className="mx-auto mt-10 z-10 overflow-x-hidden bg-white p-3 max-w-7xl py-6 sm:px-6 lg:px-8">
                 <div className="mt-8">
-                    <h2 className="sm:text-4xl font-serif font-bold text-blue-700 underline ">Name: {user.name ? user.name : "Manveer"} </h2>
+                    {/* <h2 className="sm:text-4xl font-serif font-bold text-blue-700 underline ">Name: {user.name ? user.name : "Manveer"} </h2> */}
                     <h4 className="sm:text-xl font-serif font-bold text-red-600 ">Email: {user.email ? user.email : "Manveer"}</h4>
                     <h4 className="sm:text-xl font-serif font-bold text-red-600 ">Role: {user.role === 'admin' ? user.role : 'user'}</h4>
                     <div className="flow-root">

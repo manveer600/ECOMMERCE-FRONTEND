@@ -40,21 +40,22 @@ export function fetchAllOrders(sort, pagination) {
     queryString += `${key}=${pagination[key]}&`
   }
 
-
-
   for (let key in sort) {
     queryString += `${key}=${sort[key]}&`
   }
 
-
+  console.log('query string is this', queryString);
+  console.log(`${process.env.REACT_APP_BACKEND_URL}orders?${queryString}`);
   return new Promise(async (resolve) => {
     const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}orders?${queryString}`, {
+      method:'GET',
       mode: "cors",
       credentials: 'include',
     })
     const data = await response.json();
-    const totalOrders = await response.headers.get('X-Total-Count');
-    resolve({ data: { orders: data, totalOrders: +totalOrders } })
+    // const totalOrders = await response.headers.get('X-Total-Count');
+    // resolve({ data: { orders: data, totalOrders: +totalOrders } })
+    resolve({data});
   });
 }
 

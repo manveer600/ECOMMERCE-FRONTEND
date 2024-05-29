@@ -11,6 +11,6 @@ export const store = configureStore({
     auth:authSlice.reducer,
     cart:cartSlice.reducer,
     orders:orderSlice.reducer,
-    user:userSlice.reducer
+    // user:userSlice.reducer
   },
 });

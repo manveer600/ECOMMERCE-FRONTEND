@@ -15,6 +15,7 @@ function ProtectedAdmin({ children }) {
     useEffect(() => {
         (async function () {
             const response = await dispatch(checkAuthAsync());
+            console.log('response', response);
             if(!response?.payload?.success){
                 setRedirectToLogin(true);
             }

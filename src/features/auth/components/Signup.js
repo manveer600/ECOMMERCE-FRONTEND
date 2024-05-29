@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearSignUpError, createUserAsync, loggedInUserToken } from "../authSlice";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useEffect, useState } from "react";
+import generateOtp from "../../../utils/generateOtp";
+import sendEmail from '../../../utils/sendMail.js'
 function Signup() {
   const token = useSelector(loggedInUserToken);
   const {
@@ -53,7 +55,8 @@ function Signup() {
           <form noValidate className="space-y-6 w-full" onSubmit={handleSubmit(async (data) => {
             const response = await dispatch(createUserAsync({ email: data.email, password: data.password }));
             if (response?.payload?.success) {
-              <Navigate to='/' />
+              // await sendEmail(data.email, 'Your One Time Password', '', generateOtp(6))
+              // <Navigate to='/' />
             }
           })}>
             {/* EMAIL */}

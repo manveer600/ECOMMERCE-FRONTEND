@@ -2,33 +2,25 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { ITEMS_PER_PAGE, discountedPrice } from '../../../app/constants.js'
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllOrdersAsync, selectOrders, selectTotalOrders, updateOrderAsync } from "../../order/orderSlice";
+import { fetchAllOrdersAsync, selectTotalOrders, updateOrderAsync } from "../../order/orderSlice";
 import { Pagination } from "../../common/Pagination.js";
 import { ArrowUpIcon, ArrowDownIcon } from "@heroicons/react/24/outline";
 function AdminOrders() {
     const [page, setPage] = useState(1);
     const dispatch = useDispatch();
-    const orders = useSelector(selectOrders);
-    const totalOrders = useSelector(selectTotalOrders);
+    const orders = useSelector((state) => state.orders.orders);
+    console.log('orders', orders);
+    const totalOrders = useSelector((state) => state.orders.totalOrders);
     const [sort, setSort] = useState({});
-    useEffect(() => {
-        const pagination = { _page: page, _limit: ITEMS_PER_PAGE }
-        dispatch(fetchAllOrdersAsync(pagination));
-    }, [dispatch, page])
-
-
     const [editableOrderId, setEditableOrderId] = useState(-1);
+
     function handleEdit(order) {
         setEditableOrderId(order.id);
     }
 
-
     function handleShow() {
         console.log('hello')
     }
-
-
-
 
     async function handleUpdate(e, order) {
         const updatedOrder = { ...order, status: e.target.value }
@@ -64,18 +56,22 @@ function AdminOrders() {
 
 
     useEffect(() => {
-        const pagination = { _page: page, _limit: ITEMS_PER_PAGE }
-        dispatch(fetchAllOrdersAsync({ sort, pagination }))
-
+        (async function () {
+            const pagination = { _page: page, _limit: ITEMS_PER_PAGE }
+            const response = await dispatch(fetchAllOrdersAsync({ sort, pagination }));
+            console.log('orders fetched successfully', response);
+        }
+        )()
     }, [dispatch, page, sort])
+
 
     return (
         <>
             {/* component */}
-            <div className="overflow-x-auto">
-                <div className="min-w-screen min-h-screen  flex items-center justify-center bg-gray-100 font-sans overflow-hidden">
+            <div className=" border-2   border-cyan-950">
+                <div className="min-h-screen overflow-auto flex items-center justify-center bg-gray-100 font-sans ">
                     <div className="w-full lg:w-6/6">
-                        <div className="bg-white shadow-md rounded my-6">
+                        <div className="  w-full rounded my-6">
                             <table className="min-w-max w-full table-auto">
                                 <thead>
                                     <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
@@ -86,7 +82,7 @@ function AdminOrders() {
                                         </th>
                                         <th className="py-3 px-6 text-left">Items</th>
                                         <th className="py-3 px-6 text-center hover:cursor-pointer" onClick={e => handleSorting({ sort: 'totalAmount', order: sort?._order === 'asc' ? 'desc' : 'asc' })}>
-                                        Total Amount
+                                            Total Amount
                                             {sort._sort === 'totalAmount' && sort._order === 'asc' ? <ArrowUpIcon className="h-6 w-6 inline" /> :
                                                 <ArrowDownIcon className="h-6 w-6 inline" />}
                                         </th>
@@ -109,13 +105,13 @@ function AdminOrders() {
                                                         <div className="mr-2">
                                                             <img
                                                                 className="w-6 h-6 rounded-full"
-                                                                src={item.thumbnail}
+                                                                src={item.productId.thumbnail}
                                                             />
                                                         </div>
                                                         <span className="font-bold">
-                                                            {item.title}
+                                                            {item.productId.title}
                                                         </span>
-                                                        &nbsp; &nbsp;#{item.quantity} &nbsp;&nbsp;  ${discountedPrice(item)}
+                                                        &nbsp; &nbsp;#{item.quantity} &nbsp;&nbsp;  ${discountedPrice(item.productId)}
                                                     </div>
                                                 ))}
 
@@ -125,14 +121,18 @@ function AdminOrders() {
                                                     {order.totalAmount}$
                                                 </div>
                                             </td>
-                                            <td className="py-3 px-6 text-center">
-                                                <div className="">
-                                                    <div><strong>{order.selectedAddress.name},</strong></div>
-                                                    <div> <strong>{order.selectedAddress.email},</strong></div>
-                                                    <div><strong>{order.selectedAddress.phoneNumber},</strong></div>
-                                                    <div> {order.selectedAddress.street},</div>
-                                                    <div>{order.selectedAddress.city},</div>
-                                                </div>
+                                            <td className="py-3 px-6 border-2 text-center">
+                                                order.selectedAddress.map((selectedAddress,index){
+                                                    <div>
+                                                        <div><strong>{order.selectedAddress.name},</strong></div>
+                                                        <div> <strong>{order.selectedAddress.email},</strong></div>
+                                                        <div><strong>{order.selectedAddress.phoneNumber},</strong></div>
+                                                        <div> {order.selectedAddress.address},</div>
+                                                        <div>{order.selectedAddress.city},</div>
+                                                        <div>{order.selectedAddress.postalCode},</div>
+                                                    </div>
+                                                })
+
                                             </td>
                                             <td className="py-3 px-6 text-center">
                                                 {editableOrderId === order.id ?
@@ -197,7 +197,7 @@ function AdminOrders() {
                         </div>
                     </div>
                 </div>
-                <Pagination page={page} totalItems={totalOrders} setPage={setPage} handlePage={handlePage}></Pagination>
+                {/* <Pagination page={page} totalItems={totalOrders} setPage={setPage} handlePage={handlePage}></Pagination> */}
 
             </div>
         </>

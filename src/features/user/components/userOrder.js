@@ -22,14 +22,14 @@ function UserOrder() {
                 orders && orders[0] ? orders.map((order) => (
                     <div className="mx-auto mt-10 z-10 overflow-x-hidden p-3 bg-white max-w-7xl py-6 sm:px-6 lg:px-8">
                         <div className="mt-8">
-                            <h2 className="sm:text-4xl font-serif font-bold text-blue-700 underline ">Order #{order.id}</h2>
-                            <h4 className="text-xl font-serif font-bold text-red-600 ">Order Status : {order.status}</h4>
+                            <h2 className="sm:text-3xl font-serif font-bold text-blue-700 underline sm:text-start text-center">Order #{order.id}</h2>
+                            <h4 className="text-xl font-serif font-bold text-red-600 sm:text-start text-center ">Order Status : {order.status}</h4>
                             <div className="flow-root">
-                                <ul role="list" className="-my-6 p-5 divide-y divide-gray-200">
+                                <ul role="list" className="p-5  divide-y divide-gray-200">
                                     {
                                         order.items && order.items.map((item) => (
-                                            <li key={item.id} className="text-black flex py-6">
-                                                <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                                            <li key={item.id} className="text-black  sm:flex py-6">
+                                                <div className="h-24 w-24 m-auto sm:flex-shrink-0 overflow-hidden rounded-md  border-gray-200">
                                                     <img
                                                         src={item.productId.thumbnail}
                                                         alt={item.productId.title}
@@ -37,18 +37,18 @@ function UserOrder() {
                                                     />
                                                 </div>
 
-                                                <div className="ml-4 flex flex-1 flex-col">
+                                                <div className="ml-4 text-center sm:flex sm:flex-1 sm:flex-col">
                                                     <div>
-                                                        <div className="flex justify-between text-base font-medium text-gray-900">
+                                                        <div className="sm:flex justify-between text-base font-medium text-gray-900">
                                                             <h3>
                                                                 <a href={item.productId.title}>{item.productId.title}</a>
                                                             </h3>
-                                                            <p className="ml-4">${discountedPrice(item.productId) * item.quantity}</p>
+                                                            <p className="">${discountedPrice(item.productId) * item.quantity}</p>
                                                         </div>
-                                                        <p className="text-end line-through">${item.productId.price}</p>
-                                                        <p className="mt-1 text-sm text-gray-500">Stock Available: {item.productId.stock - item.quantity}</p>
+                                                        <p className="sm:text-end line-through">${item.productId.price}</p>
+                                                        <p className="sm:text-start text-sm text-gray-500">Stock Available: {item.productId.stock - item.quantity}</p>
                                                     </div>
-                                                    <div className="flex flex-1 items-end justify-between text-sm">
+                                                    <div className="text-center sm:flex flex-1 items-end justify-between text-sm">
                                                         <div className=" text-black font-bold ">Qty:{item.quantity}</div>
                                                     </div>
 
@@ -58,14 +58,14 @@ function UserOrder() {
                                     }
                                 </ul>
 
-                                <p className="text-xl font-serif mt-4 font-bold">Shipping Addresses :</p>
+                                <p className="text-xl sm:text-start text-center font-serif mt-4 font-bold">Shipping Addresses :</p>
 
 
                                 {
                                     order.selectedAddress[0] && order.selectedAddress.map((address) => {
                                         return (
-                                            <li className=" border-2 p-3 flex justify-between  gap-x-6 py-5">
-                                                <div className="flex min-w-0 gap-x-4">
+                                            <li className=" border p-3 flex justify-between  gap-x-6 py-5">
+                                                <div className="flex min-w-0 m-auto sm:m-0  gap-x-4">
                                                     <div className="min-w-0  flex-auto">
                                                         <p className="text-sm font-semibold leading-6 text-gray-900">{address.address}</p>
                                                         <p className="mt-1 truncate text-xs leading-5 text-gray-500">{address.name}</p>

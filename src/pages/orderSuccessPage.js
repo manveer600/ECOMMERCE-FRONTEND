@@ -35,8 +35,8 @@ export default function OrderSuccessPage() {
 
             {params?.id ? <main className="grid min-h-screen place-items-center bg-white w-full">
                 <div className="text-center">
-                    <p className="px-4 text-center text-4xl sm:text-6xl font-semibold text-indigo-600 ">Congratulations😁</p>
-                    <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">Order Id #{id}</h1>
+                    <p className="px-4 text-center text-2xl sm:text-6xl font-semibold text-indigo-600 ">Congratulations😁</p>
+                    <h1 className="mt-4 text-xl font-bold tracking-tight text-gray-900 sm:text-5xl">Order Id #{id}</h1>
                     <p className="mt-6 text-base leading-7 text-gray-600 mx-3">Your order has been successfully placed.</p>
                     <p className="mt-6 text-base leading-7 text-gray-600 mx-3">To view your all orders, Go to</p>
                     <p className=" text-base leading-7 text-gray-600 mx-3">Homepage &gt; Top Right corner button &gt; click on{" "}

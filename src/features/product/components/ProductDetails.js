@@ -41,13 +41,10 @@ export default function ProductDetails() {
   const [selectedSize, setSelectedSize] = useState(sizes[2])
   const dispatch = useDispatch();
   const params = useParams();
+
   useEffect(() => {
     dispatch(fetchProductByIdAsync(params.id));
   }, [dispatch, params.id])
-
-
-
-
 
 
   async function handleCart(e) {
@@ -74,8 +71,8 @@ export default function ProductDetails() {
     }
   }
   return (
-    <div className="bg-white">
-      {product && (<div className="pt-6">
+    <div className="bg-white ">
+      {product && (<div className="pt-6 border-6 ">
         <nav aria-label="Breadcrumb">
           <ol role="list" className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
             {product.breadcrumbs && product.breadcrumbs.map((breadcrumb) => (
@@ -106,7 +103,7 @@ export default function ProductDetails() {
         </nav>
 
         {/* Image gallery */}
-        <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
+        <div className="mx-auto mt-6 max-w-2xl border-6 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
           <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
             <img
               src={product.images[0]}
@@ -140,7 +137,7 @@ export default function ProductDetails() {
         </div>
 
         {/* Product info */}
-        <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
+        <div className="mx-auto max-w-2xl  px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
           <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
             <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{product.title}</h1>
           </div>
@@ -212,8 +209,8 @@ export default function ProductDetails() {
               </div>
 
               {/* Sizes */}
-              <div className="mt-10">
-                <div className="flex items-center justify-between">
+              <div className="mt-10 ">
+                <div className="flex  items-center justify-between">
                   <h3 className="text-sm font-medium text-gray-900">Size</h3>
                   <a href="#" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
                     Size guide

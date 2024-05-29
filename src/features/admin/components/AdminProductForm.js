@@ -74,13 +74,14 @@ function AdminProductForm() {
         //   }
         <form noValidate onSubmit={handleSubmit(async (data) => {
             const product = { ...data };
+            console.log("product made", product);
             product.images = [product.image1, product.image2, product.image3]
-            product.rating = 0;
+            product.rating = 1;
             delete product['image1'];
             delete product['image2'];
             delete product['image3'];
             product.price = +product.price;
-            product.rating = +product.rating
+            product.rating = product.rating ?? +product.rating
             product.discountPercentage = +product.discountPercentage
             product.stock = +product.stock
             if (params.id) {
@@ -92,6 +93,7 @@ function AdminProductForm() {
                 }
             } else {
                 const response = await dispatch(createProductAsync(product));
+                console.log('response after adding product', response);
                 reset();
                 if (response?.payload?.success) {
                     navigate(`/productdetails/${response.payload.product.id}`);
