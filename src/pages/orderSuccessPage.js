@@ -3,28 +3,16 @@ import ReactConfetti from "react-confetti";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { resetCartAsync } from "../features/cart/CartSlice";
-import { resetOrder } from "../features/order/orderSlice";
-import { checkAuthAsync } from "../features/auth/authSlice";
 
 export default function OrderSuccessPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const params = useParams();
     const { id } = params;
-
-
-    // useEffect(() => {
-    //     (async () => {
-    //         await dispatch(checkAuthAsync());
-    //     })()
-    // }, [dispatch])
-
     useEffect(() => {
 
         async function instant() {
             await dispatch(resetCartAsync());
-            // reset current order
-            // await dispatch(resetOrder());
         }
         instant();
     }, [dispatch])

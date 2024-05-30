@@ -74,7 +74,6 @@ function AdminProductForm() {
         //   }
         <form noValidate onSubmit={handleSubmit(async (data) => {
             const product = { ...data };
-            console.log("product made", product);
             product.images = [product.image1, product.image2, product.image3]
             product.rating = 1;
             delete product['image1'];

@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 
-
 function Login() {
   const dispatch = useDispatch();
   const loginError = useSelector((state) => state?.auth?.loginError);
@@ -20,6 +19,7 @@ function Login() {
 
   const emailValue = watch('email');
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   function handleShow() {
     setShowPassword(!showPassword);
   }
@@ -49,7 +49,9 @@ function Login() {
 
         <div>
           <form noValidate onSubmit={handleSubmit(async (data) => {
+            setIsLoading(true);
             const response = await dispatch(loginUserAsync({ email: data.email, password: data.password }));
+            setIsLoading(false);
             if (response?.payload?.success) {
               <Navigate to='/' replace={true} />
             }
@@ -126,9 +128,10 @@ function Login() {
             <div>
               <button
                 type="submit"
+                disabled={isLoading}
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Sign in
+                {isLoading ? <div className="spinner" id='spinner'></div> : 'Sign in'}
               </button>
             </div>
           </form>

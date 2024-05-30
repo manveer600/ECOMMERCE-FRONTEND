@@ -23,6 +23,7 @@ import ResetPasswordPage from './pages/ResetPasswordPage.js'
 import TokenSentPage from './pages/TokenSentPage.js';
 import ContactUsPage from './pages/ContactUsPage.js';
 import './App.css';
+import OTP from "./pages/otp.js";
 
 
 // import dotenv from 'dotenv'
@@ -101,6 +102,11 @@ const router = createBrowserRouter(
     {
       path: "tokenSent",
       element: <TokenSentPage />
+    },
+
+    {
+      path: "verifyOtp",
+      element: <OTP />
     },
 
 

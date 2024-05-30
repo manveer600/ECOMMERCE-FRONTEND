@@ -33,7 +33,6 @@ export const updateUserAsync = createAsyncThunk('user/updateUser', async (update
 export const loginUserAsync = createAsyncThunk('user/loginUser', async (loginData, { rejectWithValue }) => {
     try {
         const response = await loginUser(loginData);
-        console.log('respomse.data', response.data);
         return response.data;
     }
     catch (error) {

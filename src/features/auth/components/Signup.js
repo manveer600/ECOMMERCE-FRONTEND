@@ -4,8 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearSignUpError, createUserAsync, loggedInUserToken } from "../authSlice";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import generateOtp from "../../../utils/generateOtp";
-import sendEmail from '../../../utils/sendMail.js'
+import { useNavigate } from "react-router-dom";
 function Signup() {
   const token = useSelector(loggedInUserToken);
   const {
@@ -19,9 +18,10 @@ function Signup() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const signUpError = useSelector((state) => state?.auth?.signUpError);
   const emailValue = watch('email');
-
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
-    (async function() {
+    (async function () {
       if (signUpError) {
         await dispatch(clearSignUpError());
       }
@@ -39,7 +39,7 @@ function Signup() {
 
   return (
     <>
-      {token && <Navigate to='/' replace={true} ></Navigate>}
+      {/* {token && <Navigate to='/' replace={true} ></Navigate>} */}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
@@ -53,10 +53,13 @@ function Signup() {
 
         <div className="mt-10  sm:mx-auto sm:w-full sm:max-w-sm">
           <form noValidate className="space-y-6 w-full" onSubmit={handleSubmit(async (data) => {
+            setIsLoading(true);
             const response = await dispatch(createUserAsync({ email: data.email, password: data.password }));
+            setIsLoading(false);
+            console.log('response after signup', response);
             if (response?.payload?.success) {
-              // await sendEmail(data.email, 'Your One Time Password', '', generateOtp(6))
-              // <Navigate to='/' />
+              console.log('success');
+              navigate('/');
             }
           })}>
             {/* EMAIL */}
@@ -141,7 +144,7 @@ function Signup() {
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
-                 <div className="relative">
+                <div className="relative">
                   {!showConfirmPassword ? (
                     <FaEye
                       onClick={handleConfirmPassword}
@@ -164,9 +167,10 @@ function Signup() {
             <div>
               <button
                 type="submit"
+                  disabled={isLoading}
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Sign Up
+                {isLoading ? <div className="spinner bg-white text-white" id="spinner"></div> : 'Sign Up'}
               </button>
             </div>
 
