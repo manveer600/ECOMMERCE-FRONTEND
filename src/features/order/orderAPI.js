@@ -43,7 +43,7 @@ export function fetchAllOrders(sort, pagination) {
   for (let key in sort) {
     queryString += `${key}=${sort[key]}&`
   }
-
+  console.log('query string is this', `${process.env.REACT_APP_BACKEND_URL}orders?${queryString}`);
   return new Promise(async (resolve) => {
     const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}orders?${queryString}`, {
       method:'GET',

@@ -9,7 +9,6 @@ function AdminOrders() {
     const [page, setPage] = useState(1);
     const dispatch = useDispatch();
     const orders = useSelector((state) => state.orders.orders);
-    console.log('orders', orders);
     const totalOrders = useSelector((state) => state.orders.totalOrders);
     const [sort, setSort] = useState({});
     const [editableOrderId, setEditableOrderId] = useState(-1);
@@ -50,7 +49,9 @@ function AdminOrders() {
     }
 
     async function handleSorting(sortOption) {
+        console.log('sorting options now', sortOption);
         const sort = { _sort: sortOption.sort, _order: sortOption.order }
+        console.log('sort is this', sort);
         setSort(sort);
     }
 
@@ -64,11 +65,11 @@ function AdminOrders() {
         )()
     }, [dispatch, page, sort])
 
-
+    console.log('sort is this currently', sort);
     return (
         <>
             {/* component */}
-            <div className=" border-2   border-cyan-950">
+            <div>
                 <div className="min-h-screen overflow-auto flex items-center justify-center bg-gray-100 font-sans ">
                     <div className="w-full lg:w-6/6">
                         <div className="  w-full rounded my-6">
@@ -122,17 +123,25 @@ function AdminOrders() {
                                                 </div>
                                             </td>
                                             <td className="py-3 px-6 border-2 text-center">
-                                                order.selectedAddress.map((selectedAddress,index){
-                                                    <div>
-                                                        <div><strong>{order.selectedAddress.name},</strong></div>
-                                                        <div> <strong>{order.selectedAddress.email},</strong></div>
-                                                        <div><strong>{order.selectedAddress.phoneNumber},</strong></div>
-                                                        <div> {order.selectedAddress.address},</div>
-                                                        <div>{order.selectedAddress.city},</div>
-                                                        <div>{order.selectedAddress.postalCode},</div>
-                                                    </div>
-                                                })
+                                                {/* {
+                                                    order.selectedAddress.map((selectedAddress, index) => {
+                                                        return(<div>
+                                                            <div><strong>{order.selectedAddress.name},</strong></div>
+                                                            <div> <strong>{order.selectedAddress.email},</strong></div>
+                                                            <div><strong>{order.selectedAddress.phoneNumber},</strong></div>
+                                                            <div> {order.selectedAddress.address},</div>
+                                                            <div>{order.selectedAddress.city},</div>
+                                                            <div>{order.selectedAddress.postalCode},</div>
+                                                        </div>)
+                                                    })
+                                                } */}
 
+                                                <div><strong>{order.selectedAddress[0].name},</strong></div>
+                                                <div> <strong>{order.selectedAddress[0].email},</strong></div>
+                                                <div><strong>{order.selectedAddress[0].phoneNumber},</strong></div>
+                                                <div> {order.selectedAddress[0].address},</div>
+                                                <div>{order.selectedAddress[0].city},</div>
+                                                <div>{order.selectedAddress[0].postalCode},</div>
                                             </td>
                                             <td className="py-3 px-6 text-center">
                                                 {editableOrderId === order.id ?

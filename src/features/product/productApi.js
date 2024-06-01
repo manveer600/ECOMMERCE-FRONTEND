@@ -1,7 +1,8 @@
 export function fetchAllProducts() {
   return new Promise(async (resolve) => {
     const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}products`, {
-      credentials: "include"
+      credentials: "include",
+      mode:'cors',
     })
     const data = await response.json();
     resolve({ data })
@@ -26,6 +27,7 @@ export function fetchProductsByFilter(filter, sort, pagination) {
 
   return new Promise(async (resolve) => {
     const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}products?${queryString}`, {
+      method:'GET',
       credentials: "include",
       mode: 'cors'
     })
@@ -96,5 +98,19 @@ export function updateProduct(product) {
 
     const data = await response.json();
     resolve({ id: product.id, data });
+  })
+}
+
+export function deleteProduct(id){
+  return new Promise(async (resolve,reject)=>{
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}products/deleteProduct`,{
+      method:'DELETE',
+      body:JSON.stringify({id}),
+      credentials:'include',
+      mode:'cors',
+      headers: { 'content-type': 'application/json' }
+    })
+    const data = await response.json();
+    resolve({id,data});
   })
 }

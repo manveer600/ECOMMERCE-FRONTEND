@@ -58,6 +58,8 @@ function Signup() {
             setIsLoading(false);
             console.log('response after signup', response);
             if (response?.payload?.success) {
+              const OTP = localStorage.getItem('OTP');
+              console.log('otp generated is this', OTP);
               console.log('success');
               navigate('/');
             }

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { createProduct, fetchAllBrands, fetchAllCategories, fetchAllProducts, fetchProductById, fetchProductsByFilter, updateProduct } from './productApi.js';
+import { createProduct, deleteProduct, fetchAllBrands, fetchAllCategories, fetchAllProducts, fetchProductById, fetchProductsByFilter, updateProduct } from './productApi.js';
 
 const initialState = {
     products: [],
@@ -45,6 +45,11 @@ export const createProductAsync = createAsyncThunk('/product/createProductAsync'
 
 export const updateProductAsync = createAsyncThunk('/product/updateProductAsync', async(product)=>{
     const response = await updateProduct(product);
+    return response.data;
+})
+
+export const deleteProductAsync = createAsyncThunk('product/deleteProductAsync', async(id)=>{
+    const response = await deleteProduct(id);
     return response.data;
 })
 
@@ -104,6 +109,15 @@ export const productSlice = createSlice({
                 const index = state.products.findIndex((p) => p.id === action.payload.id);
                 state.products[index] = action.payload;
             })
+            .addCase(deleteProductAsync.pending, (state,action) => {
+                state.status = 'deleting product';
+            })
+            .addCase(deleteProductAsync.fulfilled, (state,action) => {
+                state.status = 'idle';
+                const index = state.products.findIndex((p) => p.id === action.payload.id);
+                delete state.products[index];
+            })
+
     },
 });
 export default productSlice.reducer;

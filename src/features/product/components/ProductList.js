@@ -225,10 +225,6 @@ export default function ProductList() {
                     </Transition>
                   </Menu>
 
-                  {/* <button type="button" className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7">
-                    <span className="sr-only">View grid</span>
-                    <Squares2X2Icon className="h-5 w-5" aria-hidden="true" />
-                  </button>
                   <button
                     type="button"
                     className="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden"
@@ -236,7 +232,7 @@ export default function ProductList() {
                   >
                     <span className="sr-only">Filters</span>
                     <FunnelIcon className="h-5 w-5" aria-hidden="true" />
-                  </button> */}
+                  </button>
                 </div>
               </div>
 
@@ -351,7 +347,12 @@ export default function ProductList() {
                             <h2 className="text-2xl font-bold text-gray-800 mb-2">
                               Oops! We couldn't find this product with this brand!
                             </h2>
-                            <p className="text-gray-600">Try to change the filter</p>
+                            <p className="text-gray-600">Try to change the filter, or {" "} 
+                            <button className='text-blue-600 underline'  onClick={() => window.location.reload()}>
+                              GET ALL PRODUCTS
+                            </button>
+
+                            </p>
                           </div>}
                       </div>
                     </div>

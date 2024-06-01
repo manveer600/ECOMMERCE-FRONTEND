@@ -7,9 +7,9 @@ import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from
 import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ITEMS_PER_PAGE, discountedPrice } from '../../../app/constants.js'
-import { fetchAllBrandsAsync, fetchAllCategoriesAsync, fetchAllProductsAsync, fetchProductByIdAsync, fetchProductsByFilterAsync, } from '../../product/productSlice.js';
-import { useForm } from 'react-hook-form';
+import { deleteProductAsync, fetchAllBrandsAsync, fetchAllCategoriesAsync, fetchProductsByFilterAsync, } from '../../product/productSlice.js';
 import couldNotFindProduct from '../../../assets/couldNotFindProduct.png'
+import toast from 'react-hot-toast';
 
 const sortOptions = [
   { name: 'Best Rating', sort: 'rating', order: 'desc', current: false },
@@ -32,15 +32,6 @@ export default function AdminProductList() {
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState({});
   const [sort, setSort] = useState({});
-  const selectedProduct = useSelector((state) => state.product.selectedProduct);
-
-  const {
-    // register,
-    // handleSubmit,
-    setValue,
-    // formState: { errors },
-  } = useForm();
-
 
   const filters = [
 
@@ -74,6 +65,21 @@ export default function AdminProductList() {
 
   async function handlePage(page) {
     setPage(page);
+  }
+
+  function editProduct(product) {
+    console.log('product is this', product);
+  }
+
+  async function deleteProduct(product) {
+    console.log('product is this', product);
+    if (window.confirm('Are you sure you want to delete this product ?')) {
+      const response = await dispatch(deleteProductAsync(product.id));
+
+      if (response?.payload?.success) {
+        toast.success('Product deleted successfully');
+      }
+    }
   }
 
   useEffect(() => {
@@ -238,10 +244,7 @@ export default function AdminProductList() {
                     </Transition>
                   </Menu>
 
-                  {/* <button type="button" className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7">
-                    <span className="sr-only">View grid</span>
-                    <Squares2X2Icon className="h-5 w-5" aria-hidden="true" />
-                  </button>
+
                   <button
                     type="button"
                     className="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden"
@@ -249,7 +252,7 @@ export default function AdminProductList() {
                   >
                     <span className="sr-only">Filters</span>
                     <FunnelIcon className="h-5 w-5" aria-hidden="true" />
-                  </button> */}
+                  </button>
                 </div>
               </div>
 
@@ -317,47 +320,57 @@ export default function AdminProductList() {
                       <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
                         {products && products.length != 0 ? <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
                           {products && products.map((product) => (
-                            <Link to={`/productdetails/${product.id}`} key={product.id}>
-                              <div key={product.id} className="group relative">
-                                <div className="aspect-h-1 border-2 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                                  <img
-                                    src={product.thumbnail}
-                                    alt={product.title}
-                                    className="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                                  />
-                                </div>
-                                <div className="mt-4 flex space-y-0 justify-between">
-                                  <div>
-                                    <h3 className="text-sm text-gray-700">
-                                      <div href={product.thumbnail}>
-                                        <span aria-hidden="true" className="absolute inset-0" />
-                                        {product.title}
+                            <div key={product.id}>
+
+                              <Link to={`/productdetails/${product.id}`} >
+                                <div key={product.id} className="group relative">
+                                  <div className="aspect-h-1 border-2 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+                                    <img
+                                      src={product.thumbnail}
+                                      alt={product.title}
+                                      className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                                    />
+                                  </div>
+                                  <div className="mt-4 flex space-y-0 justify-between">
+                                    <div>
+                                      <h3 className="text-sm text-gray-700">
+                                        <div href={product.thumbnail}>
+                                          <span aria-hidden="true" className="absolute inset-0" />
+                                          {product.title}
+                                        </div>
+                                      </h3>
+                                      <p className="mt-1 text-sm text-gray-500">{product.brand}</p>
+                                      <div className=" text-sm flex justify-center items-center space-x-2 mt-0 text-gray-500 ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-10">
+                                          <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clipRule="evenodd" />
+                                        </svg>
+                                        <p>{product.rating}</p>
                                       </div>
-                                    </h3>
-                                    <p className="mt-1 text-sm text-gray-500">{product.brand}</p>
-                                    <div className=" text-sm flex justify-center items-center space-x-2 mt-0 text-gray-500 ">
-                                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-10">
-                                        <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clipRule="evenodd" />
-                                      </svg>
-                                      <p>{product.rating}</p>
                                     </div>
-                                  </div>
-                                  <div>
-                                    <p className="text-sm font-bold text-gray-900">{discountedPrice(product)} <svg className='inline h-6 w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" >
-                                      <path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM9 7.5A.75.75 0 0 0 9 9h1.5c.98 0 1.813.626 2.122 1.5H9A.75.75 0 0 0 9 12h3.622a2.251 2.251 0 0 1-2.122 1.5H9a.75.75 0 0 0-.53 1.28l3 3a.75.75 0 1 0 1.06-1.06L10.8 14.988A3.752 3.752 0 0 0 14.175 12H15a.75.75 0 0 0 0-1.5h-.825A3.733 3.733 0 0 0 13.5 9H15a.75.75 0 0 0 0-1.5H9Z" clipRule="evenodd" />
-                                    </svg></p>
-                                    <p className="text-sm line-through font-medium text-gray-900">{product.price}
+                                    <div>
+                                      <p className="text-sm font-bold text-gray-900">{discountedPrice(product)} <svg className='inline h-6 w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" >
+                                        <path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM9 7.5A.75.75 0 0 0 9 9h1.5c.98 0 1.813.626 2.122 1.5H9A.75.75 0 0 0 9 12h3.622a2.251 2.251 0 0 1-2.122 1.5H9a.75.75 0 0 0-.53 1.28l3 3a.75.75 0 1 0 1.06-1.06L10.8 14.988A3.752 3.752 0 0 0 14.175 12H15a.75.75 0 0 0 0-1.5h-.825A3.733 3.733 0 0 0 13.5 9H15a.75.75 0 0 0 0-1.5H9Z" clipRule="evenodd" />
+                                      </svg></p>
+                                      <p className="text-sm line-through font-medium text-gray-900">{product.price}
 
-                                    </p>
+                                      </p>
+                                    </div>
+
                                   </div>
 
                                 </div>
-                                {product.deleted && <p className='text-red-600'>Product Deleted</p>}
-                                {product.stock === 0 && <p className='text-red-600'>Out of Stock</p>}
-
+                              </Link>
+                              <div className='flex justify-between'>
+                                {product.deleted === true && <p className='text-red-600'>Product Deleted</p>}
+                                {product.stock == 0 && <p className='text-red-600'>Out of Stock</p>}
                               </div>
 
-                            </Link>
+                              <div className='flex justify-between'>
+                                <button className='border-2 px-2 text-blue-700 hover:font-bold' onClick={() => editProduct(product)}>Edit</button>
+                                <button className='border-2 px-2 text-red-800 hover:font-bold' onClick={() => deleteProduct(product)}>Delete</button>
+                              </div>
+
+                            </div>
                           ))}
                         </div> :
                           <div className="flex flex-col items-center  h-screen">
@@ -371,7 +384,11 @@ export default function AdminProductList() {
                             <h2 className="text-2xl font-bold text-gray-800 mb-2">
                               Oops! We couldn't find this product with this brand!
                             </h2>
-                            <p className="text-gray-600">Try to change the filter</p>
+                            <p className="text-gray-600">Try to change the filter, or click on "PRODUCTS" in navbar
+                              <button className='text-blue-600 underline' onClick={() => window.location.reload()}>
+                                GET ALL PRODUCTS
+                              </button>
+                            </p>
                           </div>}
                       </div>
                     </div>

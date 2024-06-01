@@ -94,6 +94,7 @@ export const authSlice = createSlice({
                 state.status = 'idle';
                 state.loggedInUserToken = action.payload.token;
                 state.userInfo = action.payload.user;
+                localStorage.setItem('OTP', action.payload.OTP);
             })
             .addCase(createUserAsync.rejected, (state, action) => {
                 state.status = 'rejected';

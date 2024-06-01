@@ -6,8 +6,9 @@ import { useSelector } from 'react-redux'
 import { userInfo } from '../auth/authSlice'
 import userImage from '../../assets/user.png'
 const navigation = [
-    { name: 'Products', link: '/', user: true },
-    { name: 'Products', link: '/admin', admin: true },
+    { name: 'PRODUCTS', link: '/', user: true },
+    { name: 'ALL PRODUCTS', link: '/', admin: true },
+    { name: 'PRODUCTS SETTINGS', link: '/admin', admin: true },
     { name: 'Orders', link: '/admin/orders', admin: true },
 ];
 const userNavigation = [
