@@ -35,7 +35,9 @@ export function loginUser(loginData) {
             console.log('response from the backend', response);
             if (response.ok) {
                 const data = await response.json();
+                console.log('data is this', data);
                 resolve({ data });
+                return;
             } else {
                 const error = await response.json();
                 reject(error);

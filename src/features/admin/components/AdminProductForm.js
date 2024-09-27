@@ -312,7 +312,7 @@ function AdminProductForm() {
 
                         {/* IMAGE2*/}
                         <div className="sm:col-span-6">
-                            <label htmlFor="image1" className="block text-sm font-medium leading-6 text-gray-900">
+                            <label htmlFor="image2" className="block text-sm font-medium leading-6 text-gray-900">
                                 Image 2
                             </label>
                             <div className="mt-2">

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { ITEMS_PER_PAGE, discountedPrice } from '../../../app/constants.js'
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllOrdersAsync, selectTotalOrders, updateOrderAsync } from "../../order/orderSlice";
-import { Pagination } from "../../common/Pagination.js";
+// import { Pagination } from "../../common/Pagination.js";
 import { ArrowUpIcon, ArrowDownIcon } from "@heroicons/react/24/outline";
 function AdminOrders() {
     const [page, setPage] = useState(1);

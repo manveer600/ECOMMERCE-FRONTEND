@@ -25,10 +25,6 @@ import ContactUsPage from './pages/ContactUsPage.js';
 import './App.css';
 import OTP from "./pages/otp.js";
 
-
-// import dotenv from 'dotenv'
-// dotenv.config();
-
 const router = createBrowserRouter(
   [
     {
@@ -108,10 +104,6 @@ const router = createBrowserRouter(
       path: "verifyOtp",
       element: <OTP />
     },
-
-
-
-
 
     // ADMIN ROUTES
     {
