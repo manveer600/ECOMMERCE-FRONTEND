@@ -2,7 +2,8 @@ import { Navigate } from "react-router-dom";
 import { checkAuthAsync, loggedInUserToken, userInfo } from "../authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import Spinner from "../../common/Spinner/spinner";
+// import Spinner from "../../common/Spinner/spinner";
+import Loader from "../../common/Spinner/Loader";
 function ProtectedAdmin({ children }) {
     const dispatch = useDispatch();
     
@@ -24,7 +25,7 @@ function ProtectedAdmin({ children }) {
     }, [dispatch,token])
 
     if (isLoading) {
-        <Spinner />
+        <Loader />
     }
 
     if (!token || user.role !== 'admin' || redirectToLogin) {

@@ -20,7 +20,8 @@ const userNavigation = [
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
-function Navbar({ children }) {
+
+export default function Navbar({ children }) {
     const user = useSelector(userInfo);
     const items = useSelector((state) => state?.cart?.items);
     const navigate = useNavigate();
@@ -202,4 +203,3 @@ function Navbar({ children }) {
     )
 }
 
-export default Navbar;

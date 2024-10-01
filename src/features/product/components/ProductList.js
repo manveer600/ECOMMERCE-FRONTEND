@@ -53,7 +53,6 @@ export default function ProductList() {
     setFilter(newFilter);
   }
 
-
   async function handleSorting(option) {
     const sort = { _sort: option.sort, _order: option.order }
     setSort(sort);
@@ -64,12 +63,10 @@ export default function ProductList() {
   }
 
   useEffect(() => {
-
     (async function () {
       const pagination = { _page: page, _limit: ITEMS_PER_PAGE }
 
-      await dispatch(fetchProductsByFilterAsync({ filter, sort, pagination })
-      );
+      await dispatch(fetchProductsByFilterAsync({ filter, sort, pagination }));
       await dispatch(fetchAllBrandsAsync());
       await dispatch(fetchAllCategoriesAsync());
     }
@@ -347,10 +344,10 @@ export default function ProductList() {
                             <h2 className="text-2xl font-bold text-gray-800 mb-2">
                               Oops! We couldn't find this product with this brand!
                             </h2>
-                            <p className="text-gray-600">Try to change the filter, or {" "} 
-                            <button className='text-blue-600 underline'  onClick={() => window.location.reload()}>
-                              GET ALL PRODUCTS
-                            </button>
+                            <p className="text-gray-600">Try to change the filter, or {" "}
+                              <button className='text-blue-600 underline' onClick={() => window.location.reload()}>
+                                GET ALL PRODUCTS
+                              </button>
 
                             </p>
                           </div>}

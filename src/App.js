@@ -22,8 +22,8 @@ import StripeCheckout from './pages/StripeCheckout.js';
 import ResetPasswordPage from './pages/ResetPasswordPage.js'
 import TokenSentPage from './pages/TokenSentPage.js';
 import ContactUsPage from './pages/ContactUsPage.js';
-import './App.css';
-import OTP from "./pages/otp.js";
+// import './App.css';
+import SubmitOTP from "./pages/SubmitOTP.js";
 
 const router = createBrowserRouter(
   [
@@ -34,6 +34,10 @@ const router = createBrowserRouter(
     {
       path: "/login",
       element: <LoginPage />
+    },
+    {
+      path:'/submitOTP',
+      element: <SubmitOTP/>
     },
     {
       path: "/resetPassword/:resetToken",
@@ -98,11 +102,6 @@ const router = createBrowserRouter(
     {
       path: "tokenSent",
       element: <TokenSentPage />
-    },
-
-    {
-      path: "verifyOtp",
-      element: <OTP />
     },
 
     // ADMIN ROUTES

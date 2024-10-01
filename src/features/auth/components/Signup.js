@@ -1,10 +1,11 @@
 import { Link, Navigate } from "react-router-dom";
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux";
-import { clearSignUpError, createUserAsync, loggedInUserToken } from "../authSlice";
+import { clearSignUpError, createUserAsync, generateOTP, loggedInUserToken } from "../authSlice";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 function Signup() {
   const token = useSelector(loggedInUserToken);
   const {
@@ -54,14 +55,16 @@ function Signup() {
         <div className="mt-10  sm:mx-auto sm:w-full sm:max-w-sm">
           <form noValidate className="space-y-6 w-full" onSubmit={handleSubmit(async (data) => {
             setIsLoading(true);
-            const response = await dispatch(createUserAsync({ email: data.email, password: data.password }));
+            const response = await dispatch(generateOTP({ email: data.email, password: data.password }));
             setIsLoading(false);
-            console.log('response after signup', response);
+            console.log('response after generating OTP', response);
             if (response?.payload?.success) {
-              const OTP = localStorage.getItem('OTP');
-              console.log('otp generated is this', OTP);
-              console.log('success');
-              navigate('/');
+              navigate('/submitOTP', { state: { email: data.email, password: data.password } });
+            } else {
+              return toast.error(response?.payload?.message, {
+                id: 'error',
+                duration:1000
+              })
             }
           })}>
             {/* EMAIL */}
@@ -169,7 +172,7 @@ function Signup() {
             <div>
               <button
                 type="submit"
-                  disabled={isLoading}
+                disabled={isLoading}
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 {isLoading ? <div className="spinner"></div> : 'Sign Up'}

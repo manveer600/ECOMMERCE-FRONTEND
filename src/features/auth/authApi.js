@@ -21,54 +21,54 @@ export function createUser(userData) {
     })
 }
 
-export function loginUser(loginData) {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}users/login`, {
-                method: 'POST',
-                credentials: 'include',
-                mode: 'cors',
-                body: JSON.stringify(loginData),
-                headers: { 'content-type': "application/json" },
-            });
+// export function loginUser(loginData) {
+//     return new Promise(async (resolve, reject) => {
+//         try {
+//             const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}users/login`, {
+//                 method: 'POST',
+//                 credentials: 'include',
+//                 mode: 'cors',
+//                 body: JSON.stringify(loginData),
+//                 headers: { 'content-type': "application/json" },
+//             });
 
-            console.log('response from the backend', response);
-            if (response.ok) {
-                const data = await response.json();
-                console.log('data is this', data);
-                resolve({ data });
-                return;
-            } else {
-                const error = await response.json();
-                reject(error);
-            }
-        } catch (e) {
-            reject(e);
-        }
-    })
-}
+//             console.log('response from the backend', response);
+//             if (response.ok) {
+//                 const data = await response.json();
+//                 console.log('data is this', data);
+//                 resolve({ data });
+//                 return;
+//             } else {
+//                 const error = await response.json();
+//                 reject(error);
+//             }
+//         } catch (e) {
+//             reject(e);
+//         }
+//     })
+// }
 
-export function signOut() {
-    return new Promise(async (resolve) => {
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}users/logout`, {
-            mode: "cors",
-            credentials: 'include',
-        });
-        const data = await response.json();
-        resolve({ data: 'success' });
-    })
-}
+// export function signOut() {
+//     return new Promise(async (resolve) => {
+//         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}users/logout`, {
+//             mode: "cors",
+//             credentials: 'include',
+//         });
+//         const data = await response.json();
+//         resolve({ data: 'success' });
+//     })
+// }
 
-export function checkAuth() {
-    return new Promise(async (resolve) => {
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}users/check-auth`, {
-            mode: "cors",
-            credentials: 'include',
-        });
-        const data = await response.json();
-        resolve({ data });
-    })
-}
+// export function checkAuth() {
+//     return new Promise(async (resolve) => {
+//         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}users/check-auth`, {
+//             mode: "cors",
+//             credentials: 'include',
+//         });
+//         const data = await response.json();
+//         resolve({ data });
+//     })
+// }
 
 export async function forgotPassword(email) {
 
