@@ -19,8 +19,7 @@ function ResetPasswordPage() {
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                 <img
                     className="mx-auto h-10 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                    alt="Your Company"
+                    src="https://res.cloudinary.com/dkyhu1iqb/image/upload/v1728366767/ecommerce-thumbnail/yz5ltzfxwlr4jjdoss1e.png" alt="Your Company"
                 />
                 <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                     Reset Your Password
@@ -34,9 +33,9 @@ function ResetPasswordPage() {
                     if (response?.payload?.success) {
                         toast.success('Password updated Successfully');
                         navigate('/login');
-                    }else{
+                    } else {
                         toast.error('Link has expired. Kindly Reset your password again');
-                        navigate('/forgetPassword', {replace:true});
+                        navigate('/forgetPassword', { replace: true });
                     }
                 })} className="space-y-6" action="#" method="POST">
 
@@ -51,8 +50,8 @@ function ResetPasswordPage() {
                                 id="password"
                                 {...register('password',
                                     {
-                                        required: 'Password is required', 
-                                        validate:(value,formValues) => value === formValues.password || 'Passwords does not match'
+                                        required: 'Password is required',
+                                        validate: (value, formValues) => value === formValues.password || 'Passwords does not match'
                                     })}
                                 type="password"
                                 autoComplete="password"

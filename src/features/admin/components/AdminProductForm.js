@@ -1,14 +1,16 @@
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { createProductAsync, fetchAllBrandsAsync, fetchAllCategoriesAsync, updateProductAsync } from "../../product/productSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function AdminProductForm() {
     const params = useParams();
     const brands = useSelector((state) => state.product.brands)
     const categories = useSelector((state) => state.product.categories)
     const selectedProduct = useSelector((state) => state.product.selectedProduct);
+    const [addingProduct, setAddingProduct] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {
@@ -91,11 +93,14 @@ function AdminProductForm() {
                     navigate('/admin');
                 }
             } else {
+                setAddingProduct(true);
                 const response = await dispatch(createProductAsync(product));
                 console.log('response after adding product', response);
-                reset();
+                setAddingProduct(false);
                 if (response?.payload?.success) {
                     navigate(`/productdetails/${response.payload.product.id}`);
+                } else {
+                    return toast.error(response?.error?.message);
                 }
             }
         })}>
@@ -398,7 +403,6 @@ function AdminProductForm() {
                             }
                         </div>
 
-
                     </div>
                 </div>
 
@@ -417,9 +421,13 @@ function AdminProductForm() {
                 </button>}
                 <button
                     type="submit"
+                    disabled={addingProduct}
                     className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
-                    Save
+                    {
+                        addingProduct ? <div className="spinner"></div> :
+                            'Add Product'
+                    }
                 </button>
             </div>
         </form>

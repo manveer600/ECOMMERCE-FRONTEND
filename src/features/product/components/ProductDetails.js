@@ -70,6 +70,7 @@ export default function ProductDetails() {
       }
     }
   }
+
   return (
     <div className="bg-white ">
       {product && (<div className="pt-6 border-6 ">
@@ -127,13 +128,23 @@ export default function ProductDetails() {
               />
             </div>
           </div>
-          {product.images[3] && <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
+          {product.images[3] ? <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
             <img
               src={product.images[3]}
               alt={product.title}
               className="h-full w-full object-cover object-center"
             />
-          </div>}
+          </div> :
+            <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
+              {/* <img
+                src={product.images[3]}
+                alt={product.title}
+                className="h-full w-full object-cover object-center"
+              /> */}
+              <img className="h-full w-full object-cover object-center"
+                src='https://res.cloudinary.com/dkyhu1iqb/image/upload/v1728393218/ecommerce-thumbnail/pdnh4g7rldzze8kafvp2.png' />
+            </div>
+          }
         </div>
 
         {/* Product info */}

@@ -89,12 +89,7 @@ export const checkAuthAsync = createAsyncThunk('user/checkAuth', async () => {
             credentials: 'include',
         });
         const data = await response.json();
-        console.log('data while checking auth', data);
         return data;
-
-
-        // const response = await checkAuth();
-        // return response.data;
     }
     catch (error) {
         console.log('error while checking authentication', error);

@@ -38,8 +38,7 @@ export default function Navbar({ children }) {
                                         <img
                                             onClick={() => navigate("/")}
                                             className="h-8 w-8"
-                                            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                                            alt="Your Company"
+                                            src='https://res.cloudinary.com/dkyhu1iqb/image/upload/v1728366767/ecommerce-thumbnail/yz5ltzfxwlr4jjdoss1e.png' alt="Your Company"
                                         />
                                     </div>
                                     <div className="hidden md:block">
