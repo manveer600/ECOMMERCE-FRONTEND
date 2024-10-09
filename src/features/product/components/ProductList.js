@@ -64,8 +64,8 @@ export default function ProductList() {
 
   useEffect(() => {
     (async function () {
-      const pagination = { _page: page, _limit: ITEMS_PER_PAGE }
-
+      const pagination = { page: page, limit: ITEMS_PER_PAGE }
+      console.log('pagination is this', pagination);
       await dispatch(fetchProductsByFilterAsync({ filter, sort, pagination }));
       await dispatch(fetchAllBrandsAsync());
       await dispatch(fetchAllCategoriesAsync());
