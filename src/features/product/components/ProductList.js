@@ -30,6 +30,7 @@ export default function ProductList() {
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState({});
   const [sort, setSort] = useState({});
+  const [isFilterApplied, setIsFilterApplied] = useState(false);
 
   const filters = [
     {
@@ -45,6 +46,7 @@ export default function ProductList() {
   ]
 
   async function handleFilter(section, option, e) {
+    setIsFilterApplied(true);
     const newFilter = { ...filter };
     if (e.target.checked) {
       newFilter[section.id] = option.value;
@@ -54,6 +56,7 @@ export default function ProductList() {
   }
 
   async function handleSorting(option) {
+    setIsFilterApplied(true);
     const sort = { _sort: option.sort, _order: option.order }
     setSort(sort);
   }
@@ -76,6 +79,9 @@ export default function ProductList() {
   useEffect(() => {
     setPage(1);
   }, [totalItems, sort])
+
+
+
 
   return (
 
@@ -175,8 +181,10 @@ export default function ProductList() {
 
             <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
-                <h1 className="text-4xl font-bold tracking-tight text-gray-900">New Arrivals</h1>
-
+                <div>
+                  <h1 className="text-4xl font-bold tracking-tight text-gray-900">New Arrivals</h1>
+                  {isFilterApplied && <h3 onClick={(e) => window.location.reload()} className='underline hover:text-blue-900 text-blue-700 cursor-pointer'>Clear filters</h3>
+                  }                </div>
                 <div className="flex items-center">
                   <Menu as="div" className="relative inline-block text-left">
                     <div>

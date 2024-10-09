@@ -33,7 +33,7 @@ export function Pagination({ page, totalItems, setPage, handlePage }) {
           </p>
         </div>
         {/* 2ND DIV ACTUALLY SHOWING PAGINATION */}
-        <div className=" overflow-x-scroll  ">
+        <div className=" overflow-x-auto  ">
           <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
             <div onClick={e => handlePage(page > 1 ? page - 1 : page)}
               className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
