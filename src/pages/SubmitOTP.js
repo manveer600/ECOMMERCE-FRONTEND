@@ -46,7 +46,7 @@ export default function SubmitOTP() {
                             }
                         } else {
                             console.log('OTPS ARE NOT EQUAL')
-                            return toast.error('OTP is not valid. Please try again', {
+                            return toast.error('OTP is in-valid. Please try again', {
                                 id: "OTPInvalid",
                                 duration: 1000
                             })

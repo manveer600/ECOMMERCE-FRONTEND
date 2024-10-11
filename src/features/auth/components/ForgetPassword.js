@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { forgotPasswordAsync } from "../authSlice";
 import toast from "react-hot-toast";
+import { useState } from "react";
 function ForgetPassword() {
     const {
         register,
@@ -11,7 +12,7 @@ function ForgetPassword() {
     } = useForm();
 
     const dispatch = useDispatch();
-
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     return (
@@ -21,7 +22,7 @@ function ForgetPassword() {
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <img
                         className="mx-auto h-10 w-auto"
-                        src="https://res.cloudinary.com/dkyhu1iqb/image/upload/v1728366767/ecommerce-thumbnail/yz5ltzfxwlr4jjdoss1e.png" 
+                        src="https://res.cloudinary.com/dkyhu1iqb/image/upload/v1728366767/ecommerce-thumbnail/yz5ltzfxwlr4jjdoss1e.png"
                         alt="Your Company"
                     />
                     <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
@@ -31,9 +32,16 @@ function ForgetPassword() {
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                     <form noValidate onSubmit={handleSubmit(async (data) => {
+                        setLoading(true);
                         const response = await dispatch(forgotPasswordAsync(data));
+                        setLoading(false);
                         if (response?.payload?.success) {
                             navigate('/tokenSent', { replace: true });
+                        } else {
+                            return toast.error(response?.payload?.message, {
+                                id: 'forgotPasswordFailure',
+                                duration: 1000
+                            });
                         }
                     })} className="space-y-6" action="#" method="POST">
                         <div>
@@ -67,10 +75,11 @@ function ForgetPassword() {
 
                         <div>
                             <button
+                                disabled={loading}
                                 type="submit"
                                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
-                                Send Verification Code
+                                {loading ? <div className="spinner"></div> : 'Send Verification Code'}
                             </button>
                             <p className="text-center mt-8 "> Go back to {" "}
                                 <Link to='/login' className="text-blue-900 font-semibold">

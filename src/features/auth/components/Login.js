@@ -5,6 +5,7 @@ import { loginUserAsync, loggedInUserToken, clearLoginError } from "../authSlice
 import { useEffect, useState } from "react";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 function Login() {
   const dispatch = useDispatch();
@@ -16,7 +17,7 @@ function Login() {
     formState: { errors },
     watch
   } = useForm();
-
+  console.log(errors);
   const emailValue = watch('email');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -51,9 +52,15 @@ function Login() {
           <form noValidate onSubmit={handleSubmit(async (data) => {
             setIsLoading(true);
             const response = await dispatch(loginUserAsync({ email: data.email, password: data.password }));
+            console.log('response while logging', response);
             setIsLoading(false);
             if (response?.payload?.success) {
               <Navigate to='/' replace={true} />
+            } else {
+              return toast.error(response?.payload?.message, {
+                id: 'loginError',
+                duration: 1000
+              });
             }
           })} className="space-y-6  sm:m-auto sm:w-[500px] w-full p-2" action="#" method="POST">
             <div>

@@ -70,36 +70,36 @@ export function createUser(userData) {
 //     })
 // }
 
-export async function forgotPassword(email) {
+// export async function forgotPassword(email) {
 
-    try {
-        const response = await toast.promise(
-            fetch(`${process.env.REACT_APP_BACKEND_URL}users/forgotPassword`, {
-                method: 'POST',
-                body: JSON.stringify(email),
-                headers: { 'Content-Type': 'application/json' }
-            }),
-            {
-                loading: 'Sending verification code...',
-                success: (data) => {
-                    return 'Verification code sent successfully!'
-                },
-                error: 'Failed to send forgot password request'
-            }
-        );
+//     try {
+//         const response = await toast.promise(
+//             fetch(`${process.env.REACT_APP_BACKEND_URL}users/forgotPassword`, {
+//                 method: 'POST',
+//                 body: JSON.stringify(email),
+//                 headers: { 'Content-Type': 'application/json' }
+//             }),
+//             {
+//                 loading: 'Sending verification code...',
+//                 success: (data) => {
+//                     return 'Verification code sent successfully!'
+//                 },
+//                 error: 'Failed to send forgot password request'
+//             }
+//         );
 
-        if (!response.ok) {
-            throw new Error(`Failed to send forgot password request: ${await response.text()}`);
-        }
+//         if (!response.ok) {
+//             throw new Error(`Failed to send forgot password request: ${await response.text()}`);
+//         }
 
 
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error("Error sending forgot password request:", error);
-        toast.error(error?.response?.data?.message || "Failed to send forgot password request");
-    }
-}
+//         const data = await response.json();
+//         return data;
+//     } catch (error) {
+//         console.error("Error sending forgot password request:", error);
+//         toast.error(error?.response?.data?.message || "Failed to send forgot password request");
+//     }
+// }
 
 
 export function resetPassword(data) {

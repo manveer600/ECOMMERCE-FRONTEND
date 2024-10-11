@@ -34,10 +34,10 @@ export default function Navbar({ children }) {
                         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                             <div className="flex h-16 items-center justify-between">
                                 <div className="flex items-center">
-                                    <div className="flex-shrink-0">
+                                    <div className="flex-shrink-0 ">
                                         <img
                                             onClick={() => navigate("/")}
-                                            className="h-8 w-8"
+                                            className="h-8 w-8 bg-white rounded-full p-1"
                                             src='https://res.cloudinary.com/dkyhu1iqb/image/upload/v1728366767/ecommerce-thumbnail/yz5ltzfxwlr4jjdoss1e.png' alt="Your Company"
                                         />
                                     </div>

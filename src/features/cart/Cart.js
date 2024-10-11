@@ -142,8 +142,8 @@ function Cart() {
 
             </p>
           </div>
-        </div>) : <div className="flex flex-col justify-start items-start mt-2">OOPS ! Card is empty
-          <button className="font-serif mt-2 bg-gray-200 px-2 py-1 hover:text-yellow-900 rounded-sm" onClick={() => navigate('/login')}>Start Adding items</button>
+        </div>) : <div className="flex flex-col justify-start text-center m-auto mt-2">OOPS ! Card is empty
+          <button className="font-serif mt-2 bg-gray-200 px-2 py-1 hover:text-yellow-900 rounded-sm m-auto" onClick={() => navigate('/login')}>Start Adding items</button>
         </div>}
       </div>
     </div>

@@ -3,12 +3,16 @@ import { updateUserAsync } from "../../auth/authSlice.js";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { userInfo } from "../../auth/authSlice";
-
+import toast from "react-hot-toast";
 function UserProfile() {
     const user = useSelector(userInfo);
     const dispatch = useDispatch();
     const [selectedEditIndex, setSelectedEditIndex] = useState(-1);
     const [showAddressForm, setShowAddressForm] = useState(false);
+    const [isLoading, setIsloading] = useState(false);
+    const [isEdit, setIsEdit] = useState(false);
+    const [isDelete, setIsDelete] = useState(false);
+    const email = useSelector((state) => state?.auth?.userInfo?.email);
     const {
         register,
         handleSubmit,
@@ -23,7 +27,21 @@ function UserProfile() {
         if (confirmation) {
             const userDetails = { ...user, address: [...user.address] };
             userDetails.address.splice(index, 1);
+            setIsDelete(true);
             const response = await dispatch(updateUserAsync(userDetails));
+            console.log(response);
+            setIsDelete(false);
+            if (response?.payload?.success) {
+                return toast.success('Address deleted successfully', {
+                    id: 'addressDeleted',
+                    duration: 1000
+                })
+            } else {
+                return toast.error(response?.payload?.message, {
+                    id: 'errorUpdatingAddress',
+                    duration: 1000
+                })
+            }
         }
 
     }
@@ -31,7 +49,15 @@ function UserProfile() {
     async function handleEdit(addressUpdate, index) {
         const userDetails = { ...user, address: [...user.address] };
         userDetails.address.splice(index, 1, addressUpdate);
-        await dispatch(updateUserAsync(userDetails));
+        setIsEdit(true);
+        const response = await dispatch(updateUserAsync(userDetails));
+        setIsEdit(false);
+        if (response?.payload?.success) {
+            toast.success('User updated successfully', {
+                id: 'userUpdated',
+                duration: 1000
+            })
+        } else toast.error(response?.payload?.message);
         setSelectedEditIndex(-1);
     }
 
@@ -44,6 +70,9 @@ function UserProfile() {
     function handleEditForm(index) {
         setSelectedEditIndex(index);
         const address = user.address[index]
+        console.log(
+            'address is this', address
+        )
         setValue('name', address.name);
         setValue('email', address.email);
         setValue('phoneNumber', address.phoneNumber);
@@ -56,18 +85,28 @@ function UserProfile() {
     async function addNewAddress(newAddress) {
         const userDetails = { ...user, address: [...user.address] };
         userDetails.address.push(newAddress);
-
-        await dispatch(updateUserAsync(userDetails));
-        setShowAddressForm(false);
+        setIsloading(true);
+        const response = await dispatch(updateUserAsync(userDetails));
+        console.log('response after updating address', response);
+        setIsloading(false);
+        if (response?.payload?.success) {
+            toast.success('Address added.', {
+                id: 'addAddressSuccess',
+                duration: 2000
+            })
+            setShowAddressForm(false);
+            return;
+        } else {
+            return toast.error(response?.payload?.message);
+        }
     }
 
     return (
-        <div className="p-2">
+        <div className="p-2 font-serif">
             <p className="text-center font-serif underline text-yellow-800  text-5xl pt-3 sm:text-6xl  ">MY PROFILE</p>
 
             <div className="mx-auto mt-10 z-10 overflow-x-hidden bg-white p-3 max-w-7xl py-6 sm:px-6 lg:px-8">
                 <div className="mt-8">
-                    {/* <h2 className="sm:text-4xl font-serif font-bold text-blue-700 underline ">Name: {user.name ? user.name : "Manveer"} </h2> */}
                     <h4 className="sm:text-xl font-serif font-bold text-red-600 ">Email: {user.email ? user.email : "Manveer"}</h4>
                     <h4 className="sm:text-xl font-serif font-bold text-red-600 ">Role: {user.role === 'admin' ? user.role : 'user'}</h4>
                     <div className="flow-root">
@@ -84,6 +123,7 @@ function UserProfile() {
                             Add New Address
                         </button>}
                         {showAddressForm === true && <form noValidate onSubmit={handleSubmit(async (newAddress) => {
+                            console.log('new address is this', newAddress);
                             if (Object.keys(newAddress).length === 0) {
                                 console.error('New address is empty');
                                 return;
@@ -93,13 +133,12 @@ function UserProfile() {
                             // await dispatch(updateUserAsync({ ...loggedInUser, addresses: [...loggedInUser.addresses, data] }));
                             reset();
                         })}>
-                            <div className="border-b border-gray-900/10 pb-12">
+                            {/* FORM TO ADD A NEW ADDRESS */}
+                            <div className="border-b border-gray-900/10 pb-12 ">
                                 <h2 className="text-xl font-semibold leading-7 text-gray-900">Personal Information</h2>
                                 <p className="mt-1 text-sm leading-6 text-gray-600">Use a permanent address where you can receive mail.</p>
 
-                                <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-
-
+                                <div className="mt-10 grid grid-cols-1  gap-x-6 gap-y-8 sm:grid-cols-6">
                                     {/* <Formfields title="First Name" id='name' type='text' errors={errors} /> */}
                                     {/* First name */}
                                     <div className="sm:col-span-3">
@@ -133,10 +172,15 @@ function UserProfile() {
                                                 id="email"
                                                 // name="email"
 
-                                                {...register('email', { required: 'Email is required' })}
+                                                {...register('email', {
+                                                    required: 'Email is required',
+                                                })}
                                                 type="email"
                                                 autoComplete="email"
                                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            // value={email}
+                                            // readOnly
+                                            // disabled
                                             />
                                         </div>
                                         {
@@ -257,7 +301,6 @@ function UserProfile() {
                                 </div>
                             </div>
 
-
                             {/* RESET AND ADD ADDRESS BUTTON */}
                             <div className="mt-6 mb-6 flex items-center justify-end gap-x-6">
                                 <button
@@ -266,10 +309,11 @@ function UserProfile() {
                                     Reset
                                 </button>
                                 <button
+                                    disabled={isLoading}
                                     type="submit"
                                     className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                 >
-                                    Add Address
+                                    {isLoading ? <div className="spinner"></div> : 'Add Address'}
                                 </button>
                             </div>
 
@@ -277,17 +321,16 @@ function UserProfile() {
                     </div>
 
                     {
-                        user.address[0] ? <p className="text-xl font-serif mt-4 font-bold">Your Addresses :</p> : <p className="text-bold text-lg"> You haven't added a single address </p>
+                        user.address[0] ? <p className="text-xl font-serif mt-4 font-bold">Your Addresses :</p> : <p className="text-bold text-lg "> You haven't added a single address.</p>
                     }
                     {user.address.map((address, index) =>
-                        <div key="index">
+                        <div key={index}>
                             {selectedEditIndex === index ? <form noValidate onSubmit={handleSubmit(async (data) => {
                                 handleEdit(data, index);
-                                // await dispatch(updateUserAsync({ ...loggedInUser, addresses: [...loggedInUser.addresses, data] }));
                                 reset();
                             })}>
                                 <div className="border-b border-gray-900/10 pb-12">
-                                    <h2 className="text-xl font-semibold leading-7 text-gray-900">Personal Information</h2>
+                                    <h2 className="text-xl font-semibold leading-7 mt-2 text-gray-900">Personal Information</h2>
                                     <p className="mt-1 text-sm leading-6 text-gray-600">Use a permanent address where you can receive mail.</p>
 
                                     <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -467,43 +510,44 @@ function UserProfile() {
                                 </div>
 
                             </form> : null}
-                            <div key={index} className=" border-2 p-3 flex justify-between  gap-x-6 py-5">
+                            <div key={index} className="p-3 border flex flex-col md:flex-row justify-between gap-3 py-5">
                                 {/* REST DETAILS OF ADDRESSES */}
                                 <div className="flex min-w-0 gap-x-4">
                                     <div className="min-w-0  flex-auto">
                                         <p className="text-sm font-semibold leading-6 text-gray-900">{address.address}</p>
                                         <p className="mt-1 truncate text-xs leading-5 text-gray-500">{address.name}</p>
-                                        <p className="mt-1 truncate text-xs leading-5 text-gray-500">{address.email}</p>
+                                        <p className="mt-1 truncate text-xs leading-5 text-gray-500">{email}</p>
                                         {/* <p className="mt-1 truncate text-xs leading-5 text-gray-500">{address.email}</p> */}
                                         <p className="mt-1 truncate text-xs leading-5 text-gray-500">{address.postalCode}</p>
                                     </div>
                                 </div>
 
                                 {/* STATE AND PHONE NUMBER */}
-                                <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                                <div className="md:flex flex-col md:items-end">
                                     <p className="text-sm leading-6 text-gray-900">{address.state}</p>
                                     <p className="text-sm leading-6 text-gray-900">Phone: {address.phoneNumber}</p>
                                 </div>
 
                                 {/* BUTTONS */}
-                                <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                                <div className="md:flex space-x-2 flex-col md:items-end">
                                     {selectedEditIndex !== index ? <button
                                         onClick={(e) => handleEditForm(index)}
                                         type="button"
-                                        className="font-medium text-indigo-600 hover:text-indigo-500"
+                                        disabled={isEdit}
+                                        className="font-bold  bg-green-600 text-white py-1 px-3 hover:rounded-lg md:bg-transparent md:text-blue-700"
                                     >
-                                        Edit
+                                        {isEdit ? <div className="spinner" /> : 'Edit'}
                                     </button> : <button
                                         onClick={(e) => cancelEdit(index)}
                                         type="button"
-                                        className="font-medium text-indigo-600 hover:text-indigo-500"
+                                        className="font-bold   bg-green-600 text-white py-1 px-3 hover:rounded-lg md:bg-transparent md:text-blue-700"
                                     >
                                         Cancel
                                     </button>}
                                     <button
                                         onClick={(e) => handleRemove(e, address, index)}
                                         type="button"
-                                        className="font-medium text-indigo-600 hover:text-indigo-500"
+                                        className=" py-1 px-3 bg-red-600 text-white font-bold hover:rounded-lg md:bg-transparent md:text-blue-700 "
                                     >
                                         Remove
                                     </button>

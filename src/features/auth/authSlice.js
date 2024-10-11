@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { forgotPassword, resetPassword, updateUser } from './authApi';
+import toast from 'react-hot-toast';
 const initialState = {
     loggedInUserToken: null,
     userInfo: {},
@@ -104,12 +105,20 @@ export const checkAuthAsync = createAsyncThunk('user/checkAuth', async () => {
 );
 
 export const forgotPasswordAsync = createAsyncThunk('user/forgotPassword', async (data) => {
+    console.log('data is this', data);
     try {
-        const response = await forgotPassword(data);
-        return response;
-    }
-    catch (error) {
-        return error;
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}users/forgotPassword`, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: { 'Content-Type': 'application/json' }
+        });
+        return await response.json();
+    } catch (error) {
+        console.error("Error sending forgot password request:", error);
+        return toast.error(error?.response?.data?.message, {
+            id: 'forgotPasswordError',
+            duration: 1000
+        });
     }
 }
 );
