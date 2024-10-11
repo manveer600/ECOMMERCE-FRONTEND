@@ -83,12 +83,17 @@ export const loginUserAsync = createAsyncThunk('user/loginUser', async (loginDat
 );
 
 export const checkAuthAsync = createAsyncThunk('user/checkAuth', async () => {
+    console.log('checking authentication');
     try {
+        const start = performance.now();
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}users/check-auth`, {
+            method: 'GET',
             mode: "cors",
             credentials: 'include',
         });
+        console.log('Request took:', performance.now() - start, 'ms');
         const data = await response.json();
+        console.log('data is this', data);
         return data;
     }
     catch (error) {
