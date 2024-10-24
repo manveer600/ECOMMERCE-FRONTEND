@@ -80,27 +80,28 @@ export const updateProductAsync = createAsyncThunk('/product/updateProductAsync'
 })
 
 export const deleteProductAsync = createAsyncThunk('product/deleteProductAsync', async (id) => {
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}products/deleteProduct`,{
-        method:'DELETE',
-        body:JSON.stringify({id}),
-        credentials:'include',
-        mode:'cors',
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}products/deleteProduct`, {
+        method: 'DELETE',
+        body: JSON.stringify({ id }),
+        credentials: 'include',
+        mode: 'cors',
         headers: { 'content-type': 'application/json' }
-      })
-      const data = await response.json();
-      return data;
+    })
+    const data = await response.json();
+    return data;
 })
 
 export const addEventAsync = createAsyncThunk('product/addEventAsync', async (data) => {
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}${data.event}`,{
-        method:'POST',
-        body:JSON.stringify(data),
-        credentials:'include',
-        mode:'cors',
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}${data.event}`, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        credentials: 'include',
+        mode: 'cors',
         headers: { 'content-type': 'application/json' }
-      })
-      const returnData = await response.json();
-      return returnData;
+    })
+    const returnData = await response.json();
+    console.log('return data', returnData);
+    return returnData;
 })
 
 export const productSlice = createSlice({
@@ -164,7 +165,7 @@ export const productSlice = createSlice({
                 state.status = 'deleting product';
             })
             .addCase(deleteProductAsync.fulfilled, (state, action) => {
-                console.log('action payload data',action.payload);
+                console.log('action payload data', action.payload);
                 state.status = 'idle';
                 const index = state.products.findIndex((p) => p.id === action.payload.data.id);
                 console.log('index found is this', index);

@@ -375,12 +375,8 @@ export default function AdminProductList() {
                     </div>
                     <div className=' md:flex md:space-x-2 mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8'>
                       <Link to='/admin/add-category/brand'
-                        className="md:w-1/2 flex mt-2 items-center justify-center rounded-md border border-transparent bg-yellow-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                        Add New Category
-                      </Link>
-                      <Link to='/admin/product-form'
-                        className="md:w-1/2 flex mt-2 items-center justify-center rounded-md border border-transparent bg-yellow-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                        Add New Brand
+                        className="w-full flex mt-2 items-center justify-center rounded-md border border-transparent bg-yellow-600 px-5 py-3 font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                        Add New Category/Brand
                       </Link>
                     </div>
 

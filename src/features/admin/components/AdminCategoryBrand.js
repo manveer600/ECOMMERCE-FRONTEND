@@ -1,13 +1,14 @@
 import { useState } from "react"
 import { useDispatch } from "react-redux";
 import { addEventAsync } from "../../product/productSlice";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 export default function AdminCategoryBrand() {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [inputValue, setInputValue] = useState('');
-    const [selectedValue, setSelectedValue] = useState('category');
+    const [selectedValue, setSelectedValue] = useState('categories');
     const [isLoading, setIsloading] = useState(false);
     const handleChange = (e) => {
         setInputValue(e.target.value);
@@ -27,14 +28,17 @@ export default function AdminCategoryBrand() {
         const response = await dispatch(addEventAsync(data));
         setIsloading(false);
         if (response?.payload?.success) {
-            toast.success(`${inputValue} ${selectedValue} added Successfully`, {
-                duration: 1000
+            toast.success(response?.payload?.message, {
+                duration: 1000,
+                id: 'eventAddedSuccess'
             });
-            <Navigate to={'/'}></Navigate>
+            setInputValue('');
+            navigate('/admin');
             return;
         } else {
-            return toast.error(`Unable to add ${inputValue} ${selectedValue}. Please try later`, {
-                duration: 2000
+            return toast.error(response?.payload?.message, {
+                duration: 2000,
+                id: 'eventAddedFailure'
             });
         }
     }
