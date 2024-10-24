@@ -104,7 +104,9 @@ export default function ProductDetails() {
         </nav>
 
         {/* Image gallery */}
-        <div className="mx-auto mt-6 max-w-2xl border-6 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
+        <div className="mx-auto mt-6  max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
+
+          {/* 1st div to represent 1st image */}
           <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
             <img
               src={product.images[0]}
@@ -112,6 +114,8 @@ export default function ProductDetails() {
               className="h-full w-full object-cover object-center"
             />
           </div>
+
+          {/* 2nd div to represent 2nd and 3rd image */}
           <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
             <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
               <img
@@ -128,23 +132,15 @@ export default function ProductDetails() {
               />
             </div>
           </div>
-          {product.images[3] ? <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
+
+          {/* 3rd div to represent 4th image */}
+          <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
             <img
-              src={product.images[3]}
+              src='https://cdn-icons-png.flaticon.com/256/8819/8819106.png'
               alt={product.title}
               className="h-full w-full object-cover object-center"
             />
-          </div> :
-            <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
-              {/* <img
-                src={product.images[3]}
-                alt={product.title}
-                className="h-full w-full object-cover object-center"
-              /> */}
-              <img className="h-full w-full object-cover object-center"
-                src='https://res.cloudinary.com/dkyhu1iqb/image/upload/v1728393218/ecommerce-thumbnail/pdnh4g7rldzze8kafvp2.png' />
-            </div>
-          }
+          </div>
         </div>
 
         {/* Product info */}

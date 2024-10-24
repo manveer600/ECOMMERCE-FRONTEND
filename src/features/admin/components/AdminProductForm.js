@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { createProductAsync, fetchAllBrandsAsync, fetchAllCategoriesAsync, updateProductAsync } from "../../product/productSlice";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, replace, useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 
 function AdminProductForm() {
@@ -66,14 +66,6 @@ function AdminProductForm() {
 
 
     return (
-        // {
-        //     "id": 91,
-        //     "rating": 4.04,
-        //     "images": [
-        //       "https://cdn.dummyjson.com/product-images/91/4.jpg",
-        //       "https://cdn.dummyjson.com/product-images/91/thumbnail.jpg"
-        //     ]
-        //   }
         <form noValidate onSubmit={handleSubmit(async (data) => {
             const product = { ...data };
             product.images = [product.image1, product.image2, product.image3]
@@ -90,7 +82,8 @@ function AdminProductForm() {
                 product.rating = selectedProduct.rating || 1;
                 const response = await dispatch(updateProductAsync(product));
                 if (response?.payload) {
-                    navigate('/admin');
+                    <Navigate to={`/admin`} replace={true} />
+                    // navigate('/admin');
                 }
             } else {
                 setAddingProduct(true);
@@ -98,7 +91,8 @@ function AdminProductForm() {
                 console.log('response after adding product', response);
                 setAddingProduct(false);
                 if (response?.payload?.success) {
-                    navigate(`/productdetails/${response.payload.product.id}`);
+                    <Navigate to={`/productdetails/${response.payload.product.id}`} replace />
+                    {/* navigate(`/productdetails/${response.payload.product.id}`); */ }
                 } else {
                     return toast.error(response?.error?.message);
                 }

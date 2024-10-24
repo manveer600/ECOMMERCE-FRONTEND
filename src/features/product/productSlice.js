@@ -34,9 +34,6 @@ export const fetchAllCategoriesAsync = createAsyncThunk('product/fetchAllCategor
 });
 
 export const fetchProductsByFilterAsync = createAsyncThunk('/product/fetchProductsByFilter', async ({ filter, sort, pagination }) => {
-    // const response = await fetchProductsByFilter(filter, sort, pagination);
-    // return response.data;
-
     let queryString = '';
     for (let key in filter) {
         const value = filter[key];
@@ -70,13 +67,40 @@ export const createProductAsync = createAsyncThunk('/product/createProductAsync'
 })
 
 export const updateProductAsync = createAsyncThunk('/product/updateProductAsync', async (product) => {
-    const response = await updateProduct(product);
-    return response.data;
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}products/${product.id}`, {
+        method: "PATCH",
+        body: JSON.stringify(product),
+        credentials: "include",
+        mode: 'cors',
+        headers: { 'content-type': 'application/json' }
+    })
+
+    const data = await response.json();
+    return data;
 })
 
 export const deleteProductAsync = createAsyncThunk('product/deleteProductAsync', async (id) => {
-    const response = await deleteProduct(id);
-    return response.data;
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}products/deleteProduct`,{
+        method:'DELETE',
+        body:JSON.stringify({id}),
+        credentials:'include',
+        mode:'cors',
+        headers: { 'content-type': 'application/json' }
+      })
+      const data = await response.json();
+      return data;
+})
+
+export const addEventAsync = createAsyncThunk('product/addEventAsync', async (data) => {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}${data.event}`,{
+        method:'POST',
+        body:JSON.stringify(data),
+        credentials:'include',
+        mode:'cors',
+        headers: { 'content-type': 'application/json' }
+      })
+      const returnData = await response.json();
+      return returnData;
 })
 
 export const productSlice = createSlice({
@@ -96,7 +120,7 @@ export const productSlice = createSlice({
             })
             .addCase(fetchProductsByFilterAsync.fulfilled, (state, action) => {
                 state.status = 'idle';
-                console.log('payload',action.payload);
+                console.log('payload', action.payload);
                 state.products = action.payload.data;
                 state.totalItems = action.payload.totalDocs;
             })
@@ -133,15 +157,17 @@ export const productSlice = createSlice({
             })
             .addCase(updateProductAsync.fulfilled, (state, action) => {
                 state.status = 'idle';
-                const index = state.products.findIndex((p) => p.id === action.payload.id);
-                state.products[index] = action.payload;
+                const index = state.products.findIndex((p) => p.id === action.payload.data.id);
+                state.products[index] = action.payload.data;
             })
             .addCase(deleteProductAsync.pending, (state, action) => {
                 state.status = 'deleting product';
             })
             .addCase(deleteProductAsync.fulfilled, (state, action) => {
+                console.log('action payload data',action.payload);
                 state.status = 'idle';
-                const index = state.products.findIndex((p) => p.id === action.payload.id);
+                const index = state.products.findIndex((p) => p.id === action.payload.data.id);
+                console.log('index found is this', index);
                 delete state.products[index];
             })
 

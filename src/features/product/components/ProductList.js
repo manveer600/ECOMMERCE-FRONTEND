@@ -184,7 +184,8 @@ export default function ProductList() {
                 <div>
                   <h1 className="text-4xl font-bold tracking-tight text-gray-900">New Arrivals</h1>
                   {isFilterApplied && <h3 onClick={(e) => window.location.reload()} className='underline hover:text-blue-900 text-blue-700 cursor-pointer'>Clear filters</h3>
-                  }                </div>
+                  }                
+                </div>
                 <div className="flex items-center">
                   <Menu as="div" className="relative inline-block text-left">
                     <div>

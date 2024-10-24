@@ -15,23 +15,30 @@ function Cart() {
   const totalAmount = items.reduce((amount, item) => discountedPrice(item.productId) * item.quantity + amount, 0);
   const totalItems = items.reduce((total, item) => item.quantity + total, 0);
   async function handleQuantity(e, item) {
-    const inputValue = +e.target.value;
+    let inputValue = Number(e.target.value);
     const maxStock = item.productId.stock;
-    const dataToBeUpdated = {
-      quantity: inputValue
+
+    // Ensure the value is within the valid range
+    if (inputValue < 1) {
+      inputValue = 1;
+    } else if (inputValue > maxStock) {
+      inputValue = maxStock;
     }
 
-    if (inputValue >= 1 && inputValue <= maxStock) {
-      await dispatch(updateItemAsync({ productId: item.productId.id, dataToBeUpdated }))
-    }
-    else {
-      e.target.value = Math.min(Math.max(inputValue, 1), item.productId.stock);
-      const dataToBeUpdated = {
-        quantity: e.target.value
-      }
-      await dispatch(updateItemAsync({ productId: item.productId.id, dataToBeUpdated }))
-    }
+    // Update the input value to reflect the clamped quantity
+    e.target.value = inputValue;
+
+    // Prepare the data to be updated
+    const dataToBeUpdated = {
+      quantity: inputValue
+    };
+
+    // Dispatch the update action
+    await dispatch(updateItemAsync({ productId: item.productId.id, dataToBeUpdated }));
   }
+
+
+
   async function handleRemove(e, item) {
     await dispatch(deleteItemFromCartAsync(item.id))
   }
@@ -61,7 +68,7 @@ function Cart() {
                     <div>
                       <div className="sm:flex justify-between text-base font-medium text-gray-900">
                         <h3>
-                          <a href={item.productId.title}> {} {item.productId.title}</a>
+                          <a href={item.productId.title}> { } {item.productId.title}</a>
                         </h3>
                         <p >${discountedPrice(item.productId) * item.quantity}</p>
                       </div>
@@ -71,6 +78,7 @@ function Cart() {
                     </div>
 
                     <div className="sm:flex flex-1 items-end mt-2 justify-between text-sm">
+                      {/* QUANTITY */}
                       <div className=" text-black font-bold ">Qty
                         <div className="inline mt-2 ml-2">
                           <input
@@ -78,13 +86,12 @@ function Cart() {
                             onChange={(e) => handleQuantity(e, item)}
                             value={item.quantity}
                             min={1}
-                            max={item.productId.stock}  // Set the maximum value to the available stock
+                            max={item.productId.stock}
                           />
                         </div>
                       </div>
 
-
-
+                      {/* REMOVE ITEM */}
                       <div className="">
                         <button
                           onClick={(e) => handleRemove(e, item)}

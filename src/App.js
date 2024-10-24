@@ -24,6 +24,7 @@ import TokenSentPage from './pages/TokenSentPage.js';
 import ContactUsPage from './pages/ContactUsPage.js';
 // import './App.css';
 import SubmitOTP from "./pages/SubmitOTP.js";
+import AdminCategoryBrandPage from "./pages/Admin/AdminCategoryBrandPage.js";
 
 const router = createBrowserRouter(
   [
@@ -104,34 +105,33 @@ const router = createBrowserRouter(
       element: <TokenSentPage />
     },
 
+
     // ADMIN ROUTES
     {
       path: "/admin",
       element: <ProtectedAdmin><AdminHomepage /></ProtectedAdmin>
     },
-
     {
       path: `/admin/product-form`,
       element: <ProtectedAdmin><AdminProductFormPage /></ProtectedAdmin>
     },
-
-
     {
       path: "/admin/productdetails",
       element: <ProtectedAdmin><AdminProductDetailsPage /></ProtectedAdmin>
     },
-
-
     {
       path: "/admin/editProduct/:id",
       element: <ProtectedAdmin><AdminProductFormPage /></ProtectedAdmin>
     },
-
-
     {
       path: "/admin/orders",
       element: <ProtectedAdmin><AdminOrdersPage /></ProtectedAdmin>
     },
+
+    {
+      path:'/admin/add-category/brand',
+      element:<AdminCategoryBrandPage/>
+    }
 
 
 

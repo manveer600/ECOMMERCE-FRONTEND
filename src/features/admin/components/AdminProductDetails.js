@@ -46,10 +46,6 @@ function AdminProductDetails() {
   }, [dispatch, params.id])
 
 
-
-
-
-
   async function handleCart(e) {
     e.preventDefault();
     let newItem;
@@ -58,7 +54,7 @@ function AdminProductDetails() {
       const qty = cartItems[existingItemIndex].quantity;
       await dispatch(updateItemAsync({ ...cartItems[existingItemIndex], quantity: qty + 1 }));
     } else {
-      newItem = { ...product, quantity: 1};
+      newItem = { ...product, quantity: 1 };
       await dispatch(addToCartAsync(newItem));
     }
   }
@@ -95,7 +91,9 @@ function AdminProductDetails() {
         </nav>
 
         {/* Image gallery */}
-        <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
+        <div className="mx-auto mt-6  max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
+
+          {/* 1st div to represent 1st image */}
           <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
             <img
               src={product.images[0]}
@@ -103,6 +101,8 @@ function AdminProductDetails() {
               className="h-full w-full object-cover object-center"
             />
           </div>
+
+          {/* 2nd div to represent 2nd and 3rd image */}
           <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
             <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
               <img
@@ -119,9 +119,12 @@ function AdminProductDetails() {
               />
             </div>
           </div>
+
+          {/* 3rd div to represent 4th image */}
           <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
             <img
-              src={product.images[3]}
+              src='https://c8.alamy.com/comp/2BNBMX2/big-sale-megaphone-banner-isolated-on-white-background-vector-sale-banner-discount-offer-market-advertising-illustration-2BNBMX2.jpg'
+
               alt={product.title}
               className="h-full w-full object-cover object-center"
             />
