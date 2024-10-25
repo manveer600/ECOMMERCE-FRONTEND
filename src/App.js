@@ -37,8 +37,8 @@ const router = createBrowserRouter(
       element: <LoginPage />
     },
     {
-      path:'/submitOTP',
-      element: <SubmitOTP/>
+      path: '/submitOTP',
+      element: <SubmitOTP />
     },
     {
       path: "/resetPassword/:resetToken",
@@ -129,8 +129,8 @@ const router = createBrowserRouter(
     },
 
     {
-      path:'/admin/add-category/brand',
-      element:<AdminCategoryBrandPage/>
+      path: '/admin/add-category/brand',
+      element: <ProtectedAdmin><AdminCategoryBrandPage /></ProtectedAdmin>
     }
 
 

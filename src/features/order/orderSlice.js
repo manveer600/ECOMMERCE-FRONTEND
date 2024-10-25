@@ -32,10 +32,9 @@ export const fetchAllOrdersAsync = createAsyncThunk('counter/fetchAllOrders', as
 );
 
 
-export const updateOrderAsync = createAsyncThunk(
-  'counter/updateOrder',
-  async (order) => {
+export const updateOrderAsync = createAsyncThunk('counter/updateOrder',async (order) => {
     const response = await updateOrder(order);
+    console.log(response)
     return response.data;
   }
 );
@@ -67,24 +66,29 @@ export const orderSlice = createSlice({
       })
       .addCase(fetchAllOrdersAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.orders = action.payload.orders;
-        state.totalOrders = action.payload.orders.length;
+        state.orders = action.payload.data;
+        state.totalOrders = action.payload.docs;
       })
       .addCase(updateOrderAsync.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(updateOrderAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        const index = state.orders.findIndex((order) => order.id === action.payload.id)
-        state.orders[index] = action.payload;
+        console.log("action's payload is", action.payload);
+        console.log('action.payload.id', action.payload.data.id);
+        const index = state.orders.findIndex((order) => order.id.toString() === action?.payload?.data?.id.toString())
+        console.log('index is this', index);
+        if (index !== -1) {
+          state.orders[index] = action.payload.data;
+        }
       })
       .addCase(fetchOrdersByUserAsync.pending, (state) => {
         state.status = 'fetching orders';
       })
       .addCase(fetchOrdersByUserAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.orders = action.payload.orders;
-        state.totalOrders = action.payload.orders.length ;
+        state.orders = action.payload.data;
+        state.totalOrders = action.payload.docs;
       })
   },
 });

@@ -1,4 +1,4 @@
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import ReactConfetti from "react-confetti";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -6,7 +6,6 @@ import { resetCartAsync } from "../features/cart/CartSlice";
 
 export default function OrderSuccessPage() {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const params = useParams();
     const { id } = params;
     useEffect(() => {

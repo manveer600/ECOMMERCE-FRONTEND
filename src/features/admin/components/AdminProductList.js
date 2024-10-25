@@ -44,7 +44,6 @@ export default function AdminProductList() {
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState({});
   const [sort, setSort] = useState({});
-  const [isEdit, setIsEdit] = useState(false);
   const [selectedEditIndex, setSelectedEditIndex] = useState(-1);
   const [isFilterApplied, setIsFilterApplied] = useState(false);
 
@@ -62,7 +61,6 @@ export default function AdminProductList() {
     }
   ]
 
-
   async function handleFilter(section, option, e) {
     setIsFilterApplied(true);
     const newFilter = { ...filter };
@@ -72,7 +70,6 @@ export default function AdminProductList() {
 
     setFilter(newFilter);
   }
-
 
   async function handleSorting(option) {
     setIsFilterApplied(true);
@@ -674,7 +671,7 @@ export default function AdminProductList() {
                                               })}>
                                                 <option value=''>--Choose Brand--</option>
                                                 {brands.map((brand, index) => <option key={index} value={brand.value}>{brand.label} </option>)
-                                                }                                
+                                                }
                                               </select>
                                             </div>
                                             {
@@ -793,13 +790,12 @@ export default function AdminProductList() {
                               className="mb-4"
                             />
                             <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                              Oops! We couldn't find this product with this brand!
+                              Oops! We couldn't find this product!
                             </h2>
-                            <p className="text-gray-600">Try to change the filter, or click on "PRODUCTS" in navbar
-                              <button className='text-blue-600 underline' onClick={() => window.location.reload()}>
-                                GET ALL PRODUCTS
-                              </button>
-                            </p>
+
+                            <button className='text-blue-600 underline' onClick={() => window.location.reload()}>
+                              GET ALL PRODUCTS
+                            </button>
                           </div>}
                       </div>
                     </div>

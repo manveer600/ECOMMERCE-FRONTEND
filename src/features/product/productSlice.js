@@ -33,7 +33,7 @@ export const fetchAllCategoriesAsync = createAsyncThunk('product/fetchAllCategor
     return response.data;
 });
 
-export const fetchProductsByFilterAsync = createAsyncThunk('/product/fetchProductsByFilter', async ({ filter, sort, pagination }) => {
+export const fetchProductsByFilterAsync = createAsyncThunk('/product/fetchProductsByFilter', async ({ filter, sort, pagination, selectedValue, inputValue }) => {
     let queryString = '';
     for (let key in filter) {
         const value = filter[key];
@@ -48,7 +48,11 @@ export const fetchProductsByFilterAsync = createAsyncThunk('/product/fetchProduc
     }
 
 
-    // return new Promise(async (resolve) => {
+    if (selectedValue && inputValue != '') {
+        queryString += `${selectedValue}=${inputValue}`
+    }
+
+
     console.log('querystring', queryString);
     const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}products?${queryString}`, {
         method: 'GET',
@@ -58,7 +62,6 @@ export const fetchProductsByFilterAsync = createAsyncThunk('/product/fetchProduc
     const data = await response.json();
     console.log('data is this', data);
     return data;
-    // });
 });
 
 export const createProductAsync = createAsyncThunk('/product/createProductAsync', async (product) => {

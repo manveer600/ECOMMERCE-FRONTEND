@@ -32,8 +32,6 @@ export function updateOrder(order) {
 
 export function fetchAllOrders(sort, pagination) {
 
-  // filter = {"category":'smartphone'}
-  // filter={category:["smartphones", "laptops", "skincare", "etc"]}
   let queryString = '';
 
   for (let key in pagination) {
@@ -51,8 +49,6 @@ export function fetchAllOrders(sort, pagination) {
       credentials: 'include',
     })
     const data = await response.json();
-    // const totalOrders = await response.headers.get('X-Total-Count');
-    // resolve({ data: { orders: data, totalOrders: +totalOrders } })
     resolve({data});
   });
 }

@@ -9,9 +9,9 @@ function UserOrder() {
     const navigate = useNavigate();
     const orders = useSelector((state) => state?.orders?.orders);
 
-    const totalItems = orders.reduce((total, order) => total + order.items.reduce((subTotal, item) => subTotal + item.quantity, 0), 0);
+    const totalItems = orders && orders.reduce((total, order) => total + order.items.reduce((subTotal, item) => subTotal + item.quantity, 0), 0);
     useEffect(() => {
-        (async function fetchOrdersByUser(){
+        (async function fetchOrdersByUser() {
             await dispatch(fetchOrdersByUserAsync());
         })()
     }, [dispatch])

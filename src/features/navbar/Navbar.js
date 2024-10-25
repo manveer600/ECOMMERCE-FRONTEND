@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { userInfo } from '../auth/authSlice'
 import userImage from '../../assets/user.png'
+import logo from '../../assets/ecomzyLogo.png'
 const navigation = [
     { name: 'PRODUCTS', link: '/', user: true },
     { name: 'ALL PRODUCTS', link: '/', admin: true },
@@ -191,7 +192,9 @@ export default function Navbar({ children }) {
 
             <header className="bg-white shadow">
                 <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                    <h1 className="text-3xl font-bold text-gray-900">SHOPSIFY</h1>
+                    <h1 className="text-3xl font-bold text-gray-900">
+                        <img className='h-20' src={logo} onClick={(e) => navigate('/')} />
+                    </h1>
                 </div>
             </header>
             <main>

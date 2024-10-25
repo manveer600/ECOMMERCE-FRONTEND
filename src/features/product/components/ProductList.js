@@ -31,6 +31,8 @@ export default function ProductList() {
   const [filter, setFilter] = useState({});
   const [sort, setSort] = useState({});
   const [isFilterApplied, setIsFilterApplied] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+  const [selectedValue, setSelectedValue] = useState('title');
 
   const filters = [
     {
@@ -68,20 +70,24 @@ export default function ProductList() {
   useEffect(() => {
     (async function () {
       const pagination = { page: page, limit: ITEMS_PER_PAGE }
-      console.log('pagination is this', pagination);
-      await dispatch(fetchProductsByFilterAsync({ filter, sort, pagination }));
+      await dispatch(fetchProductsByFilterAsync({ filter, sort, pagination, selectedValue, inputValue }));
       await dispatch(fetchAllBrandsAsync());
       await dispatch(fetchAllCategoriesAsync());
     }
     )()
-  }, [dispatch, filter, sort, page])
+  }, [dispatch, filter, sort, page, selectedValue, inputValue])
 
   useEffect(() => {
     setPage(1);
   }, [totalItems, sort])
 
+  const handleInputValue = (e) => {
+    setInputValue(e.target.value);
+  }
 
-
+  const handleSelectedValue = (e) => {
+    setSelectedValue(e.target.value);
+  }
 
   return (
 
@@ -178,14 +184,14 @@ export default function ProductList() {
                 </div>
               </Dialog>
             </Transition.Root>
-
             <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
                 <div>
                   <h1 className="text-4xl font-bold tracking-tight text-gray-900">New Arrivals</h1>
                   {isFilterApplied && <h3 onClick={(e) => window.location.reload()} className='underline hover:text-blue-900 text-blue-700 cursor-pointer'>Clear filters</h3>
-                  }                
+                  }
                 </div>
+
                 <div className="flex items-center">
                   <Menu as="div" className="relative inline-block text-left">
                     <div>
@@ -244,7 +250,6 @@ export default function ProductList() {
 
               <section aria-labelledby="products-heading" className="pb-24 pt-6">
 
-
                 <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
                   {/* Filters */}
                   <form className="hidden lg:block">
@@ -291,8 +296,18 @@ export default function ProductList() {
                     ))}
                   </form>
 
+
                   {/* Product grid */}
                   <div className="lg:col-span-3">
+                    <div className='space-x-2 flex mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8'>
+                      <select className="rounded" onChange={handleSelectedValue}>
+                        <option value='title'>Title</option>
+                        <option value='category'>Category</option>
+                        <option value='brand'>Brand</option>
+                      </select>
+                      <input type='text' placeholder='Search Either by Title, Category, Brand.' className='w-full rounded' onChange={handleInputValue} />
+
+                    </div>
 
                     <div className="bg-white">
                       <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
@@ -351,14 +366,12 @@ export default function ProductList() {
                               className="mb-4"
                             />
                             <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                              Oops! We couldn't find this product with this brand!
+                              Oops! We couldn't find this product!
                             </h2>
-                            <p className="text-gray-600">Try to change the filter, or {" "}
-                              <button className='text-blue-600 underline' onClick={() => window.location.reload()}>
-                                GET ALL PRODUCTS
-                              </button>
 
-                            </p>
+                            <button className='text-blue-600 underline' onClick={() => window.location.reload()}>
+                              GET ALL PRODUCTS
+                            </button>
                           </div>}
                       </div>
                     </div>
