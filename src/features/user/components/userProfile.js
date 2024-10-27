@@ -22,28 +22,45 @@ function UserProfile() {
     } = useForm();
 
 
-    async function handleRemove(e, address, index) {
-        const confirmation = window.confirm(`Are you sure you want to delete this address: ${address.address}?`);
-        if (confirmation) {
-            const userDetails = { ...user, address: [...user.address] };
-            userDetails.address.splice(index, 1);
-            setIsDelete(true);
-            const response = await dispatch(updateUserAsync(userDetails));
-            console.log(response);
-            setIsDelete(false);
-            if (response?.payload?.success) {
-                return toast.success('Address deleted successfully', {
-                    id: 'addressDeleted',
-                    duration: 1000
-                })
-            } else {
-                return toast.error(response?.payload?.message, {
-                    id: 'errorUpdatingAddress',
-                    duration: 1000
-                })
-            }
+    async function deleteAddress(e, address, index) {
+        const userDetails = { ...user, address: [...user.address] };
+        userDetails.address.splice(index, 1);
+        setIsDelete(true);
+        const response = await dispatch(updateUserAsync(userDetails));
+        console.log(response);
+        setIsDelete(false);
+        if (response?.payload?.success) {
+            return toast.success('Address deleted successfully', {
+                id: 'addressDeleted',
+                duration: 1000
+            })
+        } else {
+            return toast.error(response?.payload?.message, {
+                id: 'errorUpdatingAddress',
+                duration: 1000
+            })
         }
+    }
 
+
+    async function handleRemove(e, address, index) {
+        toast((t) => (
+            <div>
+                <p className='font-serif italic'>Are you sure you want to delete this address: ${address.address}?
+                </p>
+                <div className='flex justify-between align-center mt-5'>
+                    <button className='text-red-600 border border-red-500 p-2 rounded' 
+                    onClick={(e) => {
+                        toast.dismiss(t.id);
+                        deleteAddress(e, address, index);
+                    }}>Confirm</button>
+                    <button className='text-green-600 border border-green-500 p-2 rounded' onClick={(e) => toast.dismiss(t.id)}>Cancel</button>
+                </div>
+            </div>
+        ), {
+            id: 'confirmationToast',
+            position: 'top-center'
+        })
     }
 
     async function handleEdit(addressUpdate, index) {

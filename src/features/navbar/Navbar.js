@@ -10,7 +10,7 @@ const navigation = [
     { name: 'PRODUCTS', link: '/', user: true },
     { name: 'ALL PRODUCTS', link: '/', admin: true },
     { name: 'PRODUCTS SETTINGS', link: '/admin', admin: true },
-    { name: 'Orders', link: '/admin/orders', admin: true },
+    { name: 'ORDERS', link: '/admin/orders', admin: true },
 ];
 const userNavigation = [
     { name: 'My Profile', href: '/profile' },

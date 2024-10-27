@@ -64,10 +64,10 @@ function AdminOrders() {
         <>
             {/* component */}
             <div>
-                <div className="min-h-screen bg-white overflow-auto flex items-center justify-center  font-sans ">
+                <div className="min-h-screen bg-white overflow-auto flex justify-center  font-sans ">
                     <div className="w-full lg:w-6/6">
                         <div className="  w-full rounded my-6">
-                            {orders && orders.length > 0 ? <table className="min-w-max w-full table-auto">
+                            {orders && orders.length > 0 ? <table className=" min-w-max w-full table-auto">
                                 <thead>
                                     <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
                                         <th className="py-3 px-6 text-left hover:cursor-pointer"
@@ -154,7 +154,7 @@ function AdminOrders() {
                                                         )
                                                         :
                                                         (
-                                                            <span className={`${chooseColour(order.status)} py-1 px-3 rounded-full text-xs`}>
+                                                            <span className={`${chooseColour(order.status)} py-1 px-3 rounded text-xs`}>
                                                                 {order.status}
                                                             </span>
                                                         )

@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { deleteItemFromCartAsync, updateItemAsync } from '../features/cart/CartSlice.js';
 import { addOrderAsync } from '../features/order/orderSlice.js';
 import { discountedPrice } from '../app/constants.js';
+import toast from 'react-hot-toast';
 
 function Checkout() {
   const user = useSelector(userInfo);
@@ -47,9 +48,27 @@ function Checkout() {
     }
   }
 
+  async function deleteItem(item) {
+    await dispatch(deleteItemFromCartAsync(item.id))
+  }
+
   async function handleRemove(e, item) {
-    if (window.confirm('Are you sure you want to remove an item from the cart ?'))
-      await dispatch(deleteItemFromCartAsync(item.id))
+    toast((t) => (
+      <div>
+        <p className='font-serif italic'>Are you sure you want to remove an item from the cart?</p>
+        <div className='flex justify-between align-center mt-5'>
+          <button className='text-red-600 border border-red-500 p-2 rounded'
+            onClick={(e) => {
+              toast.dismiss(t.id);
+              deleteItem(item)
+            }}>Confirm</button>
+          <button className='text-green-600 border border-green-500 p-2 rounded' onClick={(e) => toast.dismiss(t.id)}>Cancel</button>
+        </div>
+      </div>
+    ), {
+      id: 'deleteItemConfirmation',
+      position: 'top-center'
+    })
   }
 
   async function handleOrder() {
@@ -363,8 +382,8 @@ function Checkout() {
 
         </div>
 
-        <div className='lg:w-1/2'>
-          <div className="mt-10 z-10 overflow-x-hidden bg-white max-w-7xl  sm:px-6 lg:px-8">
+        <div className='lg:w-1/2 '>
+          <div className="mt-10 z-10 p-5 overflow-x-hidden bg-white max-w-7xl  sm:px-6 lg:px-8">
             <div className="mt-8">
               <h2 className="text-4xl font-serif font-bold text-blue-700 underline  text-center">My cart</h2>
               <div className="flow-root ">
@@ -441,14 +460,14 @@ function Checkout() {
                   {totalItems} items
                 </p>
               </div>
-                <div className="mt-6">
-                  <button
+              <div className="mt-6">
+                <button
                   onClick={handleOrder}
-                    className="flex text-center m-auto items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-                  >
-                    Place Order
-                  </button>
-                </div>
+                  className="flex text-center m-auto items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                >
+                  Place Order
+                </button>
+              </div>
               <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                 <p>
                   or{' '}
@@ -465,7 +484,9 @@ function Checkout() {
 
                 </p>
               </div>
-            </div>) : <div className="flex flex-col justify-start items-start mt-2">OOPS ! Card is empty
+            </div>) : 
+            <div className="flex flex-col  justify-center items-center mt-2">
+              OOPS ! Card is empty
               <button className="font-serif mt-2 bg-gray-200 px-2 py-1 hover:text-yellow-900 rounded-sm" onClick={() => navigate('/login')}>Start Adding items</button>
             </div>}
           </div>

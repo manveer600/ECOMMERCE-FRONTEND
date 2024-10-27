@@ -37,10 +37,10 @@ function StripeCheckout() {
     };
 
     return (
-        <div className="Stripe">
+        <div className="Stripe h-screen flex items-center justify-center  ">
             {clientSecret && (
                 <Elements options={options} stripe={stripePromise}>
-                    <CheckoutForm  order={currentOrder} />
+                    <CheckoutForm order={currentOrder} />
                 </Elements>
             )}
         </div>

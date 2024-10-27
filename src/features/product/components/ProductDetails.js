@@ -50,18 +50,14 @@ export default function ProductDetails() {
   async function handleCart(e) {
     e.preventDefault();
     let newItem;
-    const existingItemIndex = cartItems.findIndex(c => c.productId.id === product.id);
+    const existingItemIndex = cartItems && cartItems.findIndex(c => c.productId.id === product.id);
     if (existingItemIndex != -1) {
-      if (window.confirm('Item has already been added to cart. Do you want to add 1 more quantity?')) {
-        let item = cartItems[existingItemIndex];
-        const dataToBeUpdated = {
-          quantity: item.quantity + 1
-        };
-        const response = await dispatch(updateItemAsync({ productId: product.id, dataToBeUpdated }));
-        if (response?.payload?.success) {
-          toast.success(`Item's quantity updated`);
-        }
-      }
+      toast((t) => (
+        <div className='font-serif italic'> Item has already been added to cart. </div>
+      ), {
+        id: 'itemAlreadyAdded',
+        position: 'top-center'
+      })
     } else {
       newItem = { productId: product.id, quantity: 1 }
       const response = await dispatch(addToCartAsync(newItem));

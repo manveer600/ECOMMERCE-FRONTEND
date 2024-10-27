@@ -32,11 +32,11 @@ export const fetchAllOrdersAsync = createAsyncThunk('counter/fetchAllOrders', as
 );
 
 
-export const updateOrderAsync = createAsyncThunk('counter/updateOrder',async (order) => {
-    const response = await updateOrder(order);
-    console.log(response)
-    return response.data;
-  }
+export const updateOrderAsync = createAsyncThunk('counter/updateOrder', async (order) => {
+  const response = await updateOrder(order);
+  console.log(response)
+  return response.data;
+}
 );
 
 
@@ -88,7 +88,7 @@ export const orderSlice = createSlice({
       .addCase(fetchOrdersByUserAsync.fulfilled, (state, action) => {
         state.status = 'idle';
         state.orders = action.payload.data;
-        state.totalOrders = action.payload.docs;
+        state.totalOrders = action.payload.data.length;
       })
   },
 });

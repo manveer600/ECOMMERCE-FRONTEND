@@ -107,7 +107,7 @@ export default function AdminProductList() {
     if (response?.payload?.success) {
       toast.success('Product deleted successfully', {
         id: 'productDeleted',
-        duration: 2000
+        duration: 1000
       });
       await dispatch(fetchProductsByFilterAsync({}));
     }
@@ -116,7 +116,6 @@ export default function AdminProductList() {
   async function showConfirmationToast(product) {
     console.log('product is this', product);
     toast((t) => (
-      // console.log('t is this', t)
       <div>
         <p className='font-serif italic'>Are you sure you want to delete this product: <span className='font-extrabold'>{product.title}</span></p>
         <div className='flex justify-between align-center mt-5'>

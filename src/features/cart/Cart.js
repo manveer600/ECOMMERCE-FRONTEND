@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { deleteItemFromCartAsync, updateItemAsync } from "./CartSlice";
+import { deleteItemFromCartAsync, fetchItemsByUserIdAsync, updateItemAsync } from "./CartSlice";
 import { discountedPrice } from "../../app/constants";
 
 
@@ -12,8 +12,9 @@ function Cart() {
   const dispatch = useDispatch();
   const items = useSelector((state) => state?.cart?.items);
   const [open, setOpen] = useState(true)
-  const totalAmount = items.reduce((amount, item) => discountedPrice(item.productId) * item.quantity + amount, 0);
-  const totalItems = items.reduce((total, item) => item.quantity + total, 0);
+  const totalAmount = items && items.length > 0 && items.reduce((amount, item) => discountedPrice(item.productId) * item.quantity + amount, 0);
+  const totalItems = items && items.length > 0 && items.reduce((total, item) => item.quantity + total, 0);
+
   async function handleQuantity(e, item) {
     let inputValue = Number(e.target.value);
     const maxStock = item.productId.stock;
@@ -37,12 +38,20 @@ function Cart() {
     await dispatch(updateItemAsync({ productId: item.productId.id, dataToBeUpdated }));
   }
 
-
-
   async function handleRemove(e, item) {
     await dispatch(deleteItemFromCartAsync(item.id))
   }
 
+
+  useEffect(() => {
+    async function getCart() {
+      console.log('getting user cart');
+      const response = await dispatch(fetchItemsByUserIdAsync());
+      console.log('response after getting user cart', response);
+    }
+
+    getCart();
+  }, [])
 
 
   return (

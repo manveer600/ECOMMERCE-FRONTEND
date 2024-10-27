@@ -81,9 +81,8 @@ function AdminProductForm() {
                 product.id = params.id
                 product.rating = selectedProduct.rating || 1;
                 const response = await dispatch(updateProductAsync(product));
-                if (response?.payload) {
+                if (response?.payload?.success) {
                     <Navigate to={`/admin`} replace={true} />
-                    // navigate('/admin');
                 }
             } else {
                 setAddingProduct(true);
@@ -91,17 +90,24 @@ function AdminProductForm() {
                 console.log('response after adding product', response);
                 setAddingProduct(false);
                 if (response?.payload?.success) {
-                    <Navigate to={`/productdetails/${response.payload.product.id}`} replace />
-                    {/* navigate(`/productdetails/${response.payload.product.id}`); */ }
+                    toast.success(response?.payload?.message,{
+                        id:'productCreatedSuccessfully',
+                        duration:1000
+                    })
+                    navigate(`/productdetails/${response.payload.data.id}`);
                 } else {
-                    return toast.error(response?.error?.message);
+                    return toast.error('Product already exists.',
+                        {
+                            id: 'productAlreadyExist',
+                            duration: 2000
+                        }
+                    );
                 }
             }
         })}>
             <div className="space-y-12 p-8 bg-white">
                 <div className="border-b border-gray-900/10 pb-12">
                     <h2 className="text-base font-semibold leading-7 text-gray-900">Add Product</h2>
-
 
                     <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                         {/* PRODUCT NAME */}

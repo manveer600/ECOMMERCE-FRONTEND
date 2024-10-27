@@ -23,7 +23,16 @@ function UserOrder() {
                     <div className="mx-auto mt-10 z-10 overflow-x-hidden p-3 bg-white max-w-7xl py-6 sm:px-6 lg:px-8">
                         <div className="mt-8">
                             <h2 className="sm:text-3xl font-serif font-bold text-blue-700 underline sm:text-start text-center">Order #{order.id}</h2>
-                            <h4 className="text-xl font-serif font-bold text-red-600 sm:text-start text-center ">Order Status : {order.status}</h4>
+                            <h4 className="text-xl font-serif font-bold text-yellow-500 sm:text-start text-center">
+                                Order Status:{" "}
+                                <span
+                                    className={`${order.status === 'delivered' ? 'text-black' : order.status === 'dispatched' ? 'text-green-600' : 'text-red-600'}`}
+                                    style={{ textDecoration: 'none !important' }}
+                                >
+                                    {order.status}
+                                </span>
+                            </h4>
+
                             <div className="flow-root">
                                 <ul role="list" className="p-5  divide-y divide-gray-200">
                                     {
@@ -87,22 +96,23 @@ function UserOrder() {
 
 
 
-                        {order.totalAmount > 0 ? (<div className="border-t border-gray-200 px-4 py-6 sm:px-6">
-                            <div className="flex justify-between text-base font-medium text-gray-900">
-                                <p>Subtotal</p>
-                                <p>
-                                    ${order.totalAmount}
-                                </p>
-                            </div>
-                            <div className="flex justify-between text-base font-medium text-gray-900">
-                                <p>Total Items</p>
-                                <p>
-                                    {totalItems} items
-                                </p>
-                            </div>
+                        {
+                            order.totalAmount > 0 ? (<div className="border-t border-gray-200 px-4 py-6 sm:px-6">
+                                <div className="flex justify-between text-base font-medium text-gray-900">
+                                    <p>Subtotal</p>
+                                    <p>
+                                        ${order.totalAmount}
+                                    </p>
+                                </div>
+                                <div className="flex justify-between text-base font-medium text-gray-900">
+                                    <p>Total Items</p>
+                                    <p>
+                                        {totalItems} items
+                                    </p>
+                                </div>
 
 
-                            {/* <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
+                                {/* <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                                 <p>
 
                                     <Link to='/'>
@@ -118,9 +128,10 @@ function UserOrder() {
 
                                 </p>
                             </div> */}
-                        </div>) : <div className="flex flex-col justify-start items-start mt-2">OOPS ! You haven't ordered anything.
-                            <button className="font-serif mt-2 bg-gray-200 px-2 py-1 hover:text-yellow-900 rounded-sm" onClick={() => navigate('/')}>See Items</button>
-                        </div>}
+                            </div>) : <div className="flex flex-col justify-start items-start mt-2">OOPS ! You haven't ordered anything.
+                                <button className="font-serif mt-2 bg-gray-200 px-2 py-1 hover:text-yellow-900 rounded-sm" onClick={() => navigate('/')}>See Items</button>
+                            </div>
+                        }
 
 
                     </div>
@@ -152,7 +163,7 @@ function UserOrder() {
                 </p>
             </div>
 
-        </div>
+        </div >
     );
 }
 
